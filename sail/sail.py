@@ -27,7 +27,7 @@ def sail(p,d):
         tstart = 0 # time calc
         for iModel in range(0,value.shape[1]): # must be parallelized
             # only retrain model parameters every 'p.trainingMod' iterations
-            if (nSamples == p.initialSamples OR np.remainder(nSamples, p.trainingMod * p.nAdditionalSamples)):
+            if (nSamples == p.initialSamples or np.remainder(nSamples, p.trainingMod * p.nAdditionalSamples)):
                 # gpModel
                 pass
             else:
@@ -44,7 +44,7 @@ def sail(p,d):
         trainingTime = 0 # time calc
 
         # Create intermediate prediction map for analysis
-        if ~np.remainder(nSamples, p.data.mapEvalMod) AND p.data.mapEval:
+        if ~np.remainder(nSamples, p.data.mapEvalMod) and p.data.mapEval:
             print('PE: ' + str(nSamples) + ' | Illuminating Prediction Map')
             predMap[nSamples], x = createPredictionMap(gpModel, observation, p, d, 'featureRes', p.data.predMapRes, 'nGens', 2*p.nGens)
 
@@ -104,7 +104,7 @@ def sail(p,d):
             indPool = indPool[:] # ~any(isnan(indPool),2)
 
             # Evaluate enough of these valid solutions to get your initial sample set
-            peFunction = lamda x: feval(d.preciseEvaluate, x, d) # returns nan if not converged
+            peFunction = lambda x: feval(d.preciseEvaluate, x, d) # returns nan if not converged
             foundSample, foundValue, nMissing = getValidInds(indPool, peFunction, nMissing)
             newSample = [[newSample], [foundSample]]
             newValue = [[newValue], [foundValue]]
