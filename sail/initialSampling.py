@@ -1,5 +1,6 @@
 import numpy as np
 import sobol_seq
+from sail.getValidInds import getValidInds
 
 def initialSampling(d, nInitialSamples):
     # Produce initial solutions
@@ -10,7 +11,10 @@ def initialSampling(d, nInitialSamples):
     inds = []
     sobPoint = 1
     while nMissing > 0:
-        indPool = sobol_seq#...
+        # how many sobol elements to take
+        num_take = (sobPoint+nMissing*2)-sobPoint
+
+        indPool = sobol_seq.i4_sobol_generate(d.dof,num_take)
         sobPoint = 1 + sobPoint + nMissing*2
         validFunction = lambda genomes: feval(d.validate, genomes, d)
         validInds, x, nMissing = getValidInds(indPool, validFunction, nMissing)

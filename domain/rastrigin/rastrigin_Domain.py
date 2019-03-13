@@ -1,3 +1,5 @@
+from gaussianProcess.paramsGP import paramsGP
+
 def rastrigin_Domain():
     class Domain:
         def __init__(self):
@@ -26,8 +28,9 @@ def rastrigin_Domain():
             self.featureLabels = ['Z_{up}','X_{up}'] # [X label, Y label]
 
             # GP Models
-            self.gpParams[0] = paramsGP(d.dof)
-            self.gpParams[1] = paramsGP(d.dof)
+            self.gpParams = []
+            self.gpParams.insert(0,paramsGP(self.dof))
+            self.gpParams.insert(1,paramsGP(self.dof))
             self.nVals = 2 # number of values of interest
 
             # Acquisition function
@@ -37,12 +40,6 @@ def rastrigin_Domain():
             # Domain Specific Map Values
             self.extraMapValues = []
 
-	    
-    
+
+
     return Domain()
-
-    
-
-    
-
-    
