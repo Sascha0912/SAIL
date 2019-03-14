@@ -18,7 +18,13 @@ def getValidInds(indPool, testFunction, nDesired):
         result = testFunction(nextInd) # Must return a [nInds x nVals] matrix
 
         # Assign valid solutions
-        validInds = np.where()# any isnan TODO
+        # validInds = np.where()# any isnan TODO
+        print("result")
+        print(result)
+        # isnan = ~np.isnan(result)
+        # print("isnan")
+        # print(isnan)
+
         vals = [[vals], [result[validInds,:]]]
         inds = [[inds], [nextInd[validInds,:]]]
 

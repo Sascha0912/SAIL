@@ -9,7 +9,7 @@ def paramsGP(nInputs):
             # vec = np.zeros((nInputs,1))
             # print(vec)
             self.hyp_cov = np.zeros((nInputs+1,1)) # unit vector in log space
-            print(self.hyp_cov)
+            # print(self.hyp_cov)
             self.meanfunc = pyGPs.mean.Const
             self.hyp_mean = 0
             self.likfunc = 'Gauss' # Gauss

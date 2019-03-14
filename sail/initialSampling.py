@@ -1,10 +1,15 @@
 import numpy as np
 import sobol_seq
 from sail.getValidInds import getValidInds
+from domain.rastrigin.rastrigin_Validate import rastrigin_Validate
 
 def initialSampling(d, nInitialSamples):
+
+    def feval(funcName,*args):
+        return eval(funcName)(*args)
+
     # Produce initial solutions
-    sobSequence = sobol_seq #.i4_...
+    # sobSequence = sobol_seq #.i4_...
 
     # Get collection of valid solutions
     nMissing = nInitialSamples
