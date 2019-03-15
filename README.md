@@ -1,4 +1,4 @@
-# sail
+# SAIL
 Source code for the Surrogate-Assisted Illumination (SAIL) algorithm, as
 described in: 
 
