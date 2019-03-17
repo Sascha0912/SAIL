@@ -12,7 +12,7 @@ def rastrigin_FitnessFunc(pop):
     for i in range(len(pop)):
         genes.append(pop[i])
     df = pd.DataFrame(data=genes)
-    print(df)
+    # print(df)
     df_fitness = pd.DataFrame(data=rastr(df))
     df_fitness = df_fitness.transpose()
 

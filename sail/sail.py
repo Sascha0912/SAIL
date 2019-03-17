@@ -1,13 +1,15 @@
 import numpy as np
 import pyGPs
 import sobol_seq
+from sail.initialSampling import initialSampling
+
 
 def sail(p,d):
     # Produce initial samples
-    if d.loadInitialSamples:
-        observation, value = initialSampling(d,p.initialSamples)
+    if ~d.loadInitialSamples:
+        observation, value = initialSampling(d,p.nInitialSamples)
     else:
-        np.load() # e.g. npz-File
+        np.load(d.initialSampleSource) # e.g. npz-File
         randomPick = np.random.permutation(observation.shape[0])[:p.initialSamples] # take only first "initialSamples" values
         observation = observation[randomPick,:] # get rows with indexes from randomPick
         value = value[randomPick,:] # same for value
