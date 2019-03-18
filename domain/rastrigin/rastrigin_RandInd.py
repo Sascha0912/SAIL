@@ -1,3 +1,4 @@
+# TEST
 import numpy as np
 def rastrigin_RandInd(nInds, recombine_range, recombine_mutSigma, recombine_parents):
     unitRandom = np.random.rand(2,nInds)

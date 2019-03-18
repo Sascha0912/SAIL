@@ -1,45 +1,64 @@
 from gaussianProcess.paramsGP import paramsGP
+import numpy as np
 
 def rastrigin_Domain():
     class Domain:
         def __init__(self):
             self.name = 'rastrigin'
 
-            # Scripts
-            self.preciseEvaluate   = 'rastrigin_PreciseEvaluate'
-            self.categorize        = 'rastrigin_Categorize'
-            self.createAcqFunction = 'rastrigin_CreateAcqFunc'
-            self.validate          = 'rastrigin_Validate'
+            # Functions
+            self.objFun = 'rastrigin_FitnessFunc'
+            self.getBc  = 'rastrigin_GetBehaviour'
+            self.breedPop = 'rastrigin_Variation'
+            self.randInd = 'rastrigin_RandInd'
 
-            # Alternative initialization
+            # MAP-Elites settings
+            self.nInitial = 2**6
+            self.batchSize = 2**6
+            self.nEvals = 2**10
+
+            self.mapDims_res = [25, 25]
+            self.mapDims_label = ['x-coord','y-coord']
+            self.mapDims_min = [-2, -1]
+            self.mapDims_max = [2, 2]
+            self.mapDims_misc = ['otherVal1', 'otherVal2']
+
+            # Genome
+            self.sampleInd_genome = np.empty((2,1))
+            self.sampleInd_genome[:] = np.nan
+
+            # Recombine parameters
+            self.recombine_range = [-2, 2]
+            self.recombine_mutSigma = [[1/8], [1/10]]
+            self.recombine_parents = 1
+
+            # SAIL additions
             self.loadInitialSamples = False
-            self.initialSampleSource = ''
+            self.dof = 2
+            self.validate = 'rastrigin_ValidateChildren'
 
-            # Genotype to Phentotype Expression
-            self.dof = 10
-            self.express = lambda x: rastrRaeY(x)
-            # self.base = loadBaseRastrigin(self.express, self.dof) # Creates base struct with drag, lift and geometry
+            self.preciseEvaluate = 'rastrigin_PreciseEvaluate'
+            self.createAcqFunction = 'rastrigin_CreateAcqFunc'
 
-            # Feature Space
-            self.featureRes = [25, 25]
-            self.nDims      = len(self.featureRes)
-            self.featureMin = [-2, -1]
-            self.featureMax = [2, 2]
-            self.featureLabels = ['Z_{up}','X_{up}'] # [X label, Y label]
-
-            # GP Models
             self.gpParams = []
-            self.gpParams.insert(0,paramsGP(self.dof))
-            self.gpParams.insert(1,paramsGP(self.dof))
-            self.nVals = 2 # number of values of interest
+            self.gpParams.append(paramsGP(self.dof)) # X
+            self.gpParams.append(paramsGP(self.dof)) # Y
 
             # Acquisition function
             self.varCoef = 20 # variance weight
-            self.muCoef  = 1  # mean weight
+            self.muCoef = 1 # mean weight
 
-            # Domain Specific Map Values
+            self.featureRes = [25, 25]
             self.extraMapValues = []
 
+            self.categorize = 'rastrigin_Categorize'
 
+            self.featureMin = [-2, -1]
+            self.featureMax = [2, 2]
 
+            self.nDims = len(self.featureRes)
+
+            self.featureLabels = ['X', 'Y']
+            self.extraMapValues = ['dragForce','confidence']
+            
     return Domain()

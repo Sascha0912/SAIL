@@ -1,4 +1,4 @@
-import numpy as np
+# import numpy as np
 def rastrigin_PreciseEvaluate(observations, d):
     # shape = d.express(observations)
     # area  = np.squeeze()
@@ -9,11 +9,11 @@ def rastrigin_PreciseEvaluate(observations, d):
     fitness = feval(d.objFun, observations)
 
     # Get feature coordinates of each individual
-    behaviour = feval(d.getBc, observations)
+    # behaviour = feval(d.getBc, observations)
 
     # Get miscellaneous values of each individual
-    miscVal = []
-    miscVal.append(np.random.rand(1,len(observations)))
-    miscVal.append(np.zeros((1,len(observations))))
+    # miscVal = []
+    # miscVal.append(np.random.rand(1,len(observations)))
+    # miscVal.append(np.zeros((1,len(observations))))
        
-    return behaviour, fitness # TODO: check this return: is behaviour, fitness correct?
+    return fitness # TODO: check this return: is behaviour, fitness correct?

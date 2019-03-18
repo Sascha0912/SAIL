@@ -1,27 +1,48 @@
 import numpy as np
-import sobol_seq
+from sobol_seq import i4_sobol_generate
+# import chaospy as cp
+# from sobol.sobol_seq import i4_sobol, i4_sobol_generate
 from sail.getValidInds import getValidInds
-from domain.rastrigin.rastrigin_Validate import rastrigin_Validate
+from domain.rastrigin.rastrigin_ValidateChildren import rastrigin_ValidateChildren
 
 def initialSampling(d, nInitialSamples):
-
     def feval(funcName,*args):
         return eval(funcName)(*args)
 
-    # Produce initial solutions
-    # sobSequence = sobol_seq #.i4_...
 
+
+
+    # Produce initial solutions
+    
+
+    
     # Get collection of valid solutions
     nMissing = nInitialSamples
     inds = []
     sobPoint = 1
+
+    num_take = (sobPoint+nMissing*2)-sobPoint
+    sobSequence = i4_sobol_generate(d.dof,num_take,skip=1000)
+    # print("sobseq")
+    # print(sobSequence)
+
+
+
     while nMissing > 0:
         # how many sobol elements to take
-        num_take = (sobPoint+nMissing*2)-sobPoint
+        
 
-        indPool = sobol_seq.i4_sobol_generate(d.dof,num_take)
+        indPool = i4_sobol_generate(d.dof,num_take,skip=1000)
         sobPoint = 1 + sobPoint + nMissing*2
+        # print("sobpoint")
+        # print(sobPoint)
         validFunction = lambda genomes: feval(d.validate, genomes, d)
+        # print("validFunction")
+        # print(validFunction)
+        # print("indPool")
+        # print(indPool)
+        # print("nMissing")
+        # print(nMissing)
         validInds, x, nMissing = getValidInds(indPool, validFunction, nMissing)
         inds = [[inds], [validInds]]
 

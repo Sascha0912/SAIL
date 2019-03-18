@@ -2,12 +2,22 @@ import numpy as np
 import pyGPs
 import sobol_seq
 from sail.initialSampling import initialSampling
-
+from gaussianProcess.trainGP import trainGP
 
 def sail(p,d):
+    def feval(funcName,*args):
+        return eval(funcName)(*args)
     # Produce initial samples
     if ~d.loadInitialSamples:
+        print("d")
+        print(d)
+        print("p.nInitlasmaples")
+        print(p.nInitialSamples)
         observation, value = initialSampling(d,p.nInitialSamples)
+        # print("observation")
+        # print(observation)
+        # print("value")
+        # print(value)
     else:
         np.load(d.initialSampleSource) # e.g. npz-File
         randomPick = np.random.permutation(observation.shape[0])[:p.initialSamples] # take only first "initialSamples" values
@@ -27,14 +37,15 @@ def sail(p,d):
         # models are used to produce acquisition function.
         print('PE ' + str(nSamples) + ' | Training Surrogate Models')
         tstart = 0 # time calc
+        gpModel = []
         for iModel in range(0,value.shape[1]): # must be parallelized
             # only retrain model parameters every 'p.trainingMod' iterations
             if (nSamples == p.initialSamples or np.remainder(nSamples, p.trainingMod * p.nAdditionalSamples)):
-                # gpModel
-                pass
+                gpModel.insert(iModel,trainGP(observation, value[:,iModel], d.gpParams[iModel]))
+                # pass
             else:
-                # gpModel
-                pass
+                gpModel.insert(iModel,trainGP(observation, value[:,iModel], d.gpParams[iModel], functionEvals=0))
+                # pass
 
         # Save found model parameters and update acquisition function
         for iModel in range(0,value.shape[1]):
@@ -108,6 +119,8 @@ def sail(p,d):
             # Evaluate enough of these valid solutions to get your initial sample set
             peFunction = lambda x: feval(d.preciseEvaluate, x, d) # returns nan if not converged
             foundSample, foundValue, nMissing = getValidInds(indPool, peFunction, nMissing)
+            print("foundSample")
+            print(foundSample)
             newSample = [[newSample], [foundSample]]
             newValue = [[newValue], [foundValue]]
 
@@ -139,4 +152,5 @@ def sail(p,d):
     output.unpack = '' # necessary?
 
     if p.data.outSave:
-        np.save() # sailRun.npz (example)
+        pass
+        # np.save() # sailRun.npz (example)
