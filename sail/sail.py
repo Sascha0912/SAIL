@@ -40,7 +40,7 @@ def sail(p,d):
         gpModel = []
         for iModel in range(0,value.shape[1]): # must be parallelized
             # only retrain model parameters every 'p.trainingMod' iterations
-            if (nSamples == p.initialSamples or np.remainder(nSamples, p.trainingMod * p.nAdditionalSamples)):
+            if (nSamples == p.nInitialSamples or np.remainder(nSamples, p.trainingMod * p.nAdditionalSamples)):
                 gpModel.insert(iModel,trainGP(observation, value[:,iModel], d.gpParams[iModel]))
                 # pass
             else:

@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import types
 
 def getValidInds(indPool, testFunction, nDesired):
     def any(df): # any is nonzero - equivalent to MATLAB "any"
@@ -41,7 +42,15 @@ def getValidInds(indPool, testFunction, nDesired):
         # print(nextInd)
         # Test for validity
         result = testFunction(nextInd) # Must return a [nInds x nVals] matrix
-        result = pd.DataFrame(data=result[:,np.newaxis])
+        
+        if isinstance(result, pd.DataFrame):
+            # Fall 2: Evaluierung (PreciseEvaluate) -> result ist schon DataFrame
+            pass
+        else:
+            # Fall 1: Validitätsprüfung
+            # print("result")
+            # print(result)
+            result = pd.DataFrame(data=result[:,np.newaxis])
         # Assign valid solutions
         # validInds = np.where()# any isnan TODO
         # print("result")
@@ -76,6 +85,8 @@ def getValidInds(indPool, testFunction, nDesired):
         # print()
         [unpacked_validInds] = validInds.values.T.tolist()
         # print(unpacked_validInds)
+        print("result")
+        print(result)
         vals_result = result.loc[unpacked_validInds]
 
         vals_nextInd = nextInd.loc[unpacked_validInds]

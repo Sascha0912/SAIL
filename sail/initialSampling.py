@@ -68,11 +68,15 @@ def initialSampling(d, nInitialSamples):
     # Recurse to make sure you get all the samples you need
     if nMissing > 0:
         sampleRemainder, valueRemainder = initialSampling(d, nMissing)
-        sample = [[sample], [sampleRemainder]]
-        value = [[value], [valueRemainder]]
+        sample = sample.append(sampleRemainder)
+        value  = value.append(valueRemainder)
+        # sample = [[sample], [sampleRemainder]]
+        # value = [[value], [valueRemainder]]
     else:
         # Warnings of final sample set
         if sample.shape[0] != np.unique(sample, axis=0).shape[0]:
             print('WARNING: Duplicate samples in observation set!')
         if sample.shape[0] != nInitialSamples:
             print('WARNING: Observation set smaller than specified!')
+    
+    return sample, value
