@@ -4,7 +4,7 @@ from domain.rastrigin.rastrigin_Domain import rastrigin_Domain
 class P:
     def __init__(self):
         # Edit hyperparameters
-        self.nInitialSamples = 100
+        self.nInitialSamples = 10
         self.nTotalSamples   = 200
         self.nChildren       = 2**5
         self.nGens           = 2**6
