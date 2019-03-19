@@ -1,4 +1,6 @@
 # import numpy as np
+from domain.rastrigin.rastrigin_FitnessFunc import rastrigin_FitnessFunc
+
 def rastrigin_PreciseEvaluate(observations, d):
     # shape = d.express(observations)
     # area  = np.squeeze()

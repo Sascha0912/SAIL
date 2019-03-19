@@ -1,9 +1,12 @@
 import numpy as np
+import pandas as pd
+import random
 from sobol_seq import i4_sobol_generate
 # import chaospy as cp
 # from sobol.sobol_seq import i4_sobol, i4_sobol_generate
 from sail.getValidInds import getValidInds
 from domain.rastrigin.rastrigin_ValidateChildren import rastrigin_ValidateChildren
+from domain.rastrigin.rastrigin_PreciseEvaluate import rastrigin_PreciseEvaluate
 
 def initialSampling(d, nInitialSamples):
     def feval(funcName,*args):
@@ -18,12 +21,19 @@ def initialSampling(d, nInitialSamples):
     
     # Get collection of valid solutions
     nMissing = nInitialSamples
-    inds = []
+    inds = pd.DataFrame(columns=[0,1])
     sobPoint = 1
 
-    num_take = (sobPoint+nMissing*2)-sobPoint
-    sobSequence = i4_sobol_generate(d.dof,num_take,skip=1000)
+
+    skip = 1000
+    
+    # WORKAUROUND: generate 10000 samples
+    # Performance durch die 10.000 schlecht TODO
+    sobSequence = i4_sobol_generate(d.dof,10000) # generiere 10.000 samples
+    sobSequence = sobSequence[skip:]
+    random.shuffle(sobSequence)
     # print("sobseq")
+    # print(sobSequence.shape)
     # print(sobSequence)
 
 
@@ -31,9 +41,13 @@ def initialSampling(d, nInitialSamples):
     while nMissing > 0:
         # how many sobol elements to take
         
-
-        indPool = i4_sobol_generate(d.dof,num_take,skip=1000)
+        # num_take = (sobPoint+nMissing*2)-sobPoint
+        indPool = sobSequence[sobPoint:(sobPoint+nMissing*2),:] # PROBLEM: immer die gleichen samples
+        # print("indPool")
+        # print(indPool.shape)
+        # print(indPool)
         sobPoint = 1 + sobPoint + nMissing*2
+        # print()
         # print("sobpoint")
         # print(sobPoint)
         validFunction = lambda genomes: feval(d.validate, genomes, d)
@@ -44,7 +58,8 @@ def initialSampling(d, nInitialSamples):
         # print("nMissing")
         # print(nMissing)
         validInds, x, nMissing, y = getValidInds(indPool, validFunction, nMissing)
-        inds = [[inds], [validInds]]
+        inds = inds.append(validInds)
+        # inds = [[inds], [validInds]] # problem
 
     # Evaluate enough of these valid solutions to get your initial sample set
     testFunction = lambda x: feval(d.preciseEvaluate, x, d)

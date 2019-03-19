@@ -9,10 +9,10 @@ def sail(p,d):
         return eval(funcName)(*args)
     # Produce initial samples
     if ~d.loadInitialSamples:
-        print("d")
-        print(d)
-        print("p.nInitlasmaples")
-        print(p.nInitialSamples)
+        # print("d")
+        # print(d)
+        # print("p.nInitlasmaples")
+        # print(p.nInitialSamples)
         observation, value = initialSampling(d,p.nInitialSamples)
         # print("observation")
         # print(observation)

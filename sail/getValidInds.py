@@ -10,27 +10,32 @@ def getValidInds(indPool, testFunction, nDesired):
                 continue
         return False
     # inds = []
-    inds = pd.DataFrame(data=[])
+    inds = pd.DataFrame(columns=[0])
     # vals = []
-    vals = pd.DataFrame(data=[])
+    vals = pd.DataFrame(columns=[0,1])
     nMissing = nDesired
     nAttempts = 0
 
     # print(indPool)
     # print(testFunction)
     # print(nDesired)
-
+    # print("sge")
     while nMissing > 0:
         # Get Next in Pool to test
         testStart = nAttempts + 1
         # print("nAttempts: " + str(nAttempts))
-        testEnd = min(indPool.shape[0], nAttempts+nMissing)
+        testEnd = min(np.shape(indPool)[0], nAttempts+nMissing)
         # print("TestStart: " + str(testStart))
         # print("TestEnd: " + str(testEnd))
+        
         if testStart > testEnd:
             break
-
-        nextInd = pd.DataFrame(data=indPool[testStart-1:testEnd,:])
+        # print("IndPool before")
+        # print(indPool)
+        indPool = pd.DataFrame(data=indPool)
+        # print("IndPool after")
+        # print(indPool)
+        nextInd = pd.DataFrame(data=indPool.loc[testStart-1:testEnd])
         # nextInd hat immer gleiche Länge und Inhalt -> durchmischen?
         # print("nextInd")
         # print(nextInd)
@@ -79,9 +84,17 @@ def getValidInds(indPool, testFunction, nDesired):
         # print("vals_result")
         # print(vals_result)              #             |
                                         # vals_result V
-        vals = vals.append(vals_result)
+        if vals.empty:
+            vals = vals_result
+        else:
+            # vals = vals_result
+            vals = vals.append(vals_result)
         # vals = np.concatenate((vals, np.take(result, validInds)), axis=1)
-        inds = inds.append(vals_nextInd)
+        if inds.empty:
+            inds = vals_nextInd
+        else:
+            inds = inds.append(vals_nextInd)
+            # inds = vals_nextInd
         # inds = np.concatenate((inds, np.take(nextInd, validInds)), axis=0)
 
         # print("vals")
@@ -115,10 +128,10 @@ def getValidInds(indPool, testFunction, nDesired):
         # inds = [[inds], [nextInd[validInds,:]]]
 
         # Retry
-        print(nDesired)                                     # nDesired bleibt bei 100 und ändert sich nicht   -> sollte aber stetig sinken von 100 auf 1 zb 100,99,99,98,97,...
+        # print(nDesired)                                     # nDesired bleibt bei 100 und ändert sich nicht   -> sollte aber stetig sinken von 100 auf 1 zb 100,99,99,98,97,...
         # print(vals_df.shape[0])                           # vals_df shape 0 sinkt 100,99,0,99,0,1,0000-....
         nMissing = nDesired - vals.shape[0]
-        
+        # print("nMissing: " + str(nMissing))
         nAttempts = nAttempts + nextInd.shape[0]
         # print(nAttempts)
 
