@@ -43,12 +43,12 @@ def initialSampling(d, nInitialSamples):
         # print(indPool)
         # print("nMissing")
         # print(nMissing)
-        validInds, x, nMissing = getValidInds(indPool, validFunction, nMissing)
+        validInds, x, nMissing, y = getValidInds(indPool, validFunction, nMissing)
         inds = [[inds], [validInds]]
 
     # Evaluate enough of these valid solutions to get your initial sample set
     testFunction = lambda x: feval(d.preciseEvaluate, x, d)
-    sample, value, nMissing = getValidInds(inds, testFunction, nInitialSamples)
+    sample, value, nMissing, y = getValidInds(inds, testFunction, nInitialSamples)
 
     # Recurse to make sure you get all the samples you need
     if nMissing > 0:

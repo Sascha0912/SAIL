@@ -9,10 +9,10 @@ def getValidInds(indPool, testFunction, nDesired):
             else:
                 continue
         return False
-    inds = []
-    # inds_df = pd.DataFrame(data=[])
-    vals = []
-    # vals_df = pd.DataFrame(data=[])
+    # inds = []
+    inds = pd.DataFrame(data=[])
+    # vals = []
+    vals = pd.DataFrame(data=[])
     nMissing = nDesired
     nAttempts = 0
 
@@ -29,23 +29,25 @@ def getValidInds(indPool, testFunction, nDesired):
         # print("TestEnd: " + str(testEnd))
         if testStart > testEnd:
             break
-        nextInd = indPool[testStart:testEnd,:]
+
+        nextInd = pd.DataFrame(data=indPool[testStart-1:testEnd,:])
         # nextInd hat immer gleiche Länge und Inhalt -> durchmischen?
         # print("nextInd")
         # print(nextInd)
         # Test for validity
         result = testFunction(nextInd) # Must return a [nInds x nVals] matrix
-
+        result = pd.DataFrame(data=result[:,np.newaxis])
         # Assign valid solutions
         # validInds = np.where()# any isnan TODO
         # print("result")
         # print(result[:, np.newaxis])
-        result_df = pd.DataFrame(data=result[:, np.newaxis])
+        # result_df = pd.DataFrame(data=result[:, np.newaxis])
         # print("result_df")
         # print(result_df)
-        not_isnan = pd.DataFrame(data=~np.isnan(result_df))
+        not_isnan = pd.DataFrame(data=~np.isnan(result))
         s = not_isnan.loc[:,0]
         validInds = s.to_numpy().nonzero() # liefert Indizes der validen Einträge
+        
         # validInds_test = find(any(logical_not(isnan(result)),2))
         # print(type(validInds))
         # any_value = any(not_isnan)
@@ -56,16 +58,37 @@ def getValidInds(indPool, testFunction, nDesired):
         # print(isnan)
 
         idx_list = validInds[0] # validInds
+        # print("idx_list")
         # print(idx_list)
+        validInds = pd.DataFrame(data=idx_list[:,np.newaxis])          #CHECKED validInds 100x1 int
+        # print("validInds")                                            # CHECKED result 100x1 True
+        # print(validInds)                                              # CHECKED nextInd 100x2 samples
+        
 
-        vals = np.concatenate((vals, np.take(result, idx_list)), axis=0)
-        inds = np.concatenate((inds, np.take(nextInd, idx_list)), axis=0)
+        # print("result")
+        # print(result)
+        # print("validInds vlaue to list")
+        # print()
+        [unpacked_validInds] = validInds.values.T.tolist()
+        # print(unpacked_validInds)
+        vals_result = result.loc[unpacked_validInds]
+
+        vals_nextInd = nextInd.loc[unpacked_validInds]
+
+
+        # print("vals_result")
+        # print(vals_result)              #             |
+                                        # vals_result V
+        vals = vals.append(vals_result)
+        # vals = np.concatenate((vals, np.take(result, validInds)), axis=1)
+        inds = inds.append(vals_nextInd)
+        # inds = np.concatenate((inds, np.take(nextInd, validInds)), axis=0)
 
         # print("vals")
         # print(vals)
 
-        print("inds")
-        print(inds)
+        # print("inds")
+        # print(inds)
 
 
         # vals_df = pd.DataFrame(data=vals_df)
