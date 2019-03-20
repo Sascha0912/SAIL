@@ -12,11 +12,11 @@ def trainGP(input, output, d, **kwargs):
     model.setPrior(mean=d.meanfunc, kernel=d.covfunc)
     # model.useLikelihood(d.likfunc) # Gauss ist bereits implizit durch GPR Modell gesetzt
 
-    print("input")
-    print(input)
-    print("output")
-    print(output)
-    model.getPosterior(input, output)
-    model.optimize(input, output)
+#     print("input")
+#     print(input)
+#     print("output")
+#     print(output)
+    model.getPosterior(input.values, output.values)
+    model.optimize(input.values, output.values)
 
     return model

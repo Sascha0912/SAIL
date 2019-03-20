@@ -16,9 +16,11 @@ def getValidInds(indPool, testFunction, nDesired):
     vals = pd.DataFrame(columns=[0,1])
     nMissing = nDesired
     nAttempts = 0
-
+    # print("indPool")
     # print(indPool)
+    # print("testFunction")
     # print(testFunction)
+    # print("nDesired")
     # print(nDesired)
     # print("sge")
     while nMissing > 0:
@@ -82,11 +84,10 @@ def getValidInds(indPool, testFunction, nDesired):
         # print("result")
         # print(result)
         # print("validInds vlaue to list")
-        # print()
         [unpacked_validInds] = validInds.values.T.tolist()
         # print(unpacked_validInds)
-        print("result")
-        print(result)
+        # print("result")
+        # print(result)
         vals_result = result.loc[unpacked_validInds]
 
         vals_nextInd = nextInd.loc[unpacked_validInds]

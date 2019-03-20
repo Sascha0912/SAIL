@@ -4,11 +4,19 @@ import sobol_seq
 from sail.initialSampling import initialSampling
 from gaussianProcess.trainGP import trainGP
 
-def sail(p,d):
+from pprint import pprint
+
+def sail(p,d): # domain and params
+    
+
     def feval(funcName,*args):
         return eval(funcName)(*args)
     # Produce initial samples
     if ~d.loadInitialSamples:
+        # print("d")
+        # pprint(vars(d))
+        # print("p")
+        # pprint(vars(p))
         # print("d")
         # print(d)
         # print("p.nInitlasmaples")
@@ -31,6 +39,10 @@ def sail(p,d):
     illumTime = []
     peTime = []
     predMap = []
+
+    print("value")
+    print(value)
+
     while nSamples <= p.nTotalSamples:
         # Create surrogate and acquisition function
         # Surrogate models are created from all evaluated samples, and these
@@ -40,6 +52,8 @@ def sail(p,d):
         gpModel = []
         # print("value")
         # print(value)
+        # print("value.shape[1]: " + str(value.shape))
+        # print("d.gpParams.shape: " + str(np.shape(d.gpParams)))
         for iModel in range(0,value.shape[1]): # must be parallelized
             # only retrain model parameters every 'p.trainingMod' iterations
             if (nSamples == p.nInitialSamples or np.remainder(nSamples, p.trainingMod * p.nAdditionalSamples)):
