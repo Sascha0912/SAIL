@@ -10,14 +10,17 @@ def rastrigin_FitnessFunc(pop):
         return (20 + summ)/40
 
     genes = []
-    # print("pop")
+    # print("fitness pop")
     # print(pop)
     for i in range(len(pop)):
         # genes.append(pop[i])
         genes.append(pop.iloc[i]) # DataFrame
     df = pd.DataFrame(data=genes)
+    # print("fitness genes")
+    # print(df)
     # print(df)
     df_fitness = pd.DataFrame(data=rastr(df))
     df_fitness = df_fitness.transpose()
-
+    # print("fitness")
+    # print(df_fitness)
     return df_fitness

@@ -23,11 +23,22 @@ def getValidInds(indPool, testFunction, nDesired):
     # print("nDesired")
     # print(nDesired)
     # print("sge")
+
+
+    # BIS HIER HIN GETESTET
+
+
+    # print("check loop cond")
     while nMissing > 0:
         # Get Next in Pool to test
-        testStart = nAttempts + 1
+        testStart = nAttempts # testStart ist 1 höher als in matlab. problem?
+        # 
+        # print("testStart")
+        # print(testStart)
         # print("nAttempts: " + str(nAttempts))
-        testEnd = min(np.shape(indPool)[0], nAttempts+nMissing)
+        testEnd = min(np.shape(indPool)[0], nAttempts+nMissing)-1 # testEnd sinkt in matlab durchgängig 10,10,9,9,8,8,8,7,7,...
+        # print("testEnd")
+        # print(testEnd)
         # print("TestStart: " + str(testStart))
         # print("TestEnd: " + str(testEnd))
         
@@ -36,15 +47,19 @@ def getValidInds(indPool, testFunction, nDesired):
         # print("IndPool before")
         # print(indPool)
         indPool = pd.DataFrame(data=indPool)
-        # print("IndPool after")
+        # print("IndPool dataframe")
         # print(indPool)
-        nextInd = pd.DataFrame(data=indPool.loc[testStart-1:testEnd])
+        nextInd = pd.DataFrame(data=indPool.loc[testStart:testEnd])
         # nextInd hat immer gleiche Länge und Inhalt -> durchmischen?
         # print("nextInd")
         # print(nextInd)
         # Test for validity
+        # print("testFunction")
+        # print(testFunction)
         result = testFunction(nextInd) # Must return a [nInds x nVals] matrix
-        
+        # print("result")
+        # print(result)
+
         if isinstance(result, pd.DataFrame):
             # Fall 2: Evaluierung (PreciseEvaluate) -> result ist schon DataFrame
             pass
@@ -144,7 +159,8 @@ def getValidInds(indPool, testFunction, nDesired):
         # print(vals_df.shape[0])                           # vals_df shape 0 sinkt 100,99,0,99,0,1,0000-....
         nMissing = nDesired - vals.shape[0]
         # print("nMissing: " + str(nMissing))
-        nAttempts = nAttempts + nextInd.shape[0]
+        nAttempts = nAttempts + nextInd.shape[0] # nAttempts ist immer um 1 zu gross
+        # print("nAttempts")
         # print(nAttempts)
 
     return inds, vals, nMissing, nAttempts

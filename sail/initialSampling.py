@@ -41,7 +41,8 @@ def initialSampling(d, nInitialSamples): # CHECKED d, nInitialSamples
     # Performance durch die 10.000 schlecht TODO
     # sobSequence = i4_sobol_generate(d.dof,10000) # generiere 10.000 samples
     sobSequence = i4_sobol_generate(d.dof,10000,skip).transpose() # dient nur dem initialen Sampling
-    
+    sobSequence = pd.DataFrame(data=sobSequence)
+    sobSequence = sobSequence.sample(frac=1).reset_index(drop=True)
     # print(sobSequence)
     # random.shuffle(sobSequence)
     # print("sobSequence")
@@ -61,7 +62,7 @@ def initialSampling(d, nInitialSamples): # CHECKED d, nInitialSamples
         # how many sobol elements to take
         
         # num_take = (sobPoint+nMissing*2)-sobPoint
-        indPool = sobSequence[sobPoint-1:(sobPoint+nMissing*2),:] # indPool ok, aber samples sind pro iteration nicht unterschiedlich, wie in matlab
+        indPool = sobSequence.loc[sobPoint-1:(sobPoint+nMissing*2),:] # indPool ok, aber samples sind pro iteration nicht unterschiedlich, wie in matlab
         # print("indPool")
         # print(indPool)
         # print("indPool")
