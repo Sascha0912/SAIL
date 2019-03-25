@@ -9,7 +9,7 @@ def rastrigin_PreciseEvaluate(observations, d):
         
     # Get fitness of each individual
     fitness = feval(d.objFun, observations)
-
+    fitness = fitness.T
     # Get feature coordinates of each individual
     # behaviour = feval(d.getBc, observations)
 
@@ -17,5 +17,6 @@ def rastrigin_PreciseEvaluate(observations, d):
     # miscVal = []
     # miscVal.append(np.random.rand(1,len(observations)))
     # miscVal.append(np.zeros((1,len(observations))))
-       
+    print("rastr_evaluate")
+    print(fitness)
     return fitness # TODO: check this return: is behaviour, fitness correct?

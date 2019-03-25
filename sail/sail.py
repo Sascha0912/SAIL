@@ -2,7 +2,9 @@ import numpy as np
 import pyGPs
 import sobol_seq
 from sail.initialSampling import initialSampling
+from sail.createPredictionMap import createPredictionMap
 from gaussianProcess.trainGP import trainGP
+from domain.rastrigin.rastrigin_CreateAcqFunc import rastrigin_CreateAcqFunc
 
 from pprint import pprint
 
@@ -40,8 +42,8 @@ def sail(p,d): # domain and params
     peTime = []
     predMap = []
 
-    print("value")
-    print(value)
+    # print("value")
+    # print(value)
 
     while nSamples <= p.nTotalSamples:
         # Create surrogate and acquisition function
@@ -65,7 +67,11 @@ def sail(p,d): # domain and params
 
         # Save found model parameters and update acquisition function
         for iModel in range(0,value.shape[1]):
-            d.gpParams[iModel].hyp = gpModel[iModel].hyp # See pyGPs hyp
+            # d.gpParams[iModel].hyp = gpModel[iModel].hyp # See pyGPs hyp
+            d.gpParams[iModel].hyp_cov = gpModel[iModel].covfunc
+            d.gpParams[iModel].hyp_mean = gpModel[iModel].meanfunc
+            d.gpParams[iModel].hyp_lik = gpModel[iModel].likfunc
+
 
         acqFunction = feval(d.createAcqFunction, gpModel, d)
 

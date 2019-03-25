@@ -8,4 +8,6 @@ def rastrigin_Categorize(samples, d):
     feature = [feature1[:], feature2[:]]
     feature = (feature - d.featureMin) / (d.featureMax - d.featureMin)
 
+    print("rastr_feature")
+    print(feature)
     return feature

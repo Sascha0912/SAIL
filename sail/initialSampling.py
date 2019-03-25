@@ -89,6 +89,7 @@ def initialSampling(d, nInitialSamples): # CHECKED d, nInitialSamples
     # Evaluate enough of these valid solutions to get your initial sample set
     testFunction = lambda x: feval(d.preciseEvaluate, x, d)
     sample, value, nMissing, y = getValidInds(inds, testFunction, nInitialSamples)
+    # print(value)
 
     # Recurse to make sure you get all the samples you need
     if nMissing > 0:

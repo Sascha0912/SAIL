@@ -1,5 +1,6 @@
 from sail.sail import sail
 from domain.rastrigin.rastrigin_Domain import rastrigin_Domain
+# from domain.velo.velo_Domain import velo_Domain
 from sail.defaultParamSet import defaultParamSet
 
 # class P:
@@ -21,6 +22,7 @@ from sail.defaultParamSet import defaultParamSet
 
 # Domain
 d = rastrigin_Domain()
+# d = velo_Domain()
 p = defaultParamSet()
 
 p.nInitialSamples = 10

@@ -10,7 +10,7 @@ def gPlot(*args):
         m = args[0][:,0].T
         s2 = args[0][:,1].T
         z = args[1]
-    else
+    else:
         m = args[0]
         s2 = args[1]
         z = args[2]
