@@ -17,6 +17,11 @@ def trainGP(input, output, d, **kwargs):
 #     print("output")
 #     print(output)
     model.getPosterior(input.values, output.values)
+    print("getPosterior")
+    print("input.values")
+    print(input.values)
+    print("output.values")
+    print(output.values)
     model.optimize(input.values, output.values)
-
+    print("optimize")
     return model

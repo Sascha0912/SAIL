@@ -5,12 +5,12 @@ from sail.initialSampling import initialSampling
 from sail.createPredictionMap import createPredictionMap
 from gaussianProcess.trainGP import trainGP
 from domain.rastrigin.rastrigin_CreateAcqFunc import rastrigin_CreateAcqFunc
+from mapElites.createMap import createMap
+from mapElites.nicheCompete import nicheCompete
 
 from pprint import pprint
 
 def sail(p,d): # domain and params
-    
-
     def feval(funcName,*args):
         return eval(funcName)(*args)
     # Produce initial samples
@@ -79,9 +79,9 @@ def sail(p,d): # domain and params
         trainingTime = 0 # time calc
 
         # Create intermediate prediction map for analysis
-        if ~np.remainder(nSamples, p.data.mapEvalMod) and p.data.mapEval:
+        if ~np.remainder(nSamples, p.data_mapEvalMod) and p.data_mapEval:
             print('PE: ' + str(nSamples) + ' | Illuminating Prediction Map')
-            predMap[nSamples], x = createPredictionMap(gpModel, observation, p, d, 'featureRes', p.data.predMapRes, 'nGens', 2*p.nGens)
+            predMap[nSamples], x = createPredictionMap(gpModel, observation, p, d, 'featureRes', p.data_predMapRes, 'nGens', 2*p.nGens)
 
         # 2. Illuminate Acquisition Map
         # A map is constructed using the evaluated samples which are evaluated
