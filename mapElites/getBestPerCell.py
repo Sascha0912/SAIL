@@ -14,6 +14,8 @@ def getBestPerCell(samples,fitness,d,edges):
     # print(edges)
     # Get features of all samples
     feature = feval(d.categorize, samples, d)
+    print("feature")
+    print(feature)
     # print("feature")
     # print(feature)
 
@@ -24,20 +26,36 @@ def getBestPerCell(samples,fitness,d,edges):
         else:
             df_bin = pd.DataFrame(data=np.digitize(feature.iloc[:,iDim], edges[iDim]))
         # bin[:][iDim] = np.digitize(feature.iloc[:,iDim], edges[iDim])
-    # print("df_bin")
-    # print(df_bin)
+    print("df_bin")
+    print(df_bin)
     # df_bin = pd.DataFrame(data=bin)
     fitness = pd.DataFrame(data=fitness)
     # print("fitness")
     # print(fitness)
-    a = df_bin.append(fitness.iloc[0], ignore_index=True).transpose()
+    # a = df_bin.append(fitness.iloc[0], ignore_index=True)
+    a = pd.concat([df_bin, fitness], axis=1)
+    a.columns = range(a.shape[1])
+    print("a")
+    print(a)
     sortedByFeatureAndFitness = a.sort_values(by=[0,1,2])
+    print("sortedByFeatureAndFitness")
+    print(sortedByFeatureAndFitness)
 
     indxSortOne = list(sortedByFeatureAndFitness.index.values)
+    print("indxSortOne")
+    print(indxSortOne)
+
+    # sortedByFeatureAndFitness.reset_index(drop=True, inplace=True)
+
     df_drop_dupl = sortedByFeatureAndFitness.drop_duplicates(subset=[0,1])
     indxSortTwo = list(df_drop_dupl.index.values)
 
-    bestIndex = indxSortTwo
-    bestBin = pd.DataFrame(data=df_bin[bestIndex])
+    print("indxSortTwo")
+    print(indxSortTwo)
 
-    return bestIndex, bestBin
+    bestIndex = indxSortTwo
+    bestBin = pd.DataFrame(data=df_bin.iloc[bestIndex,:])
+    print("bestBin")
+    print(bestBin)
+
+    return bestIndex, bestBin # works
