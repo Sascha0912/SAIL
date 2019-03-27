@@ -1,5 +1,9 @@
 import numpy as np
 from sail.getValidInds import getValidInds
+from mapElites.createChildren import createChildren
+from visualization.viewMap import viewMap
+from mapElites.nicheCompete import nicheCompete
+from mapElites.updateMap import updateMap
 
 def mapElites(fitnessFunction, map, p, d):
     def feval(funcName,*args):

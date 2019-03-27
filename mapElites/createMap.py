@@ -5,6 +5,9 @@ def createMap(featureResolution, genomeLength, *args):
     class Map:
         def __init__(self):
             self.edges = []
+            self.fitness = None
+            self.genes = None
+            
     edges = []
     map = Map()
 

@@ -7,6 +7,9 @@ from gaussianProcess.trainGP import trainGP
 from domain.rastrigin.rastrigin_CreateAcqFunc import rastrigin_CreateAcqFunc
 from mapElites.createMap import createMap
 from mapElites.nicheCompete import nicheCompete
+from mapElites.updateMap import updateMap
+from mapElites.mapElites import mapElites
+from sail.getValidInds import getValidInds
 
 from pprint import pprint
 
@@ -141,8 +144,8 @@ def sail(p,d): # domain and params
             # Evaluate enough of these valid solutions to get your initial sample set
             peFunction = lambda x: feval(d.preciseEvaluate, x, d) # returns nan if not converged
             foundSample, foundValue, nMissing = getValidInds(indPool, peFunction, nMissing)
-            print("foundSample")
-            print(foundSample)
+            # print("foundSample")
+            # print(foundSample)
             newSample = [[newSample], [foundSample]]
             newValue = [[newValue], [foundValue]]
 

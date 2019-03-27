@@ -2,14 +2,45 @@ import numpy as np
 from mapElites.getBestPerCell import getBestPerCell
 
 def nicheCompete(newInds, fitness, map, d):
-    bestIndex, bestBin = getBestPerCell(newInds, fitness, d, map.edges)
-    mapLinIndx = np.ravel_multi_index((bestBin[:,0], bestBin[:,1]),dims=d.featureRes, order='F')
+    # print("map[0].edges")
+    # print(map[0].edges)
+    # print("newInds")
+    # print(newInds)
+    # print("fitness")
+    # print(fitness)
+
+    # Hier checken, ob bestIndex und mapLinIndx korrekt sind
+    print("newInds")
+    print(newInds)
+    print("fitness")
+    print(fitness)
+    print("map[0].edges")
+    print(map[0].edges)
+
+    bestIndex, bestBin = getBestPerCell(newInds, fitness, d, map[0].edges) # in getBestPerCell liegt wahrscheinlich der Fehler
+    print("bestIndex")
+    print(bestIndex)
+    print("bestBin")
+    print(bestBin)
+    
+    mapLinIndx = np.ravel_multi_index((bestBin.iloc[:,0], bestBin.iloc[:,1]),dims=d.featureRes, order='F')
 
     # TODO: nan feature check
 
     # Compare to already existing samples
-    fitness_bestIndex = (fitness[i] for i in bestIndex)
-    mapfit_Index = (map.fitness[i] for i in mapLinIndx)
-    improvement = ~(fitness_bestIndex >= mapfit_Index)
-    print("improvement")
-    print(improvement)
+    improvement = []
+    
+    # print("mapLinIndx")
+    # print(mapLinIndx)
+    for i in zip(bestIndex,mapLinIndx):
+        print(i)
+        if (fitness[i[0]] >= map[0].fitness[i[1]]):
+            improvement.append(False)
+        else:
+            improvement.append(True)
+
+    # fitness_bestIndex = (fitness[i] for i in bestIndex)
+    # mapfit_Index = (map.fitness[i] for i in mapLinIndx)
+    # improvement = ~(fitness_bestIndex >= mapfit_Index)
+    # print("improvement")
+    # print(improvement)
