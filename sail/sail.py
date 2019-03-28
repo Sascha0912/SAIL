@@ -102,7 +102,7 @@ def sail(p,d): # domain and params
 
         # Place best samples in acquisition map
         obsMap = createMap(d.featureRes, d.dof, d.extraMapValues)
-        replaced, replacement = nicheCompete(observation, fitness, obsMap, d)
+        replaced, replacement, x = nicheCompete(observation, fitness, obsMap, d)
         obsMap = updateMap(replaced, replacement, obsMap, fitness, observation, predValues, d.extraMapValues)
 
         # Illuminate with MAP-Elites
