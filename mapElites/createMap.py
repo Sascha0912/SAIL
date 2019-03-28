@@ -1,5 +1,6 @@
 import numpy as np
 import numpy.matlib
+import sys
 
 def createMap(featureResolution, genomeLength, *args):
     class Map:
@@ -19,7 +20,13 @@ def createMap(featureResolution, genomeLength, *args):
     blankMap = np.empty(featureResolution)
     blankMap[:] = np.nan
     map.fitness = blankMap
-    map.genes = np.matlib.repmat(blankMap, 1, genomeLength)
+    # map.genes = np.matlib.repmat(blankMap, 1, genomeLength)
+    map.genes = np.tile(blankMap, [1,1,genomeLength])
+    print("map.genes")
+    
+    np.set_printoptions(threshold=sys.maxsize)
+    print(map.genes)
+    print(map.genes.shape)
 
     if args:
         for iValues in range(0,len(args[0])):
