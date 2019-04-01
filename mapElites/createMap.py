@@ -1,5 +1,6 @@
 import numpy as np
 import numpy.matlib
+import pandas as pd
 import sys
 
 def createMap(featureResolution, genomeLength, *args):
@@ -20,13 +21,20 @@ def createMap(featureResolution, genomeLength, *args):
     blankMap = np.empty(featureResolution)
     blankMap[:] = np.nan
     map.fitness = blankMap
-    # map.genes = np.matlib.repmat(blankMap, 1, genomeLength)
-    map.genes = np.tile(blankMap, [1,1,genomeLength])
-    print("map.genes")
+    map.genes = []
+    # print("genomeLength " + str(genomeLength))
     
+    # repmat
+    for i in range(0,genomeLength):
+        map.genes.append(pd.DataFrame(data=blankMap))
+
+    # map.genes = np.tile(blankMap, [1,1,genomeLength])
+    # print("map.genes")
+    
+    # Debugging
     np.set_printoptions(threshold=sys.maxsize)
-    print(map.genes)
-    print(map.genes.shape)
+    # print(map.genes)
+    # print(map.genes.shape)
 
     if args:
         for iValues in range(0,len(args[0])):
