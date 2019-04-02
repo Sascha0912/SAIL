@@ -25,8 +25,13 @@ def createMap(featureResolution, genomeLength, *args):
     # print("genomeLength " + str(genomeLength))
     
     # repmat
+    # for i in range(0,genomeLength):
+    #     map.genes.append(pd.DataFrame(data=blankMap))
     for i in range(0,genomeLength):
-        map.genes.append(pd.DataFrame(data=blankMap))
+        map.genes.append(pd.DataFrame(data=blankMap).copy())
+
+    # print(map.genes[0]._is_view)
+    # print(map.genes[1]._is_view)
 
     # map.genes = np.tile(blankMap, [1,1,genomeLength])
     # print("map.genes")
