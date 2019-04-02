@@ -37,9 +37,9 @@ def createChildren(map, nChildren, p, d):
             #     k = k+1
     parentPool.dropna(inplace=True)
     parentPool.reset_index(drop=True, inplace=True)
-    print("parentPool")
-    print(parentPool)
-    print("nChildren: " + str(nChildren))
+    # print("parentPool")
+    # print(parentPool)
+    # print("nChildren: " + str(nChildren))
 
     # Choose parents and create mutation
 
@@ -50,6 +50,17 @@ def createChildren(map, nChildren, p, d):
     # print("selected_parents")
     # print(selected_parents)
     parents = parentPool.iloc[selected_parents,:]
-    print("parents")
-    print(parents)
-    mutation = np.random.rand
+    parents.reset_index(drop=True, inplace=True)
+    # print("parents")
+    # print(parents)
+    mutation = pd.DataFrame(data=np.random.normal(size=(nChildren,d.dof)) * p.mutSigma)
+    # print("mutation")
+    # print(mutation)
+    children = parents.add(mutation)
+
+    # TODO: Rastrigin Domain Specific: (also need to correct featureRange for rastrigin to -2 - 2)
+    children[children<-1] = -1
+    children[children>1] = 1
+    # print("children")
+    # print(children)
+    return children

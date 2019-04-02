@@ -71,6 +71,12 @@ def updateMap(replaced, replacement, map, fitness, genes, values, extraMapValues
                 map[0][0].genes[0].iloc[replacedI[iReplace]][replacedJ[iReplace]] = genes.iloc[replacement[iReplace]][0] # needs to be adapted for more than 2 genes
                 map[0][0].genes[1].iloc[replacedI[iReplace]][replacedJ[iReplace]] = genes.iloc[replacement[iReplace]][1]
 
+            # Assign Miscellaneaous Map values
+            if extraMapValues: # not empty
+                for iValues in range(0,len(extraMapValues)):
+                    for i in zip(replaced,replacement):
+                        exec('map[0][0].'+extraMapValues[iValues]+'[i[0]] = values['+str(iValues)+'][i[1]]')
+
         else:
             # print("replacedI")
             # print(replacedI)
@@ -85,6 +91,16 @@ def updateMap(replaced, replacement, map, fitness, genes, values, extraMapValues
                 # print(genes.iloc[replacement[iReplace]][1])
                 map[0].genes[1][replacedI[iReplace]][replacedJ[iReplace]] = genes.iloc[replacement[iReplace]][1]
             
+            # Assign Miscellaneaous Map values
+            # print("replaced")
+            # print(replaced)
+            # print("replacement")
+            # print(replacement)
+            if extraMapValues: # not empty
+                for iValues in range(0,len(extraMapValues)):
+                    for i in zip(replaced,replacement):
+                        exec('map[0].'+extraMapValues[iValues]+'[i[0]] = values['+str(iValues)+'][i[1]]')
+            
             # print(map[0].genes)
             # print("map[0].genes[0]")
             # print(map[0].genes[0])
@@ -97,11 +113,13 @@ def updateMap(replaced, replacement, map, fitness, genes, values, extraMapValues
         for iReplace in range(0,len(replaced)):
             map.genes[0].iloc[replacedI[iReplace]][replacedJ[iReplace]] = genes.iloc[replacement[iReplace]][0] # needs to be adapted for more than 2 genes
             map.genes[1].iloc[replacedI[iReplace]][replacedJ[iReplace]] = genes.iloc[replacement[iReplace]][1]
+        
+        # Assign Miscellaneaous Map values
+        if extraMapValues: # not empty
+            for iValues in range(0,len(extraMapValues)):
+                for i in zip(replaced,replacement):
+                    exec('map.'+extraMapValues[iValues]+'[i[0]] = values['+str(iValues)+'][i[1]]')
 
-    # Assign Miscellaneaous Map values
-    # if extraMapValues: # not empty
-    #     for iValues in range(0,len(extraMapValues)):
-    #         for i in zip(replaced,replacement):
-    #             exec('map[0].'+extraMapValues[iValues]+'[i[0]] = values['+str(iValues)+'][i[1]]')
+    
     
     return map

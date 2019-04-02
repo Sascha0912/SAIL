@@ -27,6 +27,7 @@ def nicheCompete(newInds, fitness, map, d):
     # print(bestBin.iloc[:,0])
     # print("d.featureRes")
     # print(d.featureRes)
+
     mapLinIndx = np.ravel_multi_index((bestBin.iloc[:,0], bestBin.iloc[:,1]),dims=d.featureRes, order='C')
     # print("mapLinIndx")
     # print(mapLinIndx)

@@ -2,6 +2,7 @@ import numpy as np
 import numpy.matlib
 import pandas as pd
 import sys
+from pprint import pprint
 
 def createMap(featureResolution, genomeLength, *args):
     class Map:
@@ -37,12 +38,15 @@ def createMap(featureResolution, genomeLength, *args):
     # print("map.genes")
     
     # Debugging
-    np.set_printoptions(threshold=sys.maxsize)
+    # np.set_printoptions(threshold=sys.maxsize)
     # print(map.genes)
     # print(map.genes.shape)
 
     if args:
+        # print("args")
+        # print(args)
         for iValues in range(0,len(args[0])):
-            exec('Map.'+args[0][iValues]+'=property(blankMap)')
+            exec('map.'+args[0][iValues]+'=blankMap.flatten("F")') # put already reshaped matrices for drag and confidence in map
+        # pprint(vars(map))
     
     return map, edges

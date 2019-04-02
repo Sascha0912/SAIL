@@ -1,9 +1,11 @@
 import numpy as np
+import pandas as pd
 from sail.getValidInds import getValidInds
 from mapElites.createChildren import createChildren
 from visualization.viewMap import viewMap
 from mapElites.nicheCompete import nicheCompete
 from mapElites.updateMap import updateMap
+from domain.rastrigin.rastrigin_ValidateChildren import rastrigin_ValidateChildren
 
 def mapElites(fitnessFunction, map, p, d):
     def feval(funcName,*args):
@@ -22,18 +24,18 @@ def mapElites(fitnessFunction, map, p, d):
         # Create and evaluate children
         # Create children which satisfy geometrix constraints for validity
         nMissing = p.nChildren
-        children = []
+        children = pd.DataFrame()
 
         while nMissing > 0:
             indPool = createChildren(map, nMissing, p, d)
             validFunction = lambda genomes: feval(d.validate, genomes, d)
-            validChildren, x, nMissing = getValidInds(indPool, validFunction, nMissing)
+            validChildren, x, nMissing, y = getValidInds(indPool, validFunction, nMissing)
             children = children.append(validChildren)
         
         fitness, values = fitnessFunction(children)
 
         # Add Children to map
-        replaced, replacement = nicheCompete(children, fitness, map, d)
+        replaced, replacement, x = nicheCompete(children, fitness, map, d)
         map = updateMap(replaced, replacement, map, fitness, children, values, d.extraMapValues)
 
         # Improvement stats

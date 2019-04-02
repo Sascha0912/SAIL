@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 import pyGPs
 import sobol_seq
 from sail.initialSampling import initialSampling
@@ -47,6 +48,9 @@ def sail(p,d): # domain and params
 
     # print("value")
     # print(value)
+    percImproved = pd.DataFrame()
+    acqMapRecord = pd.DataFrame()
+    confContribution = pd.DataFrame()
 
     while nSamples <= p.nTotalSamples:
         # Create surrogate and acquisition function
@@ -106,12 +110,44 @@ def sail(p,d): # domain and params
         obsMap = updateMap(replaced, replacement, obsMap, fitness, observation, predValues, d.extraMapValues)
 
         # Illuminate with MAP-Elites
-        acqMap, percImproved[:,nSamples] = mapElites(acqFunction, obsMap, p, d)
+        acqMap, percImp, h = mapElites(acqFunction, obsMap, p, d)
+
+        # Workaround for acqMap
+        if (isinstance(acqMap,tuple)):
+            if (isinstance(acqMap[0], tuple)):
+                acqMap = acqMap[0][0]
+            else:
+                acqMap = acqMap[0]
+
+        percImproved[nSamples] = percImp # ok
+        # print("percImproved")
+        # print(percImproved)
 
         # Data Gathering (illum Time)
         illumTime = 0 # time calc
+        # print("acqMap")
+        # pprint(vars(acqMap))
         acqMapRecord[nSamples] = acqMap
-        confContribution[nSamples] = np.nanmedian( (acqMap.confidence[:] * d.varCoef) / abs(acqMap.fitness[:]))
+        print("acqMap.confidence")
+        print(acqMap.confidence)
+        # print("fitness_flattened")
+        # print(fitness_flattened)
+        # print("acqMap.fitness")
+        # print(acqMap.fitness)
+        fitness_flattened = acqMap.fitness.flatten('F')
+
+        # DEBUG
+        # for i in zip(acqMap.confidence, fitness_flattened):
+        #     print(i)
+        abs_fitness = [abs(val) for val in fitness_flattened]
+        print((acqMap.confidence * d.varCoef) / abs_fitness)
+        confContribution[nSamples] = np.nanmedian( (acqMap.confidence * d.varCoef) / abs_fitness)
+        print("nanmedian") # works
+        print(np.nanmedian( (acqMap.confidence * d.varCoef) / abs_fitness))
+        print("confContribution")
+        print(confContribution)
+
+
 
         # 3. Select infill Samples
         # The next samples to be tested are chosen from the acquisition map: a
