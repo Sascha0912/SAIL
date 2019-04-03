@@ -43,7 +43,7 @@ def mapElites(fitnessFunction, map, p, d):
 
         # View illumination progress
         if p.display_illu and ~np.remainder(iGen, p.display_illuMod):
-            pass # view + draw
+            pass # TODO: view + draw
     
         iGen = iGen+1
         if ~np.remainder(iGen,2**5):

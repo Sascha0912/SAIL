@@ -13,7 +13,7 @@ def getValidInds(indPool, testFunction, nDesired):
     # inds = []
     inds = pd.DataFrame(columns=[0])
     # vals = []
-    vals = pd.DataFrame(columns=[0,1])
+    vals = pd.DataFrame(columns=[0,1]) # TODO: correct these dataframes (columns=...)
     nMissing = nDesired
     nAttempts = 0
     # print("indPool")
@@ -23,10 +23,6 @@ def getValidInds(indPool, testFunction, nDesired):
     # print("nDesired")
     # print(nDesired)
     # print("sge")
-
-
-    # BIS HIER HIN GETESTET
-
 
     # print("check loop cond")
     while nMissing > 0:
@@ -109,7 +105,7 @@ def getValidInds(indPool, testFunction, nDesired):
 
 
         # print("vals_result")
-        # print(vals_result)              #             |
+        # print(vals_result)            #             |
                                         # vals_result V
         if vals.empty:
             vals = vals_result

@@ -1,16 +1,23 @@
 import numpy as np
 import pandas as pd
 import pyGPs
-import sobol_seq
+
+from sail.sobol2indx import sobol2indx
+from sail.sobol_lib import i4_sobol_generate
 from sail.initialSampling import initialSampling
 from sail.createPredictionMap import createPredictionMap
+from sail.getValidInds import getValidInds
+
 from gaussianProcess.trainGP import trainGP
+
 from domain.rastrigin.rastrigin_CreateAcqFunc import rastrigin_CreateAcqFunc
+from domain.rastrigin.rastrigin_PreciseEvaluate import rastrigin_PreciseEvaluate
+
 from mapElites.createMap import createMap
 from mapElites.nicheCompete import nicheCompete
 from mapElites.updateMap import updateMap
 from mapElites.mapElites import mapElites
-from sail.getValidInds import getValidInds
+
 
 from pprint import pprint
 
@@ -128,8 +135,8 @@ def sail(p,d): # domain and params
         # print("acqMap")
         # pprint(vars(acqMap))
         acqMapRecord[nSamples] = acqMap
-        print("acqMap.confidence")
-        print(acqMap.confidence)
+        # print("acqMap.confidence")
+        # print(acqMap.confidence)
         # print("fitness_flattened")
         # print(fitness_flattened)
         # print("acqMap.fitness")
@@ -140,12 +147,12 @@ def sail(p,d): # domain and params
         # for i in zip(acqMap.confidence, fitness_flattened):
         #     print(i)
         abs_fitness = [abs(val) for val in fitness_flattened]
-        print((acqMap.confidence * d.varCoef) / abs_fitness)
-        confContribution[nSamples] = np.nanmedian( (acqMap.confidence * d.varCoef) / abs_fitness)
-        print("nanmedian") # works
-        print(np.nanmedian( (acqMap.confidence * d.varCoef) / abs_fitness))
-        print("confContribution")
-        print(confContribution)
+        # print((acqMap.confidence * d.varCoef) / abs_fitness)
+        confContribution.at[0,nSamples] = np.nanmedian( (acqMap.confidence * d.varCoef) / abs_fitness)
+        # print("nanmedian") # works
+        # print(np.nanmedian( (acqMap.confidence * d.varCoef) / abs_fitness))
+        # print("confContribution")
+        # print(confContribution)
 
 
 
@@ -160,25 +167,69 @@ def sail(p,d): # domain and params
 
         # At first iteration initialize sobol sequence for sample selection
         if nSamples == p.nInitialSamples:
-            sobSet = sobol_seq #.i4_...
+            sobSet = i4_sobol_generate(d.nDims,10000,1000).transpose()
+            sobSet = pd.DataFrame(data=sobSet)
+            sobSet = sobSet.sample(frac=1).reset_index(drop=True)
             sobPoint = 1
 
         # Choose new samples and evaluate them for new observations
         nMissing = p.nAdditionalSamples
         newValue = []
         newSample = []
+        indPool = pd.DataFrame()
         while nMissing > 0:
             # Evenly sample solutions from acquisition map
-            newSampleRange = range(sobPoint, sobPoint + p.nAdditionalSamples)-1
+            newSampleRange = list(range(sobPoint-1, sobPoint + p.nAdditionalSamples-1))
+            # print("newSampleRange")
+            # print(newSampleRange)
             x, binIndx = sobol2indx(sobSet, newSampleRange, d, acqMap.edges)
+            # print("binIndxAfter")
+            # print(binIndx)
+            # print("acqMap.genes")
+            # print(acqMap.genes)
+
             for iGenes in range(0,binIndx.shape[0]):
-                indPool[iGenes,:] = acqMap.genes[binIndx[iGenes,0], binIndx[iGenes,1], :]
+                indPool.at[iGenes,0] = acqMap.genes[0].iloc[binIndx.iloc[iGenes,0],binIndx.iloc[iGenes,1]]
+                indPool.at[iGenes,1] = acqMap.genes[1].iloc[binIndx.iloc[iGenes,0],binIndx.iloc[iGenes,1]]
+
+            # print("indPool")
+            # print(indPool)
+            # print("observation")
+            # print(observation)
+
+            # for iGenes in range(0,binIndx.shape[0]):
+            #     indPool[iGenes,:] = acqMap.genes[binIndx.iloc[iGenes,0], binIndx.iloc[iGenes,1], :]
+
+
+
+
+
+
+
+
             # Remove repeats and nans (empty bins)
-            indPool = np.setdiff1d(indPool,observation) # 'rows','stable' ?
-            indPool = indPool[:] # ~any(isnan(indPool),2)
+            # repeats in case of rastrigin: almost impossible?
+            ds1 = set([tuple(line) for line in indPool.values])
+            ds2 = set([tuple(line) for line in observation.values])
+            indPool = pd.DataFrame(data=list(ds1.difference(ds2)))
+            indPool.dropna(inplace=True) # ok
+            # print("indPool after")
+            # print(indPool)
+
+
+            # indPool = np.setdiff1d(indPool,observation) # 'rows','stable' ?
+            # indPool = indPool[:] # ~any(isnan(indPool),2)
 
             # Evaluate enough of these valid solutions to get your initial sample set
             peFunction = lambda x: feval(d.preciseEvaluate, x, d) # returns nan if not converged
+            print("indPool")
+            print(indPool)
+            # TODO: reset_index of indPool to work
+            print("peFunction")
+            print(peFunction)
+            print("nMissing")
+            print(nMissing)
+
             foundSample, foundValue, nMissing = getValidInds(indPool, peFunction, nMissing)
             # print("foundSample")
             # print(foundSample)
@@ -196,7 +247,7 @@ def sail(p,d): # domain and params
         if len(observation) != len(np.unique(observation, axis=0)):
             print('WARNING: duplicate samples in observation set.')
 
-        peTime = 0 # time calc
+        peTime = 0 # TODO: time calc
         # End Acquisition loop
 
     # Save relevant Data
