@@ -44,7 +44,7 @@ def createChildren(map, nChildren, p, d):
     # Choose parents and create mutation
 
     # TODO: DEBUG: (DELETE)
-    nChildren = 2
+    # nChildren = 2
 
     selected_parents = np.random.randint(len(parentPool.index), size=nChildren)
     # print("selected_parents")

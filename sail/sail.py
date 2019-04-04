@@ -174,8 +174,8 @@ def sail(p,d): # domain and params
 
         # Choose new samples and evaluate them for new observations
         nMissing = p.nAdditionalSamples
-        newValue = []
-        newSample = []
+        newValue = pd.DataFrame()
+        newSample = pd.DataFrame()
         indPool = pd.DataFrame()
         while nMissing > 0:
             # Evenly sample solutions from acquisition map
@@ -213,6 +213,7 @@ def sail(p,d): # domain and params
             ds2 = set([tuple(line) for line in observation.values])
             indPool = pd.DataFrame(data=list(ds1.difference(ds2)))
             indPool.dropna(inplace=True) # ok
+            indPool.reset_index(drop=True, inplace=True)
             # print("indPool after")
             # print(indPool)
 
@@ -222,27 +223,41 @@ def sail(p,d): # domain and params
 
             # Evaluate enough of these valid solutions to get your initial sample set
             peFunction = lambda x: feval(d.preciseEvaluate, x, d) # returns nan if not converged
-            print("indPool")
-            print(indPool)
+            # print("indPool")
+            # print(indPool)
             # TODO: reset_index of indPool to work
-            print("peFunction")
-            print(peFunction)
-            print("nMissing")
-            print(nMissing)
+            # print("peFunction")
+            # print(peFunction)
+            # print("nMissing")
+            # print(nMissing)
 
-            foundSample, foundValue, nMissing = getValidInds(indPool, peFunction, nMissing)
+            foundSample, foundValue, nMissing, x = getValidInds(indPool, peFunction, nMissing)
             # print("foundSample")
             # print(foundSample)
-            newSample = [[newSample], [foundSample]]
-            newValue = [[newValue], [foundValue]]
+            # print("newSample")
+            # print(newSample)
+            # print("foundSample")
+            # print(foundSample)
+            # newSample = [[newSample], [foundSample]]
+            newSample = newSample.append(foundSample, ignore_index=True)
+            # print("newSample")
+            # print(newSample)
+            # print("newValue")
+            # print(newValue)
+            newValue = newValue.append(foundValue, ignore_index=True)
+            # newValue = [[newValue], [foundValue]]
+            # print("newValue")
+            # print(newValue)
 
             # Advance sobol sequence
             sobPoint = sobPoint + p.nAdditionalSamples + 1
 
         # Assign found values
-        value = [value, newValue] # cat
-        observation = [observation, newSample] # cat
-        nSamples = observation.shape[0]
+        value = value.append(newValue, ignore_index=True)
+        # value = [value, newValue] # cat
+        observation = observation.append(newSample, ignore_index=True)
+        # observation = [observation, newSample] # cat
+        nSamples = np.shape(observation)[0]
 
         if len(observation) != len(np.unique(observation, axis=0)):
             print('WARNING: duplicate samples in observation set.')
