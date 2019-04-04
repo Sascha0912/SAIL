@@ -2,12 +2,23 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def viewMap(mapMatrix, d, **kwargs): # varagin == kwargs
-    mapRes = mapMatrix.shape
-    for i in range(0,mapRes):
-        edges[i] = np.linspace(0,1,mapRes[i]+1)
+
+    # if (isinstance(mapMatrix, tuple)):
+    #     if (isinstance(mapMatrix[0], tuple)):
+    #         mapMatrix = mapMatrix[0][0]
+    #     else:
+    #         mapMatrix = mapMatrix[0]
+    # print("mapMatrix")
+    # print(mapMatrix)
+    # print("mapMatrix.fitness")
+    # print(mapMatrix.fitness)
+    mapRes = mapMatrix.fitness.shape
+    edges = []
+    for i in range(0,len(mapRes)):
+        edges.append(np.linspace(0,1,mapRes[i]+1))
     
     yOffset = [0.5, -0.0, 0]
-    imgHandle = plt.matshow(np.flipud(np.rot90(mapMatrix)))
+    imgHandle = plt.matshow(np.flipud(np.rot90(mapMatrix.fitness)))
     fitPlot = plt.gca()
 
     for key, value in kwargs.items():
@@ -23,4 +34,5 @@ def viewMap(mapMatrix, d, **kwargs): # varagin == kwargs
     plt.colorbar()
     figHandle = fitPlot
     imageHandle = imgHandle
+    plt.show()
     return figHandle, imageHandle

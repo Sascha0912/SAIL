@@ -56,6 +56,7 @@ def nicheCompete(newInds, fitness, map, d):
     df_fitness = pd.DataFrame(data=fitness.transpose())
     # print("df_fitness")
     # print(df_fitness)
+    # TODO: vergleich prüfen
     improvement = ~np.greater_equal(df_fitness.iloc[0][bestIndex],re_fitness[mapLinIndx].transpose().ravel())
     # print("bestIndex")
     # print(bestIndex)

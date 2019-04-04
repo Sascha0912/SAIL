@@ -18,6 +18,8 @@ from mapElites.nicheCompete import nicheCompete
 from mapElites.updateMap import updateMap
 from mapElites.mapElites import mapElites
 
+from visualization.viewMap import viewMap
+
 
 from pprint import pprint
 
@@ -40,7 +42,7 @@ def sail(p,d): # domain and params
         # print("value")
         # print(value)
     else:
-        np.load(d.initialSampleSource) # e.g. npz-File
+        np.load(d.initialSampleSource) # e.g. npz-File csv
         randomPick = np.random.permutation(observation.shape[0])[:p.initialSamples] # take only first "initialSamples" values
         observation = observation[randomPick,:] # get rows with indexes from randomPick
         value = value[randomPick,:] # same for value
@@ -125,7 +127,7 @@ def sail(p,d): # domain and params
                 acqMap = acqMap[0][0]
             else:
                 acqMap = acqMap[0]
-
+        viewMap(acqMap,d)
         percImproved[nSamples] = percImp # ok
         # print("percImproved")
         # print(percImproved)

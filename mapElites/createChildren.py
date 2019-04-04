@@ -31,8 +31,7 @@ def createChildren(map, nChildren, p, d):
             entry = reshaped_genes[j][i][0]
             # if (np.isnan(entry)): # only checks first attribute of sample if nan
             #     break
-            parentPool.set_value(i, j, entry) # DEPRECATED
-            
+            parentPool.at[i, j] = entry             
             # if j==len(map.genes)-1:
             #     k = k+1
     parentPool.dropna(inplace=True)
@@ -59,7 +58,7 @@ def createChildren(map, nChildren, p, d):
     children = parents.add(mutation)
 
     # TODO: Rastrigin Domain Specific: (also need to correct featureRange for rastrigin to -2 - 2)
-    children[children<-1] = -1
+    children[children<0] = 0
     children[children>1] = 1
     # print("children")
     # print(children)

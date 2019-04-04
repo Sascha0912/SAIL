@@ -120,4 +120,6 @@ def updateMap(replaced, replacement, map, fitness, genes, values, extraMapValues
                 for i in zip(replaced,replacement):
                     exec('map.'+extraMapValues[iValues]+'[i[0]] = values['+str(iValues)+'][i[1]]')
 
+
+    # print(map[0].fitness)
     return map
