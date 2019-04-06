@@ -13,10 +13,13 @@ from domain.rastrigin.rastrigin_ValidateChildren import rastrigin_ValidateChildr
 from domain.rastrigin.rastrigin_PreciseEvaluate import rastrigin_PreciseEvaluate
 
 def initialSampling(d, nInitialSamples): # CHECKED d, nInitialSamples
-    # eng = matlab.engine.start_matlab()
     def feval(funcName,*args):
         return eval(funcName)(*args)
+    def scale(value):
+        return (value - 0)/(1-0)*(d.featureMax[0] - d.featureMin[0]) + d.featureMin[0]
 
+
+    
     # print("d")
     # pprint(vars(d))
     # print("nInitialSamples")
@@ -43,6 +46,10 @@ def initialSampling(d, nInitialSamples): # CHECKED d, nInitialSamples
     sobSequence = i4_sobol_generate(d.dof,10000,skip).transpose() # dient nur dem initialen Sampling
     sobSequence = pd.DataFrame(data=sobSequence)
     sobSequence = sobSequence.sample(frac=1).reset_index(drop=True)
+
+    # ADDED: Scaling
+    sobSequence = sobSequence.applymap(scale)
+    
     # print(sobSequence)
     # random.shuffle(sobSequence)
     # print("sobSequence")

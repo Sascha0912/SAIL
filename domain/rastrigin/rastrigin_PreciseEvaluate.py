@@ -12,11 +12,11 @@ def rastrigin_PreciseEvaluate(observations, d):
     # print(observations)
 
     # Scaling values to -2 to 2 from range 0 to 1
-    def scale(value):
-        return (value - 0)/(1-0)*(d.featureMax[0] - d.featureMin[0]) + d.featureMin[0]
+    # def scale(value):
+    #     return (value - 0)/(1-0)*(d.featureMax[0] - d.featureMin[0]) + d.featureMin[0]
 
 
-    observations = observations.applymap(scale)
+    # observations = observations.applymap(scale)
     # Get fitness of each individual
     # print("observationsAfterScale")
     # print(observations)

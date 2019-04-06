@@ -3,6 +3,10 @@ from mapElites.getBestPerCell import getBestPerCell
 from pprint import pprint
 import pandas as pd
 
+# newInds - Rastrigin: DataFrame 10x2
+# fitness - Rastrigin: 2D List   10x1
+
+
 def nicheCompete(newInds, fitness, map, d):
     # print("map[0].edges")
     # print(map[0].edges)
@@ -19,7 +23,7 @@ def nicheCompete(newInds, fitness, map, d):
     # print("map[0].edges")
     # print(map[0].edges)
     # pprint(vars(map[0]))
-    bestIndex, bestBin = getBestPerCell(newInds, fitness, d, map[0].edges) # in getBestPerCell liegt wahrscheinlich der Fehler
+    bestIndex, bestBin = getBestPerCell(newInds, fitness, d, map[0].edges)
     # print("bestIndex")
     # print(bestIndex)
     # print("bestBin")
@@ -27,8 +31,10 @@ def nicheCompete(newInds, fitness, map, d):
     # print(bestBin.iloc[:,0])
     # print("d.featureRes")
     # print(d.featureRes)
-
-    mapLinIndx = np.ravel_multi_index((bestBin.iloc[:,0], bestBin.iloc[:,1]),dims=d.featureRes, order='C')
+    bestBin = bestBin + (-1)
+    # print("bestBinAfter")
+    # print(bestBin.T.to_numpy())
+    mapLinIndx = np.ravel_multi_index(bestBin.T.to_numpy(),dims=d.featureRes, order='C', mode='clip') # TODO: check here if C or F + mode clip causing incorrect solutions?
     # print("mapLinIndx")
     # print(mapLinIndx)
 

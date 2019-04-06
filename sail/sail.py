@@ -83,10 +83,15 @@ def sail(p,d): # domain and params
 
         # Save found model parameters and update acquisition function
         for iModel in range(0,value.shape[1]):
+            gpModelDict = gpModel[iModel].to_dict()
+            # print("gModelDict")
+            # print(gpModelDict)
+            d.gpParams[iModel].dict = gpModelDict
+            # d.gpParams[iModel] = gpModel[iModel]
             # d.gpParams[iModel].hyp = gpModel[iModel].hyp # See pyGPs hyp
-            d.gpParams[iModel].hyp_cov = gpModel[iModel].covfunc
-            d.gpParams[iModel].hyp_mean = gpModel[iModel].meanfunc
-            d.gpParams[iModel].hyp_lik = gpModel[iModel].likfunc
+            # d.gpParams[iModel].k = gpModel[iModel].kernel
+            # d.gpParams[iModel].meanfunc = gpModel[iModel].mean
+            # d.gpParams[iModel].lik = gpModel[iModel].likelihood
 
 
         acqFunction = feval(d.createAcqFunction, gpModel, d)
@@ -127,7 +132,7 @@ def sail(p,d): # domain and params
                 acqMap = acqMap[0][0]
             else:
                 acqMap = acqMap[0]
-        viewMap(acqMap,d)
+        # viewMap(acqMap,d)
         percImproved[nSamples] = percImp # ok
         # print("percImproved")
         # print(percImproved)
@@ -267,18 +272,32 @@ def sail(p,d): # domain and params
         peTime = 0 # TODO: time calc
         # End Acquisition loop
 
+    class Output:
+        def __init__(p, d, model, trainTime, illum, petime, percImproved, predMap, acqMap, confContrib, unpack):
+            self.p = p
+            self.d = d
+            self.model = model
+            self.trainTime = trainTime
+            self.illum = illum
+            self.petime = petime
+            self.percImproved = percImproved
+            self.predMap = predMap
+            self.acqMap = acqMap
+            self.confContrib = confContrib
+            self.unpack = unpack
     # Save relevant Data
-    output.p = p
-    output.d = d
-    output.model = gpModel
-    output.trainTime = trainingTime
-    output.illum = illumTime
-    output.petime = peTime
-    output.percImproved = percImproved
-    output.predMap = predMap
-    output.acqMap = acqMapRecord
-    output.confContrib = confContribution
-    output.unpack = '' # necessary?
+    output = Output(p, d, gpModel, trainingTime, illumTime, peTime, percImproved, predMap, acqMapRecord, confContribution, '')
+    # output.p = p
+    # output.d = d
+    # output.model = gpModel
+    # output.trainTime = trainingTime
+    # output.illum = illumTime
+    # output.petime = peTime
+    # output.percImproved = percImproved
+    # output.predMap = predMap
+    # output.acqMap = acqMapRecord
+    # output.confContrib = confContribution
+    # output.unpack = '' # necessary?
 
     if p.data.outSave:
         pass

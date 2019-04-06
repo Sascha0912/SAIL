@@ -7,5 +7,5 @@ def predictGP(gpModel, input):
     # print(input)
     # print("gpModel")
     # print(gpModel)
-    ym, ys2, fm, fs2, lp = gpModel.predict(input)
-    return ym, ys2
+    mean, var = gpModel.predict(input)
+    return mean, var
