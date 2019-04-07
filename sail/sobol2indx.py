@@ -7,9 +7,9 @@ def sobol2indx(sobSet, sobPoints, d, edges):
     # sobPoints is list with indices
     # print("sobSet")
     # print(sobSet)
-    sampleCoords = sobSet.iloc[sobPoints, :]
-    # print("sampleCoords")
-    # print(sampleCoords)
+    sampleCoords = sobSet.iloc[sobPoints, :] # TODO: Error : Positional Indexes out of bounds
+    print("sampleCoords")
+    print(sampleCoords)
 
     nans = np.empty([len(sobPoints),d.nDims])
     nans[:] = np.nan

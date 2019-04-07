@@ -20,7 +20,7 @@ from mapElites.mapElites import mapElites
 
 from visualization.viewMap import viewMap
 
-
+import time
 from pprint import pprint
 
 def sail(p,d): # domain and params
@@ -66,13 +66,13 @@ def sail(p,d): # domain and params
         # Surrogate models are created from all evaluated samples, and these
         # models are used to produce acquisition function.
         print('PE ' + str(nSamples) + ' | Training Surrogate Models')
-        tstart = 0 # time calc
+        tstart = time.time() # time calc
         gpModel = []
         # print("value")
         # print(value)
         # print("value.shape[1]: " + str(value.shape))
         # print("d.gpParams.shape: " + str(np.shape(d.gpParams)))
-        for iModel in range(0,value.shape[1]): # must be parallelized
+        for iModel in range(0,value.shape[1]): # TODO: must be parallelized
             # only retrain model parameters every 'p.trainingMod' iterations
             if (nSamples == p.nInitialSamples or np.remainder(nSamples, p.trainingMod * p.nAdditionalSamples)):
                 gpModel.insert(iModel,trainGP(observation, value.loc[:,iModel], d.gpParams[iModel]))
@@ -97,7 +97,8 @@ def sail(p,d): # domain and params
         acqFunction = feval(d.createAcqFunction, gpModel, d)
 
         # Data Gathering (training Time)
-        trainingTime = 0 # time calc
+        tEnd = time.time()
+        trainingTime.append(tEnd - tstart) # time calc
 
         # Create intermediate prediction map for analysis
         if ~np.remainder(nSamples, p.data_mapEvalMod) and p.data_mapEval:
@@ -113,7 +114,7 @@ def sail(p,d): # domain and params
         if nSamples == p.nTotalSamples:
             break # After final model is created no more infill is necessary
         print('PE: ' + str(nSamples) + ' | Illuminating Acquisition Map')
-        tstart = 0
+        tstart = time.time()
 
         # Evaluate observation set with acquisition function
         fitness, predValues = acqFunction(observation)
@@ -138,10 +139,11 @@ def sail(p,d): # domain and params
         # print(percImproved)
 
         # Data Gathering (illum Time)
-        illumTime = 0 # time calc
+        tEnd = time.time()
+        illumTime.append(tEnd - tstart) # time calc
         # print("acqMap")
         # pprint(vars(acqMap))
-        acqMapRecord[nSamples] = acqMap
+        acqMapRecord.at[0,nSamples] = acqMap
         # print("acqMap.confidence")
         # print(acqMap.confidence)
         # print("fitness_flattened")
@@ -170,7 +172,7 @@ def sail(p,d): # domain and params
         # is empty the next bin in the sobol set is chosen.
 
         print('PE: ' + str(nSamples) + ' | Evaluating New Samples')
-        tstart = 0
+        tstart = time.time()
 
         # At first iteration initialize sobol sequence for sample selection
         if nSamples == p.nInitialSamples:
@@ -206,13 +208,6 @@ def sail(p,d): # domain and params
 
             # for iGenes in range(0,binIndx.shape[0]):
             #     indPool[iGenes,:] = acqMap.genes[binIndx.iloc[iGenes,0], binIndx.iloc[iGenes,1], :]
-
-
-
-
-
-
-
 
             # Remove repeats and nans (empty bins)
             # repeats in case of rastrigin: almost impossible?
@@ -269,11 +264,12 @@ def sail(p,d): # domain and params
         if len(observation) != len(np.unique(observation, axis=0)):
             print('WARNING: duplicate samples in observation set.')
 
-        peTime = 0 # TODO: time calc
+        tEnd = time.time()
+        peTime.append(tEnd - tstart) # TODO: time calc for evaluation done - missing for illum and training
         # End Acquisition loop
 
     class Output:
-        def __init__(p, d, model, trainTime, illum, petime, percImproved, predMap, acqMap, confContrib, unpack):
+        def __init__(self, p, d, model, trainTime, illum, petime, percImproved, predMap, acqMap, confContrib, unpack):
             self.p = p
             self.d = d
             self.model = model
@@ -287,6 +283,8 @@ def sail(p,d): # domain and params
             self.unpack = unpack
     # Save relevant Data
     output = Output(p, d, gpModel, trainingTime, illumTime, peTime, percImproved, predMap, acqMapRecord, confContribution, '')
+    pprint(vars(output))
+    viewMap(output.acqMap.at[0,190],d)
     # output.p = p
     # output.d = d
     # output.model = gpModel
@@ -299,6 +297,6 @@ def sail(p,d): # domain and params
     # output.confContrib = confContribution
     # output.unpack = '' # necessary?
 
-    if p.data.outSave:
-        pass
+    # if p.data.outSave:
+    #     pass
         # np.save() # sailRun.npz (example)
