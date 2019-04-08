@@ -25,7 +25,7 @@ d = rastrigin_Domain()
 # d = velo_Domain()
 p = defaultParamSet()
 
-p.nInitialSamples = 10
+p.nInitialSamples = 100
 p.nTotalSamples   = 200
 p.nChildren       = 2**5
 p.nGens           = 2**6

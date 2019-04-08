@@ -14,3 +14,5 @@ def createPredictionMap(gpModels, observation, p, d, varargin): # **kwargs
 
     # Illuminate based on surrogate models
     predMap, percImproved = mapElites(acqFunction, predMap, p, d)
+
+    return predMap, percImproved

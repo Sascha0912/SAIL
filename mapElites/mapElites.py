@@ -42,8 +42,6 @@ def mapElites(fitnessFunction, map, p, d):
         percImproved.insert(iGen, len(replaced)/p.nChildren)
 
         # View illumination progress
-        # TODO: DEBUG
-        # viewMap(map[0], d)
         if p.display_illu and ~np.remainder(iGen, p.display_illuMod):
             pass # TODO: view + draw
     

@@ -227,7 +227,6 @@ def sail(p,d): # domain and params
             peFunction = lambda x: feval(d.preciseEvaluate, x, d) # returns nan if not converged
             # print("indPool")
             # print(indPool)
-            # TODO: reset_index of indPool to work
             # print("peFunction")
             # print(peFunction)
             # print("nMissing")
@@ -265,7 +264,7 @@ def sail(p,d): # domain and params
             print('WARNING: duplicate samples in observation set.')
 
         tEnd = time.time()
-        peTime.append(tEnd - tstart) # TODO: time calc for evaluation done - missing for illum and training
+        peTime.append(tEnd - tstart)
         # End Acquisition loop
 
     class Output:
