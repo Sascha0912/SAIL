@@ -5,12 +5,12 @@ import GPy
 def paramsGP(nInputs):
     class P:
         def __init__(self):
-            self.k        = GPy.kern.RBF(input_dim=2, variance=1, lengthscale=1)
+            self.k        = GPy.kern.RBF(input_dim=nInputs, variance=1, lengthscale=0.5)
             self.lik      = GPy.likelihoods.Gaussian()
-            mf = GPy.core.Mapping(1,1)
-            mf.f = np.log(0.1)
-            mf = GPy.mappings.Linear(2,1)
-            self.meanfunc = mf
+            # mf = GPy.core.Mapping(1,1)
+            # mf.f = np.log(0.1)
+            # mf = 
+            self.meanfunc = GPy.mappings.Linear(2,1)
             self.dict = None
             
         #     m = GPy.models.GPRegression(X,Y,k)

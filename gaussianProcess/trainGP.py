@@ -11,10 +11,10 @@ def trainGP(input, output, d, **kwargs):
     input = input.values # to numpy array    
     output = output[:,np.newaxis] 
 
-#     print("input")
-#     print(input)
-#     print("output")
-#     print(output)
+    print("input")
+    print(input)
+    print("output")
+    print(output)
 #     print("d")
 #     print(d)
     if not isinstance(d, GPy.core.GP):

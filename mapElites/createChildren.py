@@ -54,8 +54,8 @@ def createChildren(map, nChildren, p, d):
     children = parents.add(mutation)
 
     # TODO: Rastrigin Domain Specific: (also need to correct featureRange for rastrigin to -2 - 2)
-    children[children<-2] = -2
-    children[children>2] = 2
+    children[children<0] = 0
+    children[children>1] = 1
     # print("children")
     # print(children)
     return children

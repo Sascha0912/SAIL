@@ -16,10 +16,11 @@ def rastrigin_PreciseEvaluate(observations, d):
     #     return (value - 0)/(1-0)*(d.featureMax[0] - d.featureMin[0]) + d.featureMin[0]
 
 
-    # observations = observations.applymap(scale)
+    # observations = 
     # Get fitness of each individual
+    # scaled = observations.applymap(scale)
     # print("observationsAfterScale")
-    # print(observations)
+    # print(scaled)
     fitness = feval(d.objFun, observations)
     fitness = fitness.T
     # Get feature coordinates of each individual

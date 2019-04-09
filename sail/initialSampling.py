@@ -13,6 +13,11 @@ from domain.rastrigin.rastrigin_ValidateChildren import rastrigin_ValidateChildr
 from domain.rastrigin.rastrigin_PreciseEvaluate import rastrigin_PreciseEvaluate
 
 def initialSampling(d, nInitialSamples): # CHECKED d, nInitialSamples
+
+    # SOBOL settings (adjust also in sail)
+    skip     = 1000
+    seq_size = 20000
+
     def feval(funcName,*args):
         return eval(funcName)(*args)
     def scale(value):
@@ -36,19 +41,16 @@ def initialSampling(d, nInitialSamples): # CHECKED d, nInitialSamples
     # print(nMissing)
     inds = pd.DataFrame(columns=[0,1])
     sobPoint = 1
-
-
-    skip = 1000
     
     # WORKAUROUND: generate 10000 samples
     # Performance durch die 10.000 schlecht TODO
     # sobSequence = i4_sobol_generate(d.dof,10000) # generiere 10.000 samples
-    sobSequence = i4_sobol_generate(d.dof,10000,skip).transpose() # dient nur dem initialen Sampling
+    sobSequence = i4_sobol_generate(d.dof,seq_size,skip).transpose() # dient nur dem initialen Sampling
     sobSequence = pd.DataFrame(data=sobSequence)
     sobSequence = sobSequence.sample(frac=1).reset_index(drop=True)
 
-    # ADDED: Scaling
-    sobSequence = sobSequence.applymap(scale)
+    # TODO: ADDED: Scaling
+    # sobSequence = sobSequence.applymap(scale)
     
     # print(sobSequence)
     # random.shuffle(sobSequence)

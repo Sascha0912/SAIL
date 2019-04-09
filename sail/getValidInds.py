@@ -13,7 +13,7 @@ def getValidInds(indPool, testFunction, nDesired):
     # inds = []
     inds = pd.DataFrame(columns=[0])
     # vals = []
-    vals = pd.DataFrame(columns=[0,1]) # TODO: correct these dataframes (columns=...)
+    vals = pd.DataFrame(columns=[0]) # TODO: correct these dataframes (columns=...)
     nMissing = nDesired
     nAttempts = 0
     # print("indPool")

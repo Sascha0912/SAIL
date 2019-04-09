@@ -9,7 +9,7 @@ def defaultParamSet():
             # Infill Parameters
             self.nInitialSamples    = 50
             self.nAdditionalSamples = 10
-            self.nTotalSamples      = 1000
+            self.nTotalSamples      = 500
             self.trainingMod        = 2
 
             # Display Parameters

@@ -7,9 +7,11 @@ def sobol2indx(sobSet, sobPoints, d, edges):
     # sobPoints is list with indices
     # print("sobSet")
     # print(sobSet)
+    # print("sobPoints")
+    # print(sobPoints)
     sampleCoords = sobSet.iloc[sobPoints, :] # TODO: Error : Positional Indexes out of bounds
-    print("sampleCoords")
-    print(sampleCoords)
+    # print("sampleCoords")
+    # print(sampleCoords)
 
     nans = np.empty([len(sobPoints),d.nDims])
     nans[:] = np.nan
@@ -21,7 +23,7 @@ def sobol2indx(sobSet, sobPoints, d, edges):
     # print("edges")
     # print(edges)
     for iDim in range(0,d.nDims):
-        binIndx.at[:,iDim] = np.digitize(sampleCoords.iloc[:,iDim], edges[iDim])-1 # CHECK: -1 correct?
+        binIndx.at[:,iDim] = np.digitize(sampleCoords.iloc[:,iDim], edges[iDim])-1 # TODO: CHECK: -1 correct?
     
     # print("binIndx")
     # print(binIndx)

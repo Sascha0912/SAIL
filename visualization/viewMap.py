@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+# from matplotlib.ticker import FormatStrFormatter
 
 def viewMap(mapMatrix, d, **kwargs): # varagin == kwargs
 
@@ -10,15 +11,19 @@ def viewMap(mapMatrix, d, **kwargs): # varagin == kwargs
     #         mapMatrix = mapMatrix[0]
     # print("mapMatrix")
     # print(mapMatrix)
-    # print("mapMatrix.fitness")
-    # print(mapMatrix.fitness)
+    print("mapMatrix.fitness")
+    print(mapMatrix.fitness)
     mapRes = mapMatrix.fitness.shape
     edges = []
+
+    fig = plt.figure()
+    ax = plt.subplot(111)
+
     for i in range(0,len(mapRes)):
-        edges.append(np.linspace(0,1,mapRes[i]+1))
+        edges.append(np.linspace(0,1,mapRes[i])) # ADJUSTSCALE
     
-    yOffset = [0.5, -0.0, 0]
-    imgHandle = plt.matshow(np.flipud(np.rot90(mapMatrix.fitness)))
+    # yOffset = [0.5, -0.0, 0]
+    cax = ax.matshow(np.flipud(np.rot90(mapMatrix.fitness)))
     fitPlot = plt.gca()
 
     for key, value in kwargs.items():
@@ -29,10 +34,21 @@ def viewMap(mapMatrix, d, **kwargs): # varagin == kwargs
     xlab = plt.xlabel(d.featureLabels[0])
     ylab = plt.ylabel(d.featureLabels[1])
 
+    # ax.xaxis.set_major_formatter(FormatStrFormatter('%.2f'))
+    # ax.yaxis.set_major_formatter(FormatStrFormatter('%.2f'))
+
+    ax.set_xticks(np.arange(mapRes[0]))
+    ax.set_yticks(np.arange(mapRes[1]))
+
+    ax.set_xticklabels( [str(round(float(label),2)) for label in np.linspace(0,1,num=mapRes[0])] ) 
+    ax.set_yticklabels( [str(round(float(label),2)) for label in np.linspace(0,1,num=mapRes[1])] )
+
     # ...
 
-    plt.colorbar()
+
+
+    fig.colorbar(cax)
     figHandle = fitPlot
-    imageHandle = imgHandle
+    imageHandle = cax
     plt.show()
     return figHandle, imageHandle

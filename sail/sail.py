@@ -23,7 +23,13 @@ from visualization.viewMap import viewMap
 import time
 from pprint import pprint
 
+
 def sail(p,d): # domain and params
+
+    # SOBOL settings (adjust also in initialSampling)
+    skip     = 1000
+    seq_size = 20000
+
     def feval(funcName,*args):
         return eval(funcName)(*args)
     # Produce initial samples
@@ -60,14 +66,14 @@ def sail(p,d): # domain and params
     percImproved = pd.DataFrame()
     acqMapRecord = pd.DataFrame()
     confContribution = pd.DataFrame()
-
+    gpModel = []
     while nSamples <= p.nTotalSamples:
         # Create surrogate and acquisition function
         # Surrogate models are created from all evaluated samples, and these
         # models are used to produce acquisition function.
         print('PE ' + str(nSamples) + ' | Training Surrogate Models')
         tstart = time.time() # time calc
-        gpModel = []
+        
         # print("value")
         # print(value)
         # print("value.shape[1]: " + str(value.shape))
@@ -176,7 +182,7 @@ def sail(p,d): # domain and params
 
         # At first iteration initialize sobol sequence for sample selection
         if nSamples == p.nInitialSamples:
-            sobSet = i4_sobol_generate(d.nDims,10000,1000).transpose()
+            sobSet = i4_sobol_generate(d.nDims,20000,1000).transpose()
             sobSet = pd.DataFrame(data=sobSet)
             sobSet = sobSet.sample(frac=1).reset_index(drop=True)
             sobPoint = 1
@@ -256,7 +262,11 @@ def sail(p,d): # domain and params
         # Assign found values
         value = value.append(newValue, ignore_index=True)
         # value = [value, newValue] # cat
+        print("value")
+        print(value)
         observation = observation.append(newSample, ignore_index=True)
+        print("observation")
+        print(observation)
         # observation = [observation, newSample] # cat
         nSamples = np.shape(observation)[0]
 
@@ -283,7 +293,7 @@ def sail(p,d): # domain and params
     # Save relevant Data
     output = Output(p, d, gpModel, trainingTime, illumTime, peTime, percImproved, predMap, acqMapRecord, confContribution, '')
     pprint(vars(output))
-    viewMap(output.acqMap.at[0,190],d)
+    # viewMap(output.acqMap.at[0,190],d)
     # output.p = p
     # output.d = d
     # output.model = gpModel
@@ -299,3 +309,4 @@ def sail(p,d): # domain and params
     # if p.data.outSave:
     #     pass
         # np.save() # sailRun.npz (example)
+    return output

@@ -49,12 +49,12 @@ def rastrigin_Domain():
             self.muCoef = 1 # mean weight
 
             self.featureRes = [25, 25]
-            self.extraMapValues = []
+            # self.extraMapValues = []
 
             self.categorize = 'rastrigin_Categorize'
 
-            self.featureMin = [-2, -1]
-            self.featureMax = [2, 2]
+            self.featureMin = [0, 0]
+            self.featureMax = [1, 1]
 
             self.nDims = len(self.featureRes)
 

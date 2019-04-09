@@ -15,7 +15,7 @@ def createMap(featureResolution, genomeLength, *args):
     map = Map()
 
     for i in range(0,len(featureResolution)):
-        edges.insert(i, np.linspace(-2,2,featureResolution[i]+1)) # TODO: make generic!
+        edges.insert(i, np.linspace(0,1,featureResolution[i]+1)) # TODO: make generic! ADJUSTSCALE
 
     map.edges = edges
 
