@@ -4,7 +4,7 @@ import pandas as pd
 import sys
 from pprint import pprint
 
-def createMap(featureResolution, genomeLength, *args):
+def createMap(featureResolution, genomeLength, featureMin, featureMax, *args):
     class Map:
         def __init__(self):
             self.edges = []
@@ -15,7 +15,7 @@ def createMap(featureResolution, genomeLength, *args):
     map = Map()
 
     for i in range(0,len(featureResolution)):
-        edges.insert(i, np.linspace(0,1,featureResolution[i]+1)) # TODO: make generic! ADJUSTSCALE
+        edges.insert(i, np.linspace(featureMin[0] , featureMax[0], featureResolution[i]+1)) # ADJUSTSCALE
 
     map.edges = edges
 

@@ -11,8 +11,8 @@ def viewMap(mapMatrix, d, **kwargs): # varagin == kwargs
     #         mapMatrix = mapMatrix[0]
     # print("mapMatrix")
     # print(mapMatrix)
-    print("mapMatrix.fitness")
-    print(mapMatrix.fitness)
+    # print("mapMatrix.fitness")
+    # print(mapMatrix.fitness)
     mapRes = mapMatrix.fitness.shape
     edges = []
 
@@ -20,7 +20,7 @@ def viewMap(mapMatrix, d, **kwargs): # varagin == kwargs
     ax = plt.subplot(111)
 
     for i in range(0,len(mapRes)):
-        edges.append(np.linspace(0,1,mapRes[i])) # ADJUSTSCALE
+        edges.append(np.linspace(0,1,mapRes[i])) 
     
     # yOffset = [0.5, -0.0, 0]
     cax = ax.matshow(np.flipud(np.rot90(mapMatrix.fitness)))
@@ -40,14 +40,14 @@ def viewMap(mapMatrix, d, **kwargs): # varagin == kwargs
     ax.set_xticks(np.arange(mapRes[0]))
     ax.set_yticks(np.arange(mapRes[1]))
 
-    ax.set_xticklabels( [str(round(float(label),2)) for label in np.linspace(0,1,num=mapRes[0])] ) 
-    ax.set_yticklabels( [str(round(float(label),2)) for label in np.linspace(0,1,num=mapRes[1])] )
+    ax.set_xticklabels( [str(round(float(label),2)) for label in np.linspace(d.featureMin[0], d.featureMax[0], num=mapRes[0])] ) # ADJUSTSCALE
+    ax.set_yticklabels( [str(round(float(label),2)) for label in np.linspace(d.featureMin[0], d.featureMax[0], num=mapRes[1])] )
 
     # ...
 
+    hcb = fig.colorbar(cax)
+    hcb.set_label("Fitness") # TODO: make generic
 
-
-    fig.colorbar(cax)
     figHandle = fitPlot
     imageHandle = cax
     plt.show()

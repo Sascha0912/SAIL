@@ -82,7 +82,8 @@ def sail(p,d): # domain and params
             # only retrain model parameters every 'p.trainingMod' iterations
             if (nSamples == p.nInitialSamples or np.remainder(nSamples, p.trainingMod * p.nAdditionalSamples)):
                 gpModel.insert(iModel,trainGP(observation, value.loc[:,iModel], d.gpParams[iModel]))
-                # pass
+                # print("Model")
+                # print(gpModel[iModel])
             else:
                 gpModel.insert(iModel,trainGP(observation, value.loc[:,iModel], d.gpParams[iModel], functionEvals=0))
                 # pass
@@ -126,7 +127,7 @@ def sail(p,d): # domain and params
         fitness, predValues = acqFunction(observation)
 
         # Place best samples in acquisition map
-        obsMap = createMap(d.featureRes, d.dof, d.extraMapValues)
+        obsMap = createMap(d.featureRes, d.dof, d.featureMin, d.featureMax, d.extraMapValues)
         replaced, replacement, x = nicheCompete(observation, fitness, obsMap, d)
         obsMap = updateMap(replaced, replacement, obsMap, fitness, observation, predValues, d.extraMapValues)
 
@@ -262,11 +263,11 @@ def sail(p,d): # domain and params
         # Assign found values
         value = value.append(newValue, ignore_index=True)
         # value = [value, newValue] # cat
-        print("value")
-        print(value)
+        # print("value")
+        # print(value)
         observation = observation.append(newSample, ignore_index=True)
-        print("observation")
-        print(observation)
+        # print("observation")
+        # print(observation)
         # observation = [observation, newSample] # cat
         nSamples = np.shape(observation)[0]
 
@@ -292,7 +293,7 @@ def sail(p,d): # domain and params
             self.unpack = unpack
     # Save relevant Data
     output = Output(p, d, gpModel, trainingTime, illumTime, peTime, percImproved, predMap, acqMapRecord, confContribution, '')
-    pprint(vars(output))
+    # pprint(vars(output))
     # viewMap(output.acqMap.at[0,190],d)
     # output.p = p
     # output.d = d

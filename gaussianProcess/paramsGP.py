@@ -10,7 +10,7 @@ def paramsGP(nInputs):
             # mf = GPy.core.Mapping(1,1)
             # mf.f = np.log(0.1)
             # mf = 
-            self.meanfunc = GPy.mappings.Linear(2,1)
+            self.meanfunc = GPy.mappings.Constant(2,1)
             self.dict = None
             
         #     m = GPy.models.GPRegression(X,Y,k)

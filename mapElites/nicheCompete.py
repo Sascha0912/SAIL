@@ -8,6 +8,14 @@ import pandas as pd
 
 
 def nicheCompete(newInds, fitness, map, d):
+
+    # TODO: Test parameter "maximize" indicates whether to search for maximum fitness or not
+    # should be added to domain parameters
+    maximizeParam = False
+
+
+
+
     # print("map[0].edges")
     # print(map[0].edges)
     # print("newInds")
@@ -23,7 +31,7 @@ def nicheCompete(newInds, fitness, map, d):
     # print("map[0].edges")
     # print(map[0].edges)
     # pprint(vars(map[0]))
-    bestIndex, bestBin = getBestPerCell(newInds, fitness, d, map[0].edges)
+    bestIndex, bestBin = getBestPerCell(newInds, fitness, d, map[0].edges, maximize=maximizeParam)
     # print("bestIndex")
     # print(bestIndex)
     # print("bestBin")
@@ -48,15 +56,31 @@ def nicheCompete(newInds, fitness, map, d):
     re_fitness = map[0].fitness.reshape((map[0].fitness.shape[0] * map[0].fitness.shape[1], 1))
     # print("re_fitness")
     # print(re_fitness)
-    for i in zip(bestIndex,mapLinIndx):
-        # print(i)
-        if (np.isnan(fitness[i[0]])):
-            improvement.append(False)
-            continue
-        if (fitness[i[0]] >= re_fitness[i[1]]):
-            improvement.append(False)
-        else:
-            improvement.append(True)
+
+
+
+    # TODO: improvement is when smaller fitness value is found -> depends on param maximizeParam
+
+    # if maximizeParam:
+    #     for i in zip(bestIndex,mapLinIndx):
+    #         # print(i)
+    #         if (np.isnan(fitness[i[0]])):
+    #             improvement.append(False)
+    #             continue
+    #         if (fitness[i[0]] >= re_fitness[i[1]]):
+    #             improvement.append(False)
+    #         else:
+    #             improvement.append(True)
+    # else:
+    #     for i in zip(bestIndex,mapLinIndx):
+    #         # print(i)
+    #         if (np.isnan(fitness[i[0]])):
+    #             improvement.append(False) # check this
+    #             continue
+    #         if (fitness[i[0]] >= re_fitness[i[1]]):
+    #             improvement.append(True)
+    #         else:
+    #             improvement.append(False)
 
     
     df_fitness = pd.DataFrame(data=fitness.transpose())
