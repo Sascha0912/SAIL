@@ -12,6 +12,7 @@ def nicheCompete(newInds, fitness, map, d):
     # TODO: Test parameter "maximize" indicates whether to search for maximum fitness or not
     # should be added to domain parameters
     maximizeParam = False
+    first = True
 
 
 
@@ -87,9 +88,20 @@ def nicheCompete(newInds, fitness, map, d):
     # print("df_fitness")
     # print(df_fitness)
     # TODO: vergleich prüfen
-    improvement = ~np.greater_equal(df_fitness.iloc[0][bestIndex],re_fitness[mapLinIndx].transpose().ravel())
+
+    # print("df_fitness.iloc[0][bestIndex]")
+    # print(df_fitness.iloc[0][bestIndex])
+    # print("re_fitness[mapLinIndx].transpose().ravel()")
+    # print(re_fitness[mapLinIndx].transpose().ravel())
+    a = df_fitness.iloc[0][bestIndex]
+    b = re_fitness[mapLinIndx].transpose().ravel()
+    improvement = ~np.greater_equal(a,b)
+    if not maximizeParam and not first:
+        improvement = np.greater_equal(a,b)
+    first = False
     # print("bestIndex")
     # print(bestIndex)
+    
     # print("improvement")
     # print(improvement)
     replacement = [bestIndex[i] for i in range(len(bestIndex)) if improvement[improvement.index.values.tolist()[i]]]

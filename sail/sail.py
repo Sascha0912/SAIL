@@ -82,8 +82,8 @@ def sail(p,d): # domain and params
             # only retrain model parameters every 'p.trainingMod' iterations
             if (nSamples == p.nInitialSamples or np.remainder(nSamples, p.trainingMod * p.nAdditionalSamples)):
                 gpModel.insert(iModel,trainGP(observation, value.loc[:,iModel], d.gpParams[iModel]))
-                # print("Model")
-                # print(gpModel[iModel])
+                print("Model")
+                print(gpModel[iModel])
             else:
                 gpModel.insert(iModel,trainGP(observation, value.loc[:,iModel], d.gpParams[iModel], functionEvals=0))
                 # pass
