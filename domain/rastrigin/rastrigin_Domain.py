@@ -45,7 +45,7 @@ def rastrigin_Domain():
             self.gpParams.append(paramsGP(self.dof)) # Y
 
             # Acquisition function
-            self.varCoef = 20 # variance weight
+            self.varCoef = 20 # variance weight # TODO: testweise ändern
             self.muCoef = 1 # mean weight
 
             self.featureRes = [25, 25]
@@ -53,8 +53,8 @@ def rastrigin_Domain():
 
             self.categorize = 'rastrigin_Categorize'
 
-            self.featureMin = [-2, -2] # ADJUSTSCALE 
-            self.featureMax = [2, 2]   # currently, only the first values are used -> delete second items from list
+            self.featureMin = [0, 0] # ADJUSTSCALE 
+            self.featureMax = [1, 1]   # currently, only the first values are used -> delete second items from list
 
             self.nDims = len(self.featureRes)
 

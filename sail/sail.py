@@ -26,6 +26,9 @@ from pprint import pprint
 
 def sail(p,d): # domain and params
 
+    def scale(value):
+        return (value - 0)/(1-0)*(d.featureMax[0] - d.featureMin[0]) + d.featureMin[0]
+
     # SOBOL settings (adjust also in initialSampling)
     skip     = 1000
     seq_size = 20000
@@ -43,10 +46,10 @@ def sail(p,d): # domain and params
         # print("p.nInitlasmaples")
         # print(p.nInitialSamples)
         observation, value = initialSampling(d,p.nInitialSamples)
-        # print("observation")
-        # print(observation)
-        # print("value")
-        # print(value)
+        print("observation")
+        print(observation)
+        print("value")
+        print(value)
     else:
         np.load(d.initialSampleSource) # e.g. npz-File csv
         randomPick = np.random.permutation(observation.shape[0])[:p.initialSamples] # take only first "initialSamples" values
@@ -78,14 +81,14 @@ def sail(p,d): # domain and params
         # print(value)
         # print("value.shape[1]: " + str(value.shape))
         # print("d.gpParams.shape: " + str(np.shape(d.gpParams)))
-        for iModel in range(0,value.shape[1]): # TODO: must be parallelized
+        for iModel in range(0,value.shape[1]): # TODO: only first case relevant
             # only retrain model parameters every 'p.trainingMod' iterations
-            if (nSamples == p.nInitialSamples or np.remainder(nSamples, p.trainingMod * p.nAdditionalSamples)):
-                gpModel.insert(iModel,trainGP(observation, value.loc[:,iModel], d.gpParams[iModel]))
-                print("Model")
-                print(gpModel[iModel])
-            else:
-                gpModel.insert(iModel,trainGP(observation, value.loc[:,iModel], d.gpParams[iModel], functionEvals=0))
+            # if (nSamples == p.nInitialSamples or np.remainder(nSamples, p.trainingMod * p.nAdditionalSamples)):
+            gpModel.insert(iModel,trainGP(observation, value.loc[:,iModel], d.gpParams[iModel]))
+            print("Model")
+            print(gpModel[iModel])
+            # else:
+                # gpModel.insert(iModel,trainGP(observation, value.loc[:,iModel], d.gpParams[iModel], functionEvals=0))
                 # pass
 
         # Save found model parameters and update acquisition function
@@ -187,6 +190,10 @@ def sail(p,d): # domain and params
             sobSet = pd.DataFrame(data=sobSet)
             sobSet = sobSet.sample(frac=1).reset_index(drop=True)
             sobPoint = 1
+
+            # TODO: ADDED: Scaling
+            sobSet = sobSet.applymap(scale)
+
 
         # Choose new samples and evaluate them for new observations
         nMissing = p.nAdditionalSamples

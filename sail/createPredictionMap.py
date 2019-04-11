@@ -5,8 +5,8 @@ from mapElites.updateMap import updateMap
 from mapElites.mapElites import mapElites
 
 def createPredictionMap(gpModels, observation, p, d, **kwargs):
-    def scale(value):
-        return (value - 0)/(1-0)*(d.featureMax[0] - d.featureMin[0]) + d.featureMin[0]
+    # def scale(value):
+    #     return (value - 0)/(1-0)*(d.featureMax[0] - d.featureMin[0]) + d.featureMin[0]
     def feval(funcName,*args):
         return eval(funcName)(*args)
     # TODO: PARSING - see mapelites
@@ -18,7 +18,7 @@ def createPredictionMap(gpModels, observation, p, d, **kwargs):
         elif key=="featureRes":
             d.featureRes = value
     d.varCoef = 0 # no award for uncertainty
-    scaled = observation.applymap(scale)   # ADJUSTSCALE
+    # scaled = observation.applymap(scale)   # ADJUSTSCALE
 
     
     # Construct functions
@@ -26,7 +26,7 @@ def createPredictionMap(gpModels, observation, p, d, **kwargs):
     # print("acqFunction")
     # print(acqFunction)
     # Seed map with precisely evaluated solutions
-    fitness, predValues = acqFunction(scaled)
+    fitness, predValues = acqFunction(observation)
     # print("fitness")
     # print(fitness)
     # print("predValues")
@@ -34,12 +34,12 @@ def createPredictionMap(gpModels, observation, p, d, **kwargs):
     predMap = createMap(d.featureRes, d.dof, d.featureMin, d.featureMax, d.extraMapValues)
     # print("predMap")
     # print(predMap)
-    replaced, replacement, x = nicheCompete(scaled, fitness, predMap, d)
+    replaced, replacement, x = nicheCompete(observation, fitness, predMap, d)
     # print("replaced")
     # print(replaced)
     # print("replacement")
     # print(replacement)
-    predMap = updateMap(replaced, replacement, predMap, fitness, scaled, predValues, d.extraMapValues)
+    predMap = updateMap(replaced, replacement, predMap, fitness, observation, predValues, d.extraMapValues)
     # print("predMap")
     # print(predMap[0].fitness)
 

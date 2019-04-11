@@ -50,7 +50,7 @@ def initialSampling(d, nInitialSamples): # CHECKED d, nInitialSamples
     sobSequence = sobSequence.sample(frac=1).reset_index(drop=True)
 
     # TODO: ADDED: Scaling
-    # sobSequence = sobSequence.applymap(scale)
+    sobSequence = sobSequence.applymap(scale)
     
     # print(sobSequence)
     # random.shuffle(sobSequence)

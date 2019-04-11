@@ -3,7 +3,7 @@ import pandas as pd
 from domain.rastrigin.rastrigin_Categorize import rastrigin_Categorize
 
 # param: maximize indicates whether to search for max. fitness or not (min search)
-def getBestPerCell(samples,fitness,d,edges,maximize=True):
+def getBestPerCell(samples,fitness,d,edges):
     def feval(funcName,*args):
         return eval(funcName)(*args)
     fitness = pd.DataFrame(data=fitness)
@@ -47,10 +47,10 @@ def getBestPerCell(samples,fitness,d,edges,maximize=True):
     # print(indxSortOne)
 
     # sortedByFeatureAndFitness.reset_index(drop=True, inplace=True)
-    if (maximize):
-        df_drop_dupl = sortedByFeatureAndFitness.drop_duplicates(subset=[0,1], keep='first')
-    else:
-        df_drop_dupl = sortedByFeatureAndFitness.drop_duplicates(subset=[0,1], keep='last')
+    # if (maximize):
+    df_drop_dupl = sortedByFeatureAndFitness.drop_duplicates(subset=[0,1], keep='first')
+    # else:
+    #     df_drop_dupl = sortedByFeatureAndFitness.drop_duplicates(subset=[0,1], keep='last')
     
     indxSortTwo = list(df_drop_dupl.index.values)
 

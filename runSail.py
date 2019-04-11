@@ -34,8 +34,8 @@ d = rastrigin_Domain()
 # d = velo_Domain()
 p = defaultParamSet()
 
-p.nInitialSamples = 300
-p.nTotalSamples   = 500
+p.nInitialSamples = 20
+p.nTotalSamples   = 40
 p.nChildren       = 2**5
 p.nGens           = 2**6 # Illumination Generations
 

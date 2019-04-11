@@ -11,8 +11,8 @@ def nicheCompete(newInds, fitness, map, d):
 
     # TODO: Test parameter "maximize" indicates whether to search for maximum fitness or not
     # should be added to domain parameters
-    maximizeParam = False
-    first = True
+    # maximizeParam = False
+    # first = True
 
 
 
@@ -32,7 +32,7 @@ def nicheCompete(newInds, fitness, map, d):
     # print("map[0].edges")
     # print(map[0].edges)
     # pprint(vars(map[0]))
-    bestIndex, bestBin = getBestPerCell(newInds, fitness, d, map[0].edges, maximize=maximizeParam)
+    bestIndex, bestBin = getBestPerCell(newInds, fitness, d, map[0].edges)
     # print("bestIndex")
     # print(bestIndex)
     # print("bestBin")
@@ -96,9 +96,9 @@ def nicheCompete(newInds, fitness, map, d):
     a = df_fitness.iloc[0][bestIndex]
     b = re_fitness[mapLinIndx].transpose().ravel()
     improvement = ~np.greater_equal(a,b)
-    if not maximizeParam and not first:
-        improvement = np.greater_equal(a,b)
-    first = False
+    # if not maximizeParam and not first:
+        # improvement = np.greater_equal(a,b)
+    # first = False
     # print("bestIndex")
     # print(bestIndex)
     
