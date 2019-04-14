@@ -54,7 +54,7 @@ def rastrigin_Domain():
             self.categorize = 'rastrigin_Categorize'
 
             self.featureMin = [0, 0] # ADJUSTSCALE 
-            self.featureMax = [1, 1]   # currently, only the first values are used -> delete second items from list
+            self.featureMax = [4, 4]   # currently, only the first values are used -> delete second items from list
 
             self.nDims = len(self.featureRes)
 

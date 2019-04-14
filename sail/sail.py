@@ -46,10 +46,10 @@ def sail(p,d): # domain and params
         # print("p.nInitlasmaples")
         # print(p.nInitialSamples)
         observation, value = initialSampling(d,p.nInitialSamples)
-        print("observation")
-        print(observation)
-        print("value")
-        print(value)
+        # print("observation")
+        # print(observation)
+        # print("value")
+        # print(value)
     else:
         np.load(d.initialSampleSource) # e.g. npz-File csv
         randomPick = np.random.permutation(observation.shape[0])[:p.initialSamples] # take only first "initialSamples" values
@@ -85,8 +85,8 @@ def sail(p,d): # domain and params
             # only retrain model parameters every 'p.trainingMod' iterations
             # if (nSamples == p.nInitialSamples or np.remainder(nSamples, p.trainingMod * p.nAdditionalSamples)):
             gpModel.insert(iModel,trainGP(observation, value.loc[:,iModel], d.gpParams[iModel]))
-            print("Model")
-            print(gpModel[iModel])
+            # print("Model")
+            # print(gpModel[iModel])
             # else:
                 # gpModel.insert(iModel,trainGP(observation, value.loc[:,iModel], d.gpParams[iModel], functionEvals=0))
                 # pass
