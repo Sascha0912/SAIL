@@ -15,3 +15,6 @@ and
 "Aerodynamic Design Exploration through Surrogate-Assisted Illumination"
 presented at AIAA Aviation and Aeronautics Forum 2017.
 https://hal.inria.fr/hal-01518786/file/aiaa_sail.pdf
+
+MATLAB implementation:
+https://github.com/agaier/sail
