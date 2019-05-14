@@ -35,8 +35,8 @@ d = rastrigin_Domain()
 p = defaultParamSet()
 
 p.nInitialSamples = 20
-p.nTotalSamples   = 100
-p.nChildren       = 2**5
+p.nTotalSamples   = 200
+p.nChildren       = 2**5 # 2**5
 p.nGens           = 2**8 # Illumination Generations 2**6
 
 p.data_mapEval    = False # produce intermediate prediction maps
