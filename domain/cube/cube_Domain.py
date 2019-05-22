@@ -9,6 +9,8 @@ def cube_Domain():
             self.createAcqFunction = "cube_CreateAcqFunc"
             self.validate          = "cube_ValidateChildren"
 
+            self.objFun = "cube_FitnessFunc"
+
             # Alternative initialization
             self.loadInitialSamples  = False
             self.initialSampleSource = ""
@@ -36,5 +38,5 @@ def cube_Domain():
 
             # Domain Specific Map Values
             self.extraMapValues = ["cD","cL","confidence"]
-            
+
     return Domain()
