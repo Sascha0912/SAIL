@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
-from domain.rastrigin.rastrigin_Categorize import rastrigin_Categorize
+# from domain.rastrigin.rastrigin_Categorize import rastrigin_Categorize
+from domain.cube.cube_Categorize import cube_Categorize
 
 # param: maximize indicates whether to search for max. fitness or not (min search)
 def getBestPerCell(samples,fitness,d,edges):

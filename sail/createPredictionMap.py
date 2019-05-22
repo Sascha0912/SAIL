@@ -1,4 +1,5 @@
-from domain.rastrigin.rastrigin_CreateAcqFunc import rastrigin_CreateAcqFunc
+# from domain.rastrigin.rastrigin_CreateAcqFunc import rastrigin_CreateAcqFunc
+from domain.cube.cube_CreateAcqFunc import cube_CreateAcqFunc
 from mapElites.createMap import createMap
 from mapElites.nicheCompete import nicheCompete
 from mapElites.updateMap import updateMap

@@ -9,8 +9,14 @@ from pprint import pprint
 # import chaospy as cp
 # from sobol.sobol_seq import i4_sobol, i4_sobol_generate
 from sail.getValidInds import getValidInds
-from domain.rastrigin.rastrigin_ValidateChildren import rastrigin_ValidateChildren
-from domain.rastrigin.rastrigin_PreciseEvaluate import rastrigin_PreciseEvaluate
+
+
+
+# from domain.rastrigin.rastrigin_ValidateChildren import rastrigin_ValidateChildren
+# from domain.rastrigin.rastrigin_PreciseEvaluate import rastrigin_PreciseEvaluate
+
+from domain.cube.cube_ValidateChildren import cube_ValidateChildren
+from domain.cube.cube_PreciseEvaluate import cube_PreciseEvaluate
 
 def initialSampling(d, nInitialSamples): # CHECKED d, nInitialSamples
 

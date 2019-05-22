@@ -1,4 +1,5 @@
 from pygem import FFDParameters, FFD, StlHandler
+from domain.cube.cube_FitnessFunc import cube_FitnessFunc
 
 # Function takes a list of sets of meshpoints and assigns a fitness values
 def cube_PreciseEvaluate(observations, d):

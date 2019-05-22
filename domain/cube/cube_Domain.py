@@ -1,3 +1,6 @@
+from domain.cube.expression.loadBaseCube import loadBaseCube
+from gaussianProcess.paramsGP import paramsGP
+
 def cube_Domain():
     class Domain:
         def __init__(self):
@@ -16,9 +19,11 @@ def cube_Domain():
             self.initialSampleSource = ""
 
             # Genotype to Phenotype Expression
-            self.dof     = 10
+            self.dof     = 2
             self.express = lambda x: cubeRaeY(x)
             self.base    = loadBaseCube(self.express, self.dof)
+        #     print("base")
+        #     print(self.base)
 
             # Feature Space
             self.featureRes    = [25, 25]
@@ -28,8 +33,9 @@ def cube_Domain():
             self.featureLabels = ["Z", "X"] # [X label, Y label]
 
             # GP Models
-            self.gpParams[0] = paramsGP(self.dof) # Drag
-            self.gpParams[1] = paramsGP(self.dof) # Lift
+            self.gpParams = []
+            self.gpParams.append(paramsGP(self.dof)) # Drag
+            self.gpParams.append(paramsGP(self.dof)) # Lift
             self.nVals       = 2 # number of values of interest
 
             # Acquisition function

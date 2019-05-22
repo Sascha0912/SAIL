@@ -10,8 +10,11 @@ from sail.getValidInds import getValidInds
 
 from gaussianProcess.trainGP import trainGP
 
-from domain.rastrigin.rastrigin_CreateAcqFunc import rastrigin_CreateAcqFunc
-from domain.rastrigin.rastrigin_PreciseEvaluate import rastrigin_PreciseEvaluate
+# from domain.rastrigin.rastrigin_CreateAcqFunc import rastrigin_CreateAcqFunc
+# from domain.rastrigin.rastrigin_PreciseEvaluate import rastrigin_PreciseEvaluate
+
+from domain.cube.cube_CreateAcqFunc import cube_CreateAcqFunc
+from domain.cube.cube_PreciseEvaluate import cube_PreciseEvaluate
 
 from mapElites.createMap import createMap
 from mapElites.nicheCompete import nicheCompete
