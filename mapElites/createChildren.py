@@ -9,7 +9,7 @@ def createChildren(map, nChildren, p, d):
         else:
             map = map[0]
 
-    # print("map.genes")
+    # print("map.genes") # map.genes enthält nur in den ersten beiden 25x25 maps genome. Die anderen sind alle mit nan gefüllt
     # print(map.genes)
     parentPool = pd.DataFrame(data=np.empty([len(map.genes[0].index) * len(map.genes[0].columns), len(map.genes)]))
     # print("parentPool")

@@ -1,5 +1,5 @@
 import numpy as np
-import pyGPs
+# import pyGPs
 import GPy
 
 def paramsGP(nInputs):
@@ -7,10 +7,8 @@ def paramsGP(nInputs):
         def __init__(self):
             self.k        = GPy.kern.RBF(input_dim=nInputs, variance=1, lengthscale=0.5)
             self.lik      = GPy.likelihoods.Gaussian()
-            # mf = GPy.core.Mapping(1,1)
-            # mf.f = np.log(0.1)
-            # mf = 
-            self.meanfunc = GPy.mappings.Constant(2,1)
+            # TODO: make dim of meanfunc generic
+            self.meanfunc = GPy.mappings.Constant(36,1)
             self.dict = None
             
         #     m = GPy.models.GPRegression(X,Y,k)

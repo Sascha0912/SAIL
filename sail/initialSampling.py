@@ -12,8 +12,8 @@ from sail.getValidInds import getValidInds
 
 
 
-# from domain.rastrigin.rastrigin_ValidateChildren import rastrigin_ValidateChildren
-# from domain.rastrigin.rastrigin_PreciseEvaluate import rastrigin_PreciseEvaluate
+from domain.rastrigin.rastrigin_ValidateChildren import rastrigin_ValidateChildren
+from domain.rastrigin.rastrigin_PreciseEvaluate import rastrigin_PreciseEvaluate
 
 from domain.cube.cube_ValidateChildren import cube_ValidateChildren
 from domain.cube.cube_PreciseEvaluate import cube_PreciseEvaluate

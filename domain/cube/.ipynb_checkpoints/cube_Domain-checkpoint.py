@@ -28,8 +28,8 @@ def cube_Domain():
             # Feature Space
             self.featureRes    = [25, 25]
             self.nDims         = len(self.featureRes)
-            self.featureMin    = [-2, -2]
-            self.featureMax    = [2, 2]
+            self.featureMin    = [0.1, 0.5]
+            self.featureMax    = [0.2, 0.6]
             self.featureLabels = ["Z", "X"] # [X label, Y label]
 
             # GP Models
@@ -43,6 +43,6 @@ def cube_Domain():
             self.muCoef  = 1  # mean weight TODO: delete
 
             # Domain Specific Map Values
-            self.extraMapValues = ["cD","cL"]
+            self.extraMapValues = ["cD","cL","confidence"]
 
     return Domain()

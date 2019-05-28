@@ -4,6 +4,8 @@ from domain.cube.cube_FitnessFunc import cube_FitnessFunc
 # Function takes a list of sets of meshpoints and assigns a fitness values
 def cube_PreciseEvaluate(observations, d):
     # observation:
+    # print("observations")
+    # print(observations)
     def feval(funcName,*args):
         return eval(funcName)(*args)
 

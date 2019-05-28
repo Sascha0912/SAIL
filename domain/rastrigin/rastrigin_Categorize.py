@@ -2,6 +2,8 @@ import numpy as np
 import pandas as pd
 
 def rastrigin_Categorize(samples, d):
+    # print("samples")
+    # print(samples)
     return samples
     # feature1 = []
     # feature2 = []

@@ -9,10 +9,12 @@ from mapElites.createChildren import createChildren
 from mapElites.nicheCompete import nicheCompete
 from mapElites.updateMap import updateMap
 
-# from domain.rastrigin.rastrigin_ValidateChildren import rastrigin_ValidateChildren
+from domain.rastrigin.rastrigin_ValidateChildren import rastrigin_ValidateChildren
 from domain.cube.cube_ValidateChildren import cube_ValidateChildren
 
 def mapElites(fitnessFunction, map, p, d):
+    # print("map")
+    # print(map[0])
     def feval(funcName,*args):
         return eval(funcName)(*args)
     # View initial map

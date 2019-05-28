@@ -10,8 +10,8 @@ from sail.getValidInds import getValidInds
 
 from gaussianProcess.trainGP import trainGP
 
-# from domain.rastrigin.rastrigin_CreateAcqFunc import rastrigin_CreateAcqFunc
-# from domain.rastrigin.rastrigin_PreciseEvaluate import rastrigin_PreciseEvaluate
+from domain.rastrigin.rastrigin_CreateAcqFunc import rastrigin_CreateAcqFunc
+from domain.rastrigin.rastrigin_PreciseEvaluate import rastrigin_PreciseEvaluate
 
 from domain.cube.cube_CreateAcqFunc import cube_CreateAcqFunc
 from domain.cube.cube_PreciseEvaluate import cube_PreciseEvaluate
@@ -130,10 +130,19 @@ def sail(p,d): # domain and params
         tstart = time.time()
 
         # Evaluate observation set with acquisition function
+        # print("observation")
+        # print(observation)
         fitness, predValues = acqFunction(observation)
+        # print("fitness")
+        # print(fitness)
+        # print("predValues")
+        # print(predValues)
 
         # Place best samples in acquisition map
         obsMap = createMap(d.featureRes, d.dof, d.featureMin, d.featureMax, d.extraMapValues)
+        # obsMap contains only nans
+        # print("obsMap")
+        # print(obsMap[0].genes)
         replaced, replacement, x = nicheCompete(observation, fitness, obsMap, d)
         obsMap = updateMap(replaced, replacement, obsMap, fitness, observation, predValues, d.extraMapValues)
 
