@@ -143,11 +143,35 @@ def sail(p,d): # domain and params
         # obsMap contains only nans
         # print("obsMap")
         # print(obsMap[0].genes)
+        # print("observation")
+        # print(observation)
+        # print("fitness")
+        # print(fitness)
+        # print("obsMap")
+        # print(obsMap)
+        # print("d")
+        # print(d)
         replaced, replacement, x = nicheCompete(observation, fitness, obsMap, d)
+        # print("replaced")
+        # print(replaced)
+        # print("replacement")
+        # print(replacement)
+        # print("x")
+        # print(x)
         obsMap = updateMap(replaced, replacement, obsMap, fitness, observation, predValues, d.extraMapValues)
+        # print("obsMap")
+        # print(obsMap[0].genes) # OK
+        # exit()
 
         # Illuminate with MAP-Elites
         acqMap, percImp, h = mapElites(acqFunction, obsMap, p, d)
+        # print("acqMap")
+        # print(acqMap)
+        # print("percImp")
+        # print(percImp)
+        # print("h")
+        # print(h)
+        # exit()
 
         # Workaround for acqMap
         if (isinstance(acqMap,tuple)):
@@ -224,8 +248,10 @@ def sail(p,d): # domain and params
             # print(acqMap.genes)
 
             for iGenes in range(0,binIndx.shape[0]):
-                indPool.at[iGenes,0] = acqMap.genes[0].iloc[binIndx.iloc[iGenes,0],binIndx.iloc[iGenes,1]]
-                indPool.at[iGenes,1] = acqMap.genes[1].iloc[binIndx.iloc[iGenes,0],binIndx.iloc[iGenes,1]]
+                for gen in range(len(acqMap.genes)):
+                    indPool.at[iGenes,gen] = acqMap.genes[gen].iloc[binIndx.iloc[iGenes,0],binIndx.iloc[iGenes,1]]
+                    # indPool.at[iGenes,0] = acqMap.genes[0].iloc[binIndx.iloc[iGenes,0],binIndx.iloc[iGenes,1]]
+                    # indPool.at[iGenes,1] = acqMap.genes[1].iloc[binIndx.iloc[iGenes,0],binIndx.iloc[iGenes,1]]
 
             # print("indPool")
             # print(indPool)

@@ -43,6 +43,6 @@ def cube_Domain():
             self.muCoef  = 1  # mean weight TODO: delete
 
             # Domain Specific Map Values
-            self.extraMapValues = ["cD","cL"]
+            self.extraMapValues = ["cD","confidence"]
 
     return Domain()
