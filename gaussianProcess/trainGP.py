@@ -1,4 +1,3 @@
-import pyGPs
 import numpy as np
 import GPy
 
