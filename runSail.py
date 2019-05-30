@@ -1,6 +1,7 @@
 from sail.sail import sail
 from domain.rastrigin.rastrigin_Domain import rastrigin_Domain
 from domain.cube.cube_Domain import cube_Domain
+from domain.wheelcase.wheelcase_Domain import wheelcase_Domain
 # from domain.velo.velo_Domain import velo_Domain
 from sail.defaultParamSet import defaultParamSet
 import time
@@ -32,14 +33,15 @@ from visualization.viewMap import viewMap
 
 # Domain
 # d = rastrigin_Domain()
-d = cube_Domain()
+# d = cube_Domain()
+d = wheelcase_Domain()
 # d = velo_Domain()
 p = defaultParamSet()
 
-p.nInitialSamples = 40
-p.nTotalSamples   = 500
+p.nInitialSamples = 20
+p.nTotalSamples   = 100
 p.nChildren       = 2**5 # 2**5
-p.nGens           = 2**8 # Illumination Generations 2**6
+p.nGens           = 2**6 # Illumination Generations 2**6
 
 p.data_mapEval    = False # produce intermediate prediction maps
 p.data_mapEvalMod = 50    # how often? (in samples)
