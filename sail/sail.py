@@ -1,6 +1,5 @@
 import numpy as np
 import pandas as pd
-import pyGPs
 
 from sail.sobol2indx import sobol2indx
 from sail.sobol_lib import i4_sobol_generate
