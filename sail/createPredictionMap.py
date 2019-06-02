@@ -1,5 +1,7 @@
 from domain.rastrigin.rastrigin_CreateAcqFunc import rastrigin_CreateAcqFunc
 from domain.cube.cube_CreateAcqFunc import cube_CreateAcqFunc
+from domain.wheelcase.wheelcase_CreateAcqFunc import wheelcase_CreateAcqFunc
+
 from mapElites.createMap import createMap
 from mapElites.nicheCompete import nicheCompete
 from mapElites.updateMap import updateMap
@@ -21,7 +23,7 @@ def createPredictionMap(gpModels, observation, p, d, **kwargs):
     d.varCoef = 0 # no award for uncertainty
     # scaled = observation.applymap(scale)   # ADJUSTSCALE
 
-    
+
     # Construct functions
     acqFunction = feval(d.createAcqFunction, gpModels, d)
     # print("acqFunction")

@@ -15,6 +15,9 @@ from domain.rastrigin.rastrigin_PreciseEvaluate import rastrigin_PreciseEvaluate
 from domain.cube.cube_CreateAcqFunc import cube_CreateAcqFunc
 from domain.cube.cube_PreciseEvaluate import cube_PreciseEvaluate
 
+from domain.wheelcase.wheelcase_CreateAcqFunc import wheelcase_CreateAcqFunc
+from domain.wheelcase.wheelcase_DummyPreciseEvaluate import wheelcase_DummyPreciseEvaluate
+
 from mapElites.createMap import createMap
 from mapElites.nicheCompete import nicheCompete
 from mapElites.updateMap import updateMap
@@ -78,7 +81,7 @@ def sail(p,d): # domain and params
         # models are used to produce acquisition function.
         print('PE ' + str(nSamples) + ' | Training Surrogate Models')
         tstart = time.time() # time calc
-        
+
         # print("value")
         # print(value)
         # print("value.shape[1]: " + str(value.shape))

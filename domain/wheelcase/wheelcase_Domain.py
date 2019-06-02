@@ -1,10 +1,13 @@
+from domain.wheelcase.expression.loadBaseWheelcase import loadBaseWheelcase
+from gaussianProcess.paramsGP import paramsGP
+
 def wheelcase_Domain():
     class Domain:
         def __init__(self):
             self.name = "wheelcase"
 
             # Scripts
-            self.preciseEvaluate   = "wheelcase_PreciseEvaluate"
+            self.preciseEvaluate   = "wheelcase_DummyPreciseEvaluate"
             self.categorize        = "wheelcase_Categorize"
             self.createAcqFunction = "wheelcase_CreateAcqFunc"
             self.validate          = "wheelcase_ValidateChildren"
@@ -16,7 +19,7 @@ def wheelcase_Domain():
             self.initialSampleSource = ""
 
             # Genotype to Phenotype Expression
-            self.dof     = 36
+            self.dof     = 36 # Testing
             self.express = lambda x: wheelcaseRaeY(x)
             self.base    = loadBaseWheelcase(self.express, self.dof)
 

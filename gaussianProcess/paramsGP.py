@@ -9,7 +9,7 @@ def paramsGP(nInputs):
             # TODO: make dim of meanfunc generic
             self.meanfunc = GPy.mappings.Constant(36,1)
             self.dict = None
-            
+
         #     m = GPy.models.GPRegression(X,Y,k)
 
             # print(nInputs)
@@ -24,7 +24,7 @@ def paramsGP(nInputs):
         #     self.hyp_lik = np.log(0.1)
         #     self.functionEvals = 100 # function evals to optimize hyperparams
 
-            # Zusatz k-nearest neighbour für Längenskala 
+            # Zusatz k-nearest neighbour für Längenskala
 
 
     return P()

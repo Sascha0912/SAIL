@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 from domain.rastrigin.rastrigin_Categorize import rastrigin_Categorize
 from domain.cube.cube_Categorize import cube_Categorize
+from domain.wheelcase.wheelcase_Categorize import wheelcase_Categorize
 
 # param: maximize indicates whether to search for max. fitness or not (min search)
 def getBestPerCell(samples,fitness,d,edges):
@@ -52,7 +53,7 @@ def getBestPerCell(samples,fitness,d,edges):
     df_drop_dupl = sortedByFeatureAndFitness.drop_duplicates(subset=[0,1], keep='first')
     # else:
     #     df_drop_dupl = sortedByFeatureAndFitness.drop_duplicates(subset=[0,1], keep='last')
-    
+
     indxSortTwo = list(df_drop_dupl.index.values)
 
     # print("indxSortTwo")

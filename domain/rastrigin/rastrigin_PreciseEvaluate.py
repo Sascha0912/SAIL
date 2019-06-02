@@ -7,16 +7,16 @@ def rastrigin_PreciseEvaluate(observations, d):
 
     def feval(funcName,*args):
         return eval(funcName)(*args)
-        
-    # print("observations")
-    # print(observations)
+
+    print("observations")
+    print(observations)
 
     # Scaling values to -2 to 2 from range 0 to 1
     # def scale(value):
     #     return (value - 0)/(1-0)*(d.featureMax[0] - d.featureMin[0]) + d.featureMin[0]
 
 
-    # observations = 
+    # observations =
     # Get fitness of each individual
     # scaled = observations.applymap(scale)   # ADJUSTSCALE
     # print("observationsAfterScale")
@@ -31,5 +31,5 @@ def rastrigin_PreciseEvaluate(observations, d):
     # miscVal.append(np.random.rand(1,len(observations)))
     # miscVal.append(np.zeros((1,len(observat ions))))
     # print("rastr_evaluate")
-    # print(fitness)
+    print(fitness)
     return fitness # TODO: check this return: is behaviour, fitness correct?

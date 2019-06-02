@@ -10,14 +10,14 @@ from sail.createPredictionMap import createPredictionMap
 from visualization.viewMap import viewMap
 
 # IN CASE OF ERRORS:
-# 
+#
 # 1.) CHECK if Sobol Sequence is big enough (default is 10k) [IndexError: positional indexers are out-of-bounds]
-# 
+#
 
 # class P:
 #     def __init__(self):
         # Edit hyperparameters
-        
+
 
 # Algorithm hyperparameters
 # p = sail # load default hyperparameters

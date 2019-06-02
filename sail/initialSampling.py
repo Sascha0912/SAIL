@@ -18,6 +18,9 @@ from domain.rastrigin.rastrigin_PreciseEvaluate import rastrigin_PreciseEvaluate
 from domain.cube.cube_ValidateChildren import cube_ValidateChildren
 from domain.cube.cube_PreciseEvaluate import cube_PreciseEvaluate
 
+from domain.wheelcase.wheelcase_ValidateChildren import wheelcase_ValidateChildren
+from domain.wheelcase.wheelcase_DummyPreciseEvaluate import wheelcase_DummyPreciseEvaluate # TODO: change evaluation
+
 def initialSampling(d, nInitialSamples): # CHECKED d, nInitialSamples
 
     # SOBOL settings (adjust also in sail)
@@ -30,7 +33,7 @@ def initialSampling(d, nInitialSamples): # CHECKED d, nInitialSamples
         return (value - 0)/(1-0)*(d.featureMax[0] - d.featureMin[0]) + d.featureMin[0]
 
 
-    
+
     # print("d")
     # pprint(vars(d))
     # print("nInitialSamples")
@@ -38,16 +41,16 @@ def initialSampling(d, nInitialSamples): # CHECKED d, nInitialSamples
 
 
     # Produce initial solutions
-    
 
-    
+
+
     # Get collection of valid solutions
     nMissing = nInitialSamples # CHECKED nMissing
     # print("nMissing")
     # print(nMissing)
     inds = pd.DataFrame(columns=[0,1])
     sobPoint = 1
-    
+
     # WORKAUROUND: generate 10000 samples
     # Performance durch die 10.000 schlecht TODO
     # sobSequence = i4_sobol_generate(d.dof,10000) # generiere 10.000 samples
@@ -57,7 +60,7 @@ def initialSampling(d, nInitialSamples): # CHECKED d, nInitialSamples
 
     # TODO: ADDED: Scaling
     sobSequence = sobSequence.applymap(scale)
-    
+
     # print(sobSequence)
     # random.shuffle(sobSequence)
     # print("sobSequence")
@@ -75,7 +78,7 @@ def initialSampling(d, nInitialSamples): # CHECKED d, nInitialSamples
 
     while nMissing > 0:
         # how many sobol elements to take
-        
+
         # num_take = (sobPoint+nMissing*2)-sobPoint
         indPool = sobSequence.loc[sobPoint-1:(sobPoint+nMissing*2),:] # indPool ok, aber samples sind pro iteration nicht unterschiedlich, wie in matlab
         # print("indPool")
@@ -119,7 +122,7 @@ def initialSampling(d, nInitialSamples): # CHECKED d, nInitialSamples
             print('WARNING: Duplicate samples in observation set!')
         if sample.shape[0] != nInitialSamples:
             print('WARNING: Observation set smaller than specified!')
-    
+
     # print("value")
     # print(value)
     return sample, value
