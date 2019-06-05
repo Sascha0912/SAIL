@@ -8,11 +8,11 @@ def wheelcase_FitnessFunc(pop):
 
     # TODO: adapt Fitnessfunction for wheelcase
     params = FFDParameters()
-    params.read_parameters(filename='domain/cube/ffd/deform_goal.prm')
+    # params.read_parameters(filename='domain/cube/ffd/deform_goal.prm')
 
-    goal_genome = np.concatenate((params.array_mu_x.flatten(), params.array_mu_y.flatten(), params.array_mu_z.flatten()), axis=None)
+    # goal_genome = np.concatenate((params.array_mu_x.flatten(), params.array_mu_y.flatten(), params.array_mu_z.flatten()), axis=None)
     fitness_arr = []
-    
+
     for i in range(len(pop)):
         a = pop.iloc[i,:].values
         # print("a")

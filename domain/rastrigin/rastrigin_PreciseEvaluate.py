@@ -8,8 +8,8 @@ def rastrigin_PreciseEvaluate(observations, d):
     def feval(funcName,*args):
         return eval(funcName)(*args)
 
-    print("observations")
-    print(observations)
+    # print("observations")
+    # print(observations)
 
     # Scaling values to -2 to 2 from range 0 to 1
     # def scale(value):

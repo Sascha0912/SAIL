@@ -20,14 +20,14 @@ def viewMap(mapMatrix, d, **kwargs): # varagin == kwargs
     ax = plt.subplot(111)
 
     for i in range(0,len(mapRes)):
-        edges.append(np.linspace(0,1,mapRes[i])) 
-    
+        edges.append(np.linspace(0,1,mapRes[i]))
+
     # yOffset = [0.5, -0.0, 0]
     # TEST
-    print("mapMatrix.genes")
-    print(mapMatrix.genes)
-    for i in range(len(mapMatrix.genes)):
-        print(mapMatrix.genes[i].at[0,0])
+    # print("mapMatrix.genes")
+    # print(mapMatrix.genes)
+    # for i in range(len(mapMatrix.genes)):
+    #     print(mapMatrix.genes[i].at[0,0])
 
     cax = ax.matshow(np.flipud(np.rot90(mapMatrix.fitness)))
     fitPlot = plt.gca()

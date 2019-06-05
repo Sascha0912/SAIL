@@ -22,13 +22,13 @@ def cube_FitnessFunc(pop):# TODO: need also domain as input -> for feature Range
 
 #     df_fitness = pd.DataFrame()
     fitness_arr = []
-    
+
 #     print("goal_df")
 #     print(goal_df)
     for i in range(len(pop)):
         a = pop.iloc[i,:].values
-        print("a")
-        print(a)
+        # print("a")
+        # print(a)
         s = np.sum(abs(a-goal_genome))
         fitness_arr.append(s)
         # TODO: -2 and +2 should be replaced with featureMin and featureMax
