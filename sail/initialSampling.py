@@ -19,7 +19,8 @@ from domain.cube.cube_ValidateChildren import cube_ValidateChildren
 from domain.cube.cube_PreciseEvaluate import cube_PreciseEvaluate
 
 from domain.wheelcase.wheelcase_ValidateChildren import wheelcase_ValidateChildren
-from domain.wheelcase.wheelcase_DummyPreciseEvaluate import wheelcase_DummyPreciseEvaluate # TODO: change evaluation
+# from domain.wheelcase.wheelcase_DummyPreciseEvaluate import wheelcase_DummyPreciseEvaluate # TODO: change evaluation
+from domain.wheelcase.wheelcase_PreciseEvaluate import wheelcase_PreciseEvaluate
 
 def initialSampling(d, nInitialSamples): # CHECKED d, nInitialSamples
 

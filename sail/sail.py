@@ -16,7 +16,8 @@ from domain.cube.cube_CreateAcqFunc import cube_CreateAcqFunc
 from domain.cube.cube_PreciseEvaluate import cube_PreciseEvaluate
 
 from domain.wheelcase.wheelcase_CreateAcqFunc import wheelcase_CreateAcqFunc
-from domain.wheelcase.wheelcase_DummyPreciseEvaluate import wheelcase_DummyPreciseEvaluate
+# from domain.wheelcase.wheelcase_DummyPreciseEvaluate import wheelcase_DummyPreciseEvaluate
+from domain.wheelcase.wheelcase_PreciseEvaluate import wheelcase_PreciseEvaluate
 
 from mapElites.createMap import createMap
 from mapElites.nicheCompete import nicheCompete

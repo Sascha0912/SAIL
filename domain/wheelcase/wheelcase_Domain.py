@@ -7,7 +7,7 @@ def wheelcase_Domain():
             self.name = "wheelcase"
 
             # Scripts
-            self.preciseEvaluate   = "wheelcase_DummyPreciseEvaluate"
+            self.preciseEvaluate   = "wheelcase_PreciseEvaluate"
             self.categorize        = "wheelcase_Categorize"
             self.createAcqFunction = "wheelcase_CreateAcqFunc"
             self.validate          = "wheelcase_ValidateChildren"
