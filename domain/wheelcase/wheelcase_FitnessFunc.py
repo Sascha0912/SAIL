@@ -4,6 +4,9 @@ import pandas as pd
 
 from pygem import FFDParameters, FFD, StlHandler
 
+# import subprocess
+import os
+
 def wheelcase_FitnessFunc(pop):
 
     # TODO: adapt Fitnessfunction for wheelcase
@@ -53,7 +56,6 @@ def wheelcase_FitnessFunc(pop):
         params.write_parameters(filename='configs/ffd_config_'+str(i)+'.prm')
 
     # Create wheelcase stl based on each config file
-
     for j in range(len(pop)):
         mesh_points_base = stl_handler.parse(filename='domain/wheelcase/hpc1_velo_changed/constant/triSurface/wheelcase_turned.stl') # Base stl
         params.read_parameters(filename='configs/ffd_config_'+str(j)+'.prm')
@@ -61,6 +63,16 @@ def wheelcase_FitnessFunc(pop):
         free_form.perform() # Perform FFD
         new_mesh_points = free_form.modified_mesh_points # Save new mesh of wheelcase
         stl_handler.write(new_mesh_points, 'stls/wheelcase_'+str(j)+'.stl') # save it in stls folder
+
+    # execute openFoam for each stl (combine with top and velo stls)
+    for k in range(len(pop)):
+        # TODO: verketten der Kommandos mit &
+        copy_cmd = "cp /stls/wheelcase_"+str(k)+" domain/wheelcase/hpc1_velo_changed/constant/triSurface"
+        rename_cmd = "mv domain/wheelcase/hpc1_velo_changed/constant/triSurface/wheelcase_"+str(k)+" domain/wheelcase/hpc1_velo_changed/constant/triSurface/wheelcase_turned"
+        os.system(copy_cmd)
+        os.system(rename_cmd)
+
+
     # params.read_parameters(filename='domain/cube/ffd/deform_goal.prm')
 
     # goal_genome = np.concatenate((params.array_mu_x.flatten(), params.array_mu_y.flatten(), params.array_mu_z.flatten()), axis=None)
