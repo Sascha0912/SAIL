@@ -15,7 +15,7 @@ def cube_FitnessFunc(pop):# TODO: need also domain as input -> for feature Range
     # TODO: Hardcode deformation parameters of goal here -> save time
     params = FFDParameters()
     params.read_parameters(filename='domain/cube/ffd/deform_goal.prm')
-    print(params.array_mu_x)
+    # print(params.array_mu_x)
     goal_genome = np.concatenate((params.array_mu_x.flatten(), params.array_mu_y.flatten(), params.array_mu_z.flatten()), axis=None)
 #     print("goal")
 #     print(goal_genome)
@@ -40,6 +40,6 @@ def cube_FitnessFunc(pop):# TODO: need also domain as input -> for feature Range
     # make all values negative (high fitness is bad fitness)
     fitness_arr = np.negative(fitness_arr)
     df_fitness = pd.DataFrame(data=fitness_arr).transpose()
-#     print("df_fitness")
-#     print(df_fitness)
+    print("df_fitness")
+    print(df_fitness)
     return df_fitness
