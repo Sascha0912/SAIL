@@ -29,7 +29,7 @@ startTime       0;
 
 stopAt          endTime;
 
-endTime         1000;
+endTime         100; // 1000
 
 deltaT          1;
 
@@ -100,7 +100,7 @@ functions
     //    UName               U;
     //    rhoName             rhoInf;
     //    rhoInf              1;
-    //    log                 true;    
+    //    log                 true;
     //}
 
     velo

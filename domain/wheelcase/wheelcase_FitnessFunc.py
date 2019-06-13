@@ -112,7 +112,7 @@ def wheelcase_FitnessFunc(pop):
         df_force = pd.DataFrame(data=data_force)
         cD = df_force.iloc[:,2]
         # fitness is mean over the last 100 timesteps (inverted because lower cD (drag) is better)
-        fitness = np.negative(cD.iloc[900:1000].mean())
+        fitness = np.negative(cD.iloc[0:100].mean())
         fitness_values.append(fitness)
 
 
@@ -120,21 +120,29 @@ def wheelcase_FitnessFunc(pop):
         clean_cmd1 = "\\rm -rf domain/wheelcase/hpc1_velo_changed/constant/extendedFeatureEdgeMesh"
         clean_cmd2 = "\\rm -f domain/wheelcase/hpc1_velo_changed/constant/triSurface/wheelcase_turned.eMesh"
         clean_cmd3 = "rm -rf domain/wheelcase/hpc1_velo_changed/0"
-        clean_cmd4 = "rm -r 0* & rm -r 1* & rm -r 2* & rm -r 3* &rm -r 4* & rm -r 5* & rm -r 6* & rm -r 7* & rm -r 8* & rm -r 9* & rm -r postProcessing"
+        clean_cmd4 = "rm -r domain/wheelcase/hpc1_velo_changed/1* | rm -r domain/wheelcase/hpc1_velo_changed/2* | rm -r domain/wheelcase/hpc1_velo_changed/3* | rm -r domain/wheelcase/hpc1_velo_changed/4* | rm -r domain/wheelcase/hpc1_velo_changed/5* | rm -r domain/wheelcase/hpc1_velo_changed/6* | rm -r domain/wheelcase/hpc1_velo_changed/7* | rm -r domain/wheelcase/hpc1_velo_changed/8* | rm -r domain/wheelcase/hpc1_velo_changed/9* | rm -r domain/wheelcase/hpc1_velo_changed/postProcessing"
         #TODO: delete polyMesh contents
+        clean_cmd5 = "rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/faces | rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/neighbour | rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/owner | rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/points | rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/cellLevel & rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/level0Edge | rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/pointLevel | rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/refinementHistory | rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/surfaceIndex"
+        # clean_cmd5 = "rm -v !('blockMeshDict')"
         # clean_cmd4 = ". $WM_PROJECT_DIR/bin/tools/CleanFunctions"# & /home/sascha/Schreibtisch/SAIL/domain/wheelcase/hpc1_velo_changed/cleanCase"
         # os.chdir('/home/sascha/Schreibtisch/SAIL/domain/wheelcase/hpc1_velo_changed')
         # clean_cmd5 = "cleanCase"
         remove_wheelcase_cmd = "rm domain/wheelcase/hpc1_velo_changed/constant/triSurface/wheelcase_turned.stl"
+        remove_stls_cmd = "rm -r /home/sascha/Schreibtisch/SAIL/slts/*"
+        remove_configs_cmd = "rm -r /home/sascha/Schreibtisch/SAIL/configs/*"
         os.system(clean_cmd1)
         os.system(clean_cmd2)
         os.system(clean_cmd3)
         os.system(clean_cmd4)
+        os.system(clean_cmd5)
+
         os.system(remove_wheelcase_cmd)
+        os.system(remove_stls_cmd)
+        os.system(remove_configs_cmd)
     print("end openfoam")
         # extract Fitness values (postProcessing folder)
 
-
+    np.savetxt('domain/wheelcase/debug.txt',fitness_values)
     # params.read_parameters(filename='domain/cube/ffd/deform_goal.prm')
 
     # goal_genome = np.concatenate((params.array_mu_x.flatten(), params.array_mu_y.flatten(), params.array_mu_z.flatten()), axis=None)
