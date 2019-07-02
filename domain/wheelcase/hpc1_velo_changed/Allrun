@@ -11,7 +11,7 @@ runApplication surfaceFeatureExtract
 runApplication blockMesh
 
 runApplication decomposePar
-runParallel snappyHexMesh 6 -overwrite
+runParallel snappyHexMesh 32 -overwrite
 
 meshTime=`date +%s` 
 echo "$((meshTime-start))" >> mesh.timing
@@ -25,9 +25,9 @@ ls -d processor* | xargs -I {} cp -r 0.org ./{}/0
 
 cfdStart=`date +%s`
 
-runParallel patchSummary 6
-runParallel potentialFoam 6
-runParallel $(getApplication) 6
+runParallel patchSummary 32
+runParallel potentialFoam 32
+runParallel $(getApplication) 32
 
 cfdEnd=`date +%s` 
 echo "$((cfdEnd-cfdStart))" >> cfd.timing
