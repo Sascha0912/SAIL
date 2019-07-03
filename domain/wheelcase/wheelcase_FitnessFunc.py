@@ -103,7 +103,7 @@ def wheelcase_FitnessFunc(pop):
     params_left.read_parameters(filename='domain/wheelcase/ffd/ffd_config_left.prm') # Dummy config file
     params_right.read_parameters(filename='domain/wheelcase/ffd/ffd_config_right.prm')
     # print(pop)
-    pop.to_csv('domain/wheelcase/pop.csv',mode='a+',index=False)
+    pop.to_csv('domain/wheelcase/pop.csv',mode='a+',index=False,header=False)
 
 
     # Generate config file for each sample
@@ -271,7 +271,7 @@ def wheelcase_FitnessFunc(pop):
         clean_cmd3 = "rm -rf domain/wheelcase/hpc1_velo_changed/0"
         clean_cmd4 = "rm -r domain/wheelcase/hpc1_velo_changed/1* | rm -r domain/wheelcase/hpc1_velo_changed/2* | rm -r domain/wheelcase/hpc1_velo_changed/3* | rm -r domain/wheelcase/hpc1_velo_changed/4* | rm -r domain/wheelcase/hpc1_velo_changed/5* | rm -r domain/wheelcase/hpc1_velo_changed/6* | rm -r domain/wheelcase/hpc1_velo_changed/7* | rm -r domain/wheelcase/hpc1_velo_changed/8* | rm -r domain/wheelcase/hpc1_velo_changed/9* | rm -r domain/wheelcase/hpc1_velo_changed/postProcessing"
         # #TODO: delete polyMesh contents
-        clean_cmd5 = "rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/faces | rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/neighbour | rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/owner | rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/points | rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/cellLevel & rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/level0Edge | rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/pointLevel | rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/refinementHistory | rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/surfaceIndex | rm -f domai/faceZones | rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/cellZones | rm -rf domain/wheelcase/hpc1_velo_changed/constant/polyMesh/sets"
+        clean_cmd5 = "rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/faces | rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/neighbour | rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/owner | rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/points | rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/cellLevel | rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/level0Edge | rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/pointLevel | rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/refinementHistory | rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/surfaceIndex | rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/faceZones | rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/pointZones | rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/cellZones | rm -rf domain/wheelcase/hpc1_velo_changed/constant/polyMesh/sets"
         # # clean_cmd5 = "rm -v !('blockMeshDict')"
         # # clean_cmd4 = ". $WM_PROJECT_DIR/bin/tools/CleanFunctions"# & /home/sascha/Schreibtisch/SAIL/domain/wheelcase/hpc1_velo_changed/cleanCase"
         # # os.chdir('/home/sascha/Schreibtisch/SAIL/domain/wheelcase/hpc1_velo_changed')
@@ -295,7 +295,7 @@ def wheelcase_FitnessFunc(pop):
     os.system(remove_configs_cmd)
     
     # extract Fitness values (postProcessing folder)
-    pd.DataFrame(data=fitness_values).to_csv('domain/wheelcase/fitness.csv',mode='a+')
+    pd.DataFrame(data=fitness_values).to_csv('domain/wheelcase/fitness.csv',mode='a+',index=False,header=False)
     # for i in range(len(pop)):
         
 

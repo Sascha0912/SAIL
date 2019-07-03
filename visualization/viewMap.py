@@ -65,5 +65,11 @@ def viewMap(mapMatrix, d, **kwargs): # varagin == kwargs
 
     figHandle = fitPlot
     imageHandle = cax
-    plt.show()
+
+    # for non cluster execution
+    # plt.show()
+
+    # for cluster execution
+    plt.savefig("pred.pdf")
+
     return figHandle, imageHandle
