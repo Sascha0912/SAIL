@@ -11,85 +11,59 @@ from stl import mesh
 # import subprocess
 import os
 
-def find_mins_maxs(obj):
-    minx = maxx = miny = maxy = minz = maxz = None
-    for p in obj.points:
-        # p contains (x, y, z)
-        if minx is None:
-            minx = p[stl.Dimension.X]
-            maxx = p[stl.Dimension.X]
-            miny = p[stl.Dimension.Y]
-            maxy = p[stl.Dimension.Y]
-            minz = p[stl.Dimension.Z]
-            maxz = p[stl.Dimension.Z]
-        else:
-            maxx = max(p[stl.Dimension.X], maxx)
-            minx = min(p[stl.Dimension.X], minx)
-            maxy = max(p[stl.Dimension.Y], maxy)
-            miny = min(p[stl.Dimension.Y], miny)
-            maxz = max(p[stl.Dimension.Z], maxz)
-            minz = min(p[stl.Dimension.Z], minz)
-    return minx, maxx, miny, maxy, minz, maxz
+# def find_mins_maxs(obj):
+#     minx = maxx = miny = maxy = minz = maxz = None
+#     for p in obj.points:
+#         # p contains (x, y, z)
+#         if minx is None:
+#             minx = p[stl.Dimension.X]
+#             maxx = p[stl.Dimension.X]
+#             miny = p[stl.Dimension.Y]
+#             maxy = p[stl.Dimension.Y]
+#             minz = p[stl.Dimension.Z]
+#             maxz = p[stl.Dimension.Z]
+#         else:
+#             maxx = max(p[stl.Dimension.X], maxx)
+#             minx = min(p[stl.Dimension.X], minx)
+#             maxy = max(p[stl.Dimension.Y], maxy)
+#             miny = min(p[stl.Dimension.Y], miny)
+#             maxz = max(p[stl.Dimension.Z], maxz)
+#             minz = min(p[stl.Dimension.Z], minz)
+#     return minx, maxx, miny, maxy, minz, maxz
 
-def translate(_solid, step, padding, multiplier, axis):
-    if 'x' == axis:
-        items = 0, 3, 6
-    elif 'y' == axis:
-        items = 1, 4, 7
-    elif 'z' == axis:
-        items = 2, 5, 8
-    else:
-        raise RuntimeError('Unknown axis %r, expected x, y or z' % axis)
+# def translate(_solid, step, padding, multiplier, axis):
+#     if 'x' == axis:
+#         items = 0, 3, 6
+#     elif 'y' == axis:
+#         items = 1, 4, 7
+#     elif 'z' == axis:
+#         items = 2, 5, 8
+#     else:
+#         raise RuntimeError('Unknown axis %r, expected x, y or z' % axis)
 
-    # _solid.points.shape == [:, ((x, y, z), (x, y, z), (x, y, z))]
-    _solid.points[:, items] += (step * multiplier) + (padding * multiplier)
+#     # _solid.points.shape == [:, ((x, y, z), (x, y, z), (x, y, z))]
+#     _solid.points[:, items] += (step * multiplier) + (padding * multiplier)
 
-def copy_obj(obj, dims, num_rows, num_cols, num_layers):
-    w, l, h = dims
-    copies = []
-    for layer in range(num_layers):
-        for row in range(num_rows):
-            for col in range(num_cols):
-                # skip the position where original being copied is
-                if row == 0 and col == 0 and layer == 0:
-                    continue
-                _copy = mesh.Mesh(obj.data.copy())
-                # pad the space between objects by 10% of the dimension being
-                # translated
-                if col != 0:
-                    translate(_copy, w, w / 10., col, 'x')
-                if row != 0:
-                    translate(_copy, l, l / 10., row, 'y')
-                if layer != 0:
-                    translate(_copy, h, h / 10., layer, 'z')
-                copies.append(_copy)
-    return copies
-
-# # Using an existing stl file:
-# main_body = mesh.Mesh.from_file('ball_and_socket_simplified_-_main_body.stl')
-
-# # rotate along Y
-# main_body.rotate([0.0, 0.5, 0.0], math.radians(90))
-
-# minx, maxx, miny, maxy, minz, maxz = find_mins_maxs(main_body)
-# w1 = maxx - minx
-# l1 = maxy - miny
-# h1 = maxz - minz
-# copies = copy_obj(main_body, (w1, l1, h1), 2, 2, 1)
-
-# # I wanted to add another related STL to the final STL
-# twist_lock = mesh.Mesh.from_file('ball_and_socket_simplified_-_twist_lock.stl')
-# minx, maxx, miny, maxy, minz, maxz = find_mins_maxs(twist_lock)
-# w2 = maxx - minx
-# l2 = maxy - miny
-# h2 = maxz - minz
-# translate(twist_lock, w1, w1 / 10., 3, 'x')
-# copies2 = copy_obj(twist_lock, (w2, l2, h2), 2, 2, 1)
-# combined = mesh.Mesh(numpy.concatenate([main_body.data, twist_lock.data] +
-#                                     [copy.data for copy in copies] +
-#                                     [copy.data for copy in copies2]))
-
-# combined.save('combined.stl', mode=stl.Mode.ASCII)  # save as ASCII
+# def copy_obj(obj, dims, num_rows, num_cols, num_layers):
+#     w, l, h = dims
+#     copies = []
+#     for layer in range(num_layers):
+#         for row in range(num_rows):
+#             for col in range(num_cols):
+#                 # skip the position where original being copied is
+#                 if row == 0 and col == 0 and layer == 0:
+#                     continue
+#                 _copy = mesh.Mesh(obj.data.copy())
+#                 # pad the space between objects by 10% of the dimension being
+#                 # translated
+#                 if col != 0:
+#                     translate(_copy, w, w / 10., col, 'x')
+#                 if row != 0:
+#                     translate(_copy, l, l / 10., row, 'y')
+#                 if layer != 0:
+#                     translate(_copy, h, h / 10., layer, 'z')
+#                 copies.append(_copy)
+#     return copies
 
 def wheelcase_FitnessFunc(pop):
     # os.system('. /usr/local/stella/OpenFOAM/OpenFOAM-2.4.0/bin/tools/RunFunctions')
@@ -99,7 +73,10 @@ def wheelcase_FitnessFunc(pop):
     # TODO: adapt Fitnessfunction for wheelcase
     params_left = FFDParameters()
     params_right = FFDParameters()
-    stl_handler = StlHandler()
+
+    stl_handler_left = StlHandler()
+    stl_handler_right = StlHandler()
+
     params_left.read_parameters(filename='domain/wheelcase/ffd/ffd_config_left.prm') # Dummy config file
     params_right.read_parameters(filename='domain/wheelcase/ffd/ffd_config_right.prm')
     # print(pop)
@@ -116,35 +93,130 @@ def wheelcase_FitnessFunc(pop):
         # print("sample")
         # print(sample)
         mu_x = []
+        mu_x_right = []
         mu_y = []
-        mu_y_neg = []
+        mu_y_right = []
         mu_z = []
+        mu_z_right = []
+
         x = sample.iloc[:12].to_numpy().reshape((6,2))
+
         mu_x.append(x[0:2])
         mu_x.append(x[2:4])
         mu_x.append(x[4:6])
         # print(mu_x)
+        print(mu_x)
         params_left.array_mu_x = mu_x
-        params_right.array_mu_x = mu_x
+
+        # for right side: different coords
+        # Reihenfolge
+        # 2,3,0,1,6,7,4,5,10,11,8,9
+
+        tmp_list = []
+        tmp_list.append([x[1,0],x[1,1]])
+        tmp_list.append([x[0,0],x[0,1]])
+        mu_x_right.append(tmp_list.copy())
+        del tmp_list[:]
+        tmp_list.append([x[3,0],x[3,1]])
+        tmp_list.append([x[2,0],x[2,1]])
+        mu_x_right.append(tmp_list.copy())
+        del tmp_list[:]
+        tmp_list.append([x[5,0],x[5,1]])
+        tmp_list.append([x[4,0],x[4,1]])
+        mu_x_right.append(tmp_list.copy())
+        del tmp_list[:]
+
+        # mu_x_right.append([x[1,0],x[1,1]]) # 2
+        # # mu_x_right.append() # 3
+        # mu_x_right.append([x[0,0],x[0,1]]) # 0
+        # # mu_x_right.append() # 1
+        # mu_x_right.append([x[3,0],x[3,1]]) # 6
+        # # mu_x_right.append() # 7
+        # mu_x_right.append([x[2,0],x[2,1]]) # 4
+        # # mu_x_right.append() # 5
+        # mu_x_right.append([x[5,0],x[5,1]]) # 10
+        # # mu_x_right.append() # 11
+        # mu_x_right.append([x[4,0],x[4,1]]) # 8
+        # # mu_x_right.append() # 9
+        print(mu_x_right)
+        params_right.array_mu_x = mu_x_right
+
 
         y = sample.iloc[12:24].to_numpy().reshape((6,2))
         mu_y.append(y[0:2])
         mu_y.append(y[2:4])
         mu_y.append(y[4:6])
-        mu_y_neg.append(-y[0:2])
-        mu_y_neg.append(-y[2:4])
-        mu_y_neg.append(-y[4:6])
+        print(mu_y)
+        # mu_y_neg.append(-y[0:2])
+        # mu_y_neg.append(-y[2:4])
+        # mu_y_neg.append(-y[4:6])
         # print(mu_y)
         params_left.array_mu_y = mu_y
-        params_right.array_mu_y = mu_y_neg
+
+        tmp_list.append([-y[1,0],-y[1,1]])
+        tmp_list.append([-y[0,0],-y[0,1]])
+        mu_y_right.append(tmp_list.copy())
+        del tmp_list[:]
+        tmp_list.append([-y[3,0],-y[3,1]])
+        tmp_list.append([-y[2,0],-y[2,1]])
+        mu_y_right.append(tmp_list.copy())
+        del tmp_list[:]
+        tmp_list.append([-y[5,0],-y[5,1]])
+        tmp_list.append([-y[4,0],-y[4,1]])
+        mu_y_right.append(tmp_list.copy())
+        del tmp_list[:]
+
+        # mu_y_right.append([-y[1,0],-y[1,1]]) # 2
+        # # mu_y_right.append() # 3
+        # mu_y_right.append([-y[0,0],-y[0,1]]) # 0
+        # # mu_y_right.append() # 1
+        # mu_y_right.append([-y[3,0],-y[3,1]]) # 6
+        # # mu_y_right.append() # 7
+        # mu_y_right.append([-y[2,0],-y[2,1]]) # 4
+        # # mu_y_right.append() # 5
+        # mu_y_right.append([-y[5,0],-y[5,1]]) # 10
+        # # mu_y_right.append() # 11
+        # mu_y_right.append([-y[4,0],-y[4,1]]) # 8
+        # # mu_y_right.append() # 9
+        print(mu_y_right)
+        params_right.array_mu_y = mu_y_right
+
 
         z = sample.iloc[24:36].to_numpy().reshape((6,2))
         mu_z.append(z[0:2])
         mu_z.append(z[2:4])
         mu_z.append(z[4:6])
         # print(mu_z)
+        print(mu_z)
         params_left.array_mu_z = mu_z
-        params_right.array_mu_z = mu_z
+
+        tmp_list.append([z[1,0],z[1,1]])
+        tmp_list.append([z[0,0],z[0,1]])
+        mu_z_right.append(tmp_list.copy())
+        del tmp_list[:]
+        tmp_list.append([z[3,0],z[3,1]])
+        tmp_list.append([z[2,0],z[2,1]])
+        mu_z_right.append(tmp_list.copy())
+        del tmp_list[:]
+        tmp_list.append([z[5,0],z[5,1]])
+        tmp_list.append([z[4,0],z[4,1]])
+        mu_z_right.append(tmp_list.copy())
+        del tmp_list[:]
+
+        # mu_z_right.append([z[1,0],z[1,1]]) # 2
+        # # mu_z_right.append() # 3
+        # mu_z_right.append([z[0,0],z[0,1]]) # 0
+        # # mu_z_right.append() # 1
+        # mu_z_right.append([z[3,0],z[3,1]]) # 6
+        # # mu_z_right.append() # 7
+        # mu_z_right.append([z[2,0],z[2,1]]) # 4
+        # # mu_z_right.append() # 5
+        # mu_z_right.append([z[5,0],z[5,1]]) # 10
+        # # mu_z_right.append() # 11
+        # mu_z_right.append([z[4,0],z[4,1]]) # 8
+        # # mu_z_right.append() # 9
+        print(mu_z_right)
+        params_right.array_mu_z = mu_z_right
         # print(x[0:2])
         # mu_x.append([x[0:2]])
         # mu_x.append([x[2:4]])
@@ -160,8 +232,8 @@ def wheelcase_FitnessFunc(pop):
 
     # Create wheelcase stl based on each config file
     for j in range(len(pop)):
-        mesh_points_left = stl_handler.parse(filename='domain/wheelcase/ffd/wheelcase_turned_left.stl') # Base stl
-        mesh_points_right = stl_handler.parse(filename='domain/wheelcase/ffd/wheelcase_turned_right.stl')
+        mesh_points_left = stl_handler_left.parse(filename='domain/wheelcase/ffd/wheelcase_turned_left.stl') # Base stl
+        mesh_points_right = stl_handler_right.parse(filename='domain/wheelcase/ffd/wheelcase_turned_right.stl')
         params_left.read_parameters(filename='configs/ffd_config_left_'+str(j)+'.prm')
         params_right.read_parameters(filename='configs/ffd_config_right_'+str(j)+'.prm')
 
@@ -172,10 +244,10 @@ def wheelcase_FitnessFunc(pop):
         free_form_right.perform()
 
         new_mesh_points_left = free_form_left.modified_mesh_points # Save new mesh of wheelcase
-        stl_handler.write(new_mesh_points_left, 'stls/wheelcase_left_'+str(j)+'.stl') # save it in stls folder
+        stl_handler_left.write(new_mesh_points_left, 'stls/wheelcase_left_'+str(j)+'.stl') # save it in stls folder
 
         new_mesh_points_right = free_form_right.modified_mesh_points
-        stl_handler.write(new_mesh_points_right, 'stls/wheelcase_right_'+str(j)+'.stl')
+        stl_handler_right.write(new_mesh_points_right, 'stls/wheelcase_right_'+str(j)+'.stl')
 
         # STLs zusammenfuegen - rechts und links
         left = mesh.Mesh.from_file('stls/wheelcase_left_'+str(j)+'.stl')
