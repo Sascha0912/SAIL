@@ -11,60 +11,6 @@ from stl import mesh
 # import subprocess
 import os
 
-# def find_mins_maxs(obj):
-#     minx = maxx = miny = maxy = minz = maxz = None
-#     for p in obj.points:
-#         # p contains (x, y, z)
-#         if minx is None:
-#             minx = p[stl.Dimension.X]
-#             maxx = p[stl.Dimension.X]
-#             miny = p[stl.Dimension.Y]
-#             maxy = p[stl.Dimension.Y]
-#             minz = p[stl.Dimension.Z]
-#             maxz = p[stl.Dimension.Z]
-#         else:
-#             maxx = max(p[stl.Dimension.X], maxx)
-#             minx = min(p[stl.Dimension.X], minx)
-#             maxy = max(p[stl.Dimension.Y], maxy)
-#             miny = min(p[stl.Dimension.Y], miny)
-#             maxz = max(p[stl.Dimension.Z], maxz)
-#             minz = min(p[stl.Dimension.Z], minz)
-#     return minx, maxx, miny, maxy, minz, maxz
-
-# def translate(_solid, step, padding, multiplier, axis):
-#     if 'x' == axis:
-#         items = 0, 3, 6
-#     elif 'y' == axis:
-#         items = 1, 4, 7
-#     elif 'z' == axis:
-#         items = 2, 5, 8
-#     else:
-#         raise RuntimeError('Unknown axis %r, expected x, y or z' % axis)
-
-#     # _solid.points.shape == [:, ((x, y, z), (x, y, z), (x, y, z))]
-#     _solid.points[:, items] += (step * multiplier) + (padding * multiplier)
-
-# def copy_obj(obj, dims, num_rows, num_cols, num_layers):
-#     w, l, h = dims
-#     copies = []
-#     for layer in range(num_layers):
-#         for row in range(num_rows):
-#             for col in range(num_cols):
-#                 # skip the position where original being copied is
-#                 if row == 0 and col == 0 and layer == 0:
-#                     continue
-#                 _copy = mesh.Mesh(obj.data.copy())
-#                 # pad the space between objects by 10% of the dimension being
-#                 # translated
-#                 if col != 0:
-#                     translate(_copy, w, w / 10., col, 'x')
-#                 if row != 0:
-#                     translate(_copy, l, l / 10., row, 'y')
-#                 if layer != 0:
-#                     translate(_copy, h, h / 10., layer, 'z')
-#                 copies.append(_copy)
-#     return copies
-
 def wheelcase_FitnessFunc(pop):
     # os.system('. /usr/local/stella/OpenFOAM/OpenFOAM-2.4.0/bin/tools/RunFunctions')
     fitness_values = []
@@ -87,11 +33,7 @@ def wheelcase_FitnessFunc(pop):
     for i in range(len(pop)):
         # Change displacements (weights) of each sample
         sample = pop.iloc[i] # get sample (1x36)
-        # f = open("domain/wheelcase/debug.txt","a+")
-        # f.write()
-        # np.savetxt('domain/wheelcase/debug.txt',sample)
-        # print("sample")
-        # print(sample)
+
         mu_x = []
         mu_x_right = []
         mu_y = []
@@ -105,7 +47,7 @@ def wheelcase_FitnessFunc(pop):
         mu_x.append(x[2:4])
         mu_x.append(x[4:6])
         # print(mu_x)
-        print(mu_x)
+        # print(mu_x)
         params_left.array_mu_x = mu_x
 
         # for right side: different coords
@@ -126,19 +68,6 @@ def wheelcase_FitnessFunc(pop):
         mu_x_right.append(tmp_list.copy())
         del tmp_list[:]
 
-        # mu_x_right.append([x[1,0],x[1,1]]) # 2
-        # # mu_x_right.append() # 3
-        # mu_x_right.append([x[0,0],x[0,1]]) # 0
-        # # mu_x_right.append() # 1
-        # mu_x_right.append([x[3,0],x[3,1]]) # 6
-        # # mu_x_right.append() # 7
-        # mu_x_right.append([x[2,0],x[2,1]]) # 4
-        # # mu_x_right.append() # 5
-        # mu_x_right.append([x[5,0],x[5,1]]) # 10
-        # # mu_x_right.append() # 11
-        # mu_x_right.append([x[4,0],x[4,1]]) # 8
-        # # mu_x_right.append() # 9
-        print(mu_x_right)
         params_right.array_mu_x = mu_x_right
 
 
@@ -146,11 +75,7 @@ def wheelcase_FitnessFunc(pop):
         mu_y.append(y[0:2])
         mu_y.append(y[2:4])
         mu_y.append(y[4:6])
-        print(mu_y)
-        # mu_y_neg.append(-y[0:2])
-        # mu_y_neg.append(-y[2:4])
-        # mu_y_neg.append(-y[4:6])
-        # print(mu_y)
+
         params_left.array_mu_y = mu_y
 
         tmp_list.append([-y[1,0],-y[1,1]])
@@ -166,19 +91,6 @@ def wheelcase_FitnessFunc(pop):
         mu_y_right.append(tmp_list.copy())
         del tmp_list[:]
 
-        # mu_y_right.append([-y[1,0],-y[1,1]]) # 2
-        # # mu_y_right.append() # 3
-        # mu_y_right.append([-y[0,0],-y[0,1]]) # 0
-        # # mu_y_right.append() # 1
-        # mu_y_right.append([-y[3,0],-y[3,1]]) # 6
-        # # mu_y_right.append() # 7
-        # mu_y_right.append([-y[2,0],-y[2,1]]) # 4
-        # # mu_y_right.append() # 5
-        # mu_y_right.append([-y[5,0],-y[5,1]]) # 10
-        # # mu_y_right.append() # 11
-        # mu_y_right.append([-y[4,0],-y[4,1]]) # 8
-        # # mu_y_right.append() # 9
-        print(mu_y_right)
         params_right.array_mu_y = mu_y_right
 
 
@@ -186,8 +98,7 @@ def wheelcase_FitnessFunc(pop):
         mu_z.append(z[0:2])
         mu_z.append(z[2:4])
         mu_z.append(z[4:6])
-        # print(mu_z)
-        print(mu_z)
+
         params_left.array_mu_z = mu_z
 
         tmp_list.append([z[1,0],z[1,1]])
@@ -203,29 +114,8 @@ def wheelcase_FitnessFunc(pop):
         mu_z_right.append(tmp_list.copy())
         del tmp_list[:]
 
-        # mu_z_right.append([z[1,0],z[1,1]]) # 2
-        # # mu_z_right.append() # 3
-        # mu_z_right.append([z[0,0],z[0,1]]) # 0
-        # # mu_z_right.append() # 1
-        # mu_z_right.append([z[3,0],z[3,1]]) # 6
-        # # mu_z_right.append() # 7
-        # mu_z_right.append([z[2,0],z[2,1]]) # 4
-        # # mu_z_right.append() # 5
-        # mu_z_right.append([z[5,0],z[5,1]]) # 10
-        # # mu_z_right.append() # 11
-        # mu_z_right.append([z[4,0],z[4,1]]) # 8
-        # # mu_z_right.append() # 9
-        print(mu_z_right)
         params_right.array_mu_z = mu_z_right
-        # print(x[0:2])
-        # mu_x.append([x[0:2]])
-        # mu_x.append([x[2:4]])
-        # mu_x.append([x[4:6]])
-        # params.array_mu_x = mu_x
-        # params.array_mu_y = sample.iloc[12:24].to_numpy().reshape((6,2))
-        # params.array_mu_z = sample.iloc[24:36].to_numpy().reshape((6,2))
-        # print("mu_x")
-        # print(params.array_mu_x)
+
         params_left.write_parameters(filename='configs/ffd_config_left_'+str(i)+'.prm')
         params_right.write_parameters(filename='configs/ffd_config_right_'+str(i)+'.prm')
     print("config files generated")
@@ -267,15 +157,16 @@ def wheelcase_FitnessFunc(pop):
         copy_cmd = "cp stls/wheelcase_"+str(k)+".stl domain/wheelcase/hpc1_velo_changed/constant/triSurface"
         
         rename_cmd = "mv domain/wheelcase/hpc1_velo_changed/constant/triSurface/wheelcase_"+str(k)+".stl domain/wheelcase/hpc1_velo_changed/constant/triSurface/wheelcase_turned.stl"
-        # source_of240_cmd = "of240" # check if this alias exist
-        # source_of240_cmd = "source ~/OpenFOAM/OpenFOAM-2.4.0/etc/bashrc WM_NCOMPPROCS=6"
+
         openfoam_pre_cmd = "surfaceFeatureExtract -case " + str(case_folder)
-        # cd_cmd = "cd " + str(case_folder)
-        blockMesh_cmd = "blockMesh -case " + home_dir + "SAIL/domain/wheelcase/hpc1_velo_changed"#-case " + str(case_folder)  + " -dict domain/wheelcase/hpc1_velo_changed/constant/polyMesh/blockMeshDict"
-        # decompose_cmd = "runApplication decomposePar -case " + home_dir + "SAIL/domain/wheelcase/hpc1_velo_changed"
+
+        blockMesh_cmd = "blockMesh -case " + home_dir + "SAIL/domain/wheelcase/hpc1_velo_changed" #-case " + str(case_folder)  + " -dict domain/wheelcase/hpc1_velo_changed/constant/polyMesh/blockMeshDict"
+
         snappy_cmd = "snappyHexMesh -case " + str(case_folder) + " -overwrite"
+
         # copy all the contents of 0.org to 0 folder (should exist at this point)
         copy_0org_cmd = "cp -a domain/wheelcase/hpc1_velo_changed/0.org/. domain/wheelcase/hpc1_velo_changed/0"
+
         # non parallel computation (TODO: look at Allrun for parallel run functions)
         openfoam_cmd = "patchSummary -case " + str(case_folder)
         potential_cmd = "potentialFoam -case " + str(case_folder)
@@ -285,42 +176,41 @@ def wheelcase_FitnessFunc(pop):
         # recPar_cmd = "runApplication reconstructPar -latestTime -case " + home_dir + "SAIL/domain/wheelcase/hpc1_velo_changed"
         # postprocess_cmd = ""
         # print(copy_cmd)
-        os.system(copy_cmd)
+        print("cp: " + str(os.system(copy_cmd)))
         print("cp executed")
         # print(rename_cmd) # 105 - 165
-        os.system(rename_cmd)
+        print("renaming: " + str(os.system(rename_cmd)))
         print("renaming executed")
         # # testen ob case ausführbar ist
         # # os.system(source_of240_cmd)
         # print(openfoam_pre_cmd)
-        os.system(openfoam_pre_cmd)
+        print("surfaceFeatureExtract: " + str(os.system(openfoam_pre_cmd)))
         print("surfaceFaetureExtract executed")
         
         # # print(cd_cmd)
         # # os.system(cd_cmd)
         # print(blockMesh_cmd)
-        os.system(blockMesh_cmd)
+        print("blockMesh: " + str(os.system(blockMesh_cmd)))
         print("blockMesh executed")
         # exit()
         # # print(decompose_cmd)
         # # os.system(decompose_cmd)
 
         # print(snappy_cmd)
-        os.system(snappy_cmd)
+        print("snappy: " + str(os.system(snappy_cmd)))
         print("snappy executed")
         
-
         # print(copy_0org_cmd)
-        os.system(copy_0org_cmd)
+        print("copying: " + str(os.system(copy_0org_cmd)))
         print("copying 0.org files to 0 folder")
         # print(openfoam_cmd)
-        os.system(openfoam_cmd)
+        print("patchSummary: " + str(os.system(openfoam_cmd)))
         print("patchSummary executed")
         # print(potential_cmd)
-        os.system(potential_cmd)
+        print("potentialFoam: " + str(os.system(potential_cmd)))
         print("potentialFoam executed")
         # print(simple_cmd)
-        os.system(simple_cmd)
+        print("simpleFoam: " + str(os.system(simple_cmd)))
         print("simpleFoam executed")
 
         # # print(recParMesh_cmd)

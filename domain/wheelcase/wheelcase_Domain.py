@@ -26,8 +26,8 @@ def wheelcase_Domain():
             # Feature Space
             self.featureRes    = [25, 25]
             self.nDims         = len(self.featureRes)
-            self.featureMin    = [-0.2, -0.2]
-            self.featureMax    = [0.2, 0.2]
+            self.featureMin    = [-1, -1]
+            self.featureMax    = [1, 1]
             self.featureLabels = ["Z", "X"] # [X label, Y label]
 
             # GP Models

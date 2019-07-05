@@ -38,8 +38,8 @@ d = wheelcase_Domain()
 # d = velo_Domain()
 p = defaultParamSet()
 
-p.nInitialSamples = 8
-p.nTotalSamples   = 30
+p.nInitialSamples = 2
+p.nTotalSamples   = 5
 p.nChildren       = 2**5 # 2**5
 p.nGens           = 2**6 # Illumination Generations 2**6
 
