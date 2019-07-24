@@ -6,12 +6,13 @@ start=`date +%s`
 # Source tutorial run functions
 . $WM_PROJECT_DIR/bin/tools/RunFunctions
 
-runApplication surfaceFeatureExtract
+runApplication surfaceFeatureExtract -case /home/sascha/SAIL/domain/wheelcase/hpc1_velo_changed
 
-runApplication blockMesh
+runApplication blockMesh -case /home/sascha/SAIL/domain/wheelcase/hpc1_velo_changed
 
-runApplication decomposePar
-runParallel snappyHexMesh 32 -overwrite
+runApplication decomposePar -case /home/sascha/SAIL/domain/wheelcase/hpc1_velo_changed
+runParallel snappyHexMesh 4 -overwrite -case /home/sascha/SAIL/domain/wheelcase/hpc1_velo_changed
+# foamJob -parallel -screen snappyHexMesh
 
 meshTime=`date +%s` 
 echo "$((meshTime-start))" >> mesh.timing
@@ -25,15 +26,15 @@ ls -d processor* | xargs -I {} cp -r 0.org ./{}/0
 
 cfdStart=`date +%s`
 
-runParallel patchSummary 32
-runParallel potentialFoam 32
-runParallel $(getApplication) 32
+runParallel patchSummary 4 -case /home/sascha/SAIL/domain/wheelcase/hpc1_velo_changed
+runParallel potentialFoam 4 -case /home/sascha/SAIL/domain/wheelcase/hpc1_velo_changed
+runParallel $(getApplication) 4 -case /home/sascha/SAIL/domain/wheelcase/hpc1_velo_changed
 
 cfdEnd=`date +%s` 
 echo "$((cfdEnd-cfdStart))" >> cfd.timing
 
-runApplication reconstructParMesh -constant
-runApplication reconstructPar -latestTime
+runApplication reconstructParMesh -constant -case /home/sascha/SAIL/domain/wheelcase/hpc1_velo_changed
+runApplication reconstructPar -latestTime -case /home/sascha/SAIL/domain/wheelcase/hpc1_velo_changed
 
 end=`date +%s`
 echo "$((end-start))" >> all.timing

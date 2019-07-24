@@ -41,7 +41,7 @@ p = defaultParamSet()
 p.nInitialSamples = 2
 p.nTotalSamples   = 5
 p.nChildren       = 2**5 # 2**5
-p.nGens           = 2**6 # Illumination Generations 2**6
+p.nGens           = 2**8 # Illumination Generations 2**6
 
 p.data_mapEval    = False # produce intermediate prediction maps
 p.data_mapEvalMod = 50    # how often? (in samples)

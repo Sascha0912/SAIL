@@ -15,40 +15,40 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-8
+6
 (
     frontAndBack
     {
         type            patch;
         nFaces          320;
-        startFace       1662672;
+        startFace       248806;
     }
     inlet
     {
         type            patch;
         nFaces          64;
-        startFace       1662992;
+        startFace       249126;
     }
     outlet
     {
         type            patch;
         nFaces          64;
-        startFace       1663056;
+        startFace       249190;
     }
     lowerWall
     {
         type            wall;
         inGroups        1(wall);
-        nFaces          4086;
-        startFace       1663120;
+        nFaces          529;
+        startFace       249254;
     }
     upperWall
     {
         type            patch;
-        nFaces          160;
-        startFace       1667206;
+        nFaces          166;
+        startFace       249783;
     }
-    veloMain
+    allDef
     {
         type            wall;
         inGroups        
@@ -58,34 +58,8 @@ veloGroup
 wall
 )
 ;
-        nFaces          38230;
-        startFace       1667366;
-    }
-    veloTop
-    {
-        type            wall;
-        inGroups        
-2
-(
-veloGroup
-wall
-)
-;
-        nFaces          4587;
-        startFace       1705596;
-    }
-    veloWheelcase
-    {
-        type            wall;
-        inGroups        
-2
-(
-veloGroup
-wall
-)
-;
-        nFaces          40611;
-        startFace       1710183;
+        nFaces          19200;
+        startFace       249949;
     }
 )
 

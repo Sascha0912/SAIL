@@ -19,15 +19,15 @@ def wheelcase_Domain():
             self.initialSampleSource = ""
 
             # Genotype to Phenotype Expression
-            self.dof     = 36 # Testing
+            self.dof     = 18 # only outer side will be deformed 2*3*3
             self.express = lambda x: wheelcaseRaeY(x)
             self.base    = loadBaseWheelcase(self.express, self.dof)
 
             # Feature Space
             self.featureRes    = [25, 25]
             self.nDims         = len(self.featureRes)
-            self.featureMin    = [-1, -1]
-            self.featureMax    = [1, 1]
+            self.featureMin    = [-0.2, -0.2]
+            self.featureMax    = [0.2, 0.2]
             self.featureLabels = ["Z", "X"] # [X label, Y label]
 
             # GP Models
