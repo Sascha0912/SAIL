@@ -19,7 +19,7 @@ def wheelcase_Domain():
             self.initialSampleSource = ""
 
             # Genotype to Phenotype Expression
-            self.dof     = 18 # only outer side will be deformed 2*3*3
+            self.dof     = 6 # only outer side will be deformed 2*3*3 # only middle of one side will be deformed 2*3
             self.express = lambda x: wheelcaseRaeY(x)
             self.base    = loadBaseWheelcase(self.express, self.dof)
 

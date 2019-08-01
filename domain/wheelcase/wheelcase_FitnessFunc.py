@@ -45,21 +45,36 @@ def wheelcase_FitnessFunc(pop):
 
         tmp_list = []
 
-        x = sample.iloc[:6].to_numpy().reshape((3,2))
+        x = sample.iloc[:2].to_numpy().reshape((1,2))
 
-        # for 18 genomes
+        # for 6 genomes
+        tmp_list.append([0,0])
+        tmp_list.append([0,0])
+        mu_x.append(tmp_list.copy())
+        del tmp_list[:]
         tmp_list.append([0,0])
         tmp_list.append([x[0,0],x[0,1]])
         mu_x.append(tmp_list.copy())
         del tmp_list[:]
         tmp_list.append([0,0])
-        tmp_list.append([x[1,0],x[1,1]])
-        mu_x.append(tmp_list.copy())
-        del tmp_list[:]
         tmp_list.append([0,0])
-        tmp_list.append([x[2,0],x[2,1]])
         mu_x.append(tmp_list.copy())
         del tmp_list[:]
+
+
+        # for 18 genomes
+        # tmp_list.append([0,0])
+        # tmp_list.append([x[0,0],x[0,1]])
+        # mu_x.append(tmp_list.copy())
+        # del tmp_list[:]
+        # tmp_list.append([0,0])
+        # tmp_list.append([x[1,0],x[1,1]])
+        # mu_x.append(tmp_list.copy())
+        # del tmp_list[:]
+        # tmp_list.append([0,0])
+        # tmp_list.append([x[2,0],x[2,1]])
+        # mu_x.append(tmp_list.copy())
+        # del tmp_list[:]
 
         # for 36 genomes
         # mu_x.append(x[0:2])
@@ -87,19 +102,34 @@ def wheelcase_FitnessFunc(pop):
         # mu_x_right.append(tmp_list.copy())
         # del tmp_list[:]
 
-        # for 18 genomes
+        # for 6 genomes
+        tmp_list.append([0,0])
+        tmp_list.append([0,0])
+        mu_x_right.append(tmp_list.copy())
+        del tmp_list[:]
         tmp_list.append([x[0,0],x[0,1]])
         tmp_list.append([0,0])
         mu_x_right.append(tmp_list.copy())
         del tmp_list[:]
-        tmp_list.append([x[1,0],x[1,1]])
+        tmp_list.append([0,0])
         tmp_list.append([0,0])
         mu_x_right.append(tmp_list.copy())
         del tmp_list[:]
-        tmp_list.append([x[2,0],x[2,1]])
-        tmp_list.append([0,0])
-        mu_x_right.append(tmp_list.copy())
-        del tmp_list[:]
+
+
+        # for 18 genomes
+        # tmp_list.append([x[0,0],x[0,1]])
+        # tmp_list.append([0,0])
+        # mu_x_right.append(tmp_list.copy())
+        # del tmp_list[:]
+        # tmp_list.append([x[1,0],x[1,1]])
+        # tmp_list.append([0,0])
+        # mu_x_right.append(tmp_list.copy())
+        # del tmp_list[:]
+        # tmp_list.append([x[2,0],x[2,1]])
+        # tmp_list.append([0,0])
+        # mu_x_right.append(tmp_list.copy())
+        # del tmp_list[:]
 
 
 
@@ -107,80 +137,140 @@ def wheelcase_FitnessFunc(pop):
         params_right.array_mu_x = mu_x_right
 
 
-        y = sample.iloc[6:12].to_numpy().reshape((3,2))
+        y = sample.iloc[2:4].to_numpy().reshape((1,2))
 
         # for 36 genomes
         # mu_y.append(y[0:2])
         # mu_y.append(y[2:4])
         # mu_y.append(y[4:6])
 
-        # for 18 genomes
+
+        # for 6 genomes
+        tmp_list.append([0,0])
+        tmp_list.append([0,0])
+        mu_y.append(tmp_list.copy())
+        del tmp_list[:]
         tmp_list.append([0,0])
         tmp_list.append([y[0,0],y[0,1]])
         mu_y.append(tmp_list.copy())
         del tmp_list[:]
         tmp_list.append([0,0])
-        tmp_list.append([y[1,0],y[1,1]])
-        mu_y.append(tmp_list.copy())
-        del tmp_list[:]
         tmp_list.append([0,0])
-        tmp_list.append([y[2,0],y[2,1]])
         mu_y.append(tmp_list.copy())
         del tmp_list[:]
+
+
+        # for 18 genomes
+        # tmp_list.append([0,0])
+        # tmp_list.append([y[0,0],y[0,1]])
+        # mu_y.append(tmp_list.copy())
+        # del tmp_list[:]
+        # tmp_list.append([0,0])
+        # tmp_list.append([y[1,0],y[1,1]])
+        # mu_y.append(tmp_list.copy())
+        # del tmp_list[:]
+        # tmp_list.append([0,0])
+        # tmp_list.append([y[2,0],y[2,1]])
+        # mu_y.append(tmp_list.copy())
+        # del tmp_list[:]
 
         params_left.array_mu_y = mu_y
 
-        # for 18 genomes
+        # for 6 genomes
+        tmp_list.append([0,0])
+        tmp_list.append([0,0])
+        mu_y_right.append(tmp_list.copy())
+        del tmp_list[:]
         tmp_list.append([-y[0,0],-y[0,1]])
         tmp_list.append([0,0])
         mu_y_right.append(tmp_list.copy())
         del tmp_list[:]
-        tmp_list.append([-y[1,0],-y[1,1]])
+        tmp_list.append([0,0])
         tmp_list.append([0,0])
         mu_y_right.append(tmp_list.copy())
         del tmp_list[:]
-        tmp_list.append([-y[2,0],-y[2,1]])
-        tmp_list.append([0,0])
-        mu_y_right.append(tmp_list.copy())
-        del tmp_list[:]
+
+        # for 18 genomes
+        # tmp_list.append([-y[0,0],-y[0,1]])
+        # tmp_list.append([0,0])
+        # mu_y_right.append(tmp_list.copy())
+        # del tmp_list[:]
+        # tmp_list.append([-y[1,0],-y[1,1]])
+        # tmp_list.append([0,0])
+        # mu_y_right.append(tmp_list.copy())
+        # del tmp_list[:]
+        # tmp_list.append([-y[2,0],-y[2,1]])
+        # tmp_list.append([0,0])
+        # mu_y_right.append(tmp_list.copy())
+        # del tmp_list[:]
 
         params_right.array_mu_y = mu_y_right
 
 
-        z = sample.iloc[12:18].to_numpy().reshape((3,2))
+        z = sample.iloc[4:6].to_numpy().reshape((1,2))
         # mu_z.append(z[0:2])
         # mu_z.append(z[2:4])
         # mu_z.append(z[4:6])
 
+
+        # for 6 genomes
+        tmp_list.append([0,0])
+        tmp_list.append([0,0])
+        mu_z.append(tmp_list.copy())
+        del tmp_list[:]
         tmp_list.append([0,0])
         tmp_list.append([z[0,0],z[0,1]])
         mu_z.append(tmp_list.copy())
         del tmp_list[:]
         tmp_list.append([0,0])
-        tmp_list.append([z[1,0],z[1,1]])
-        mu_z.append(tmp_list.copy())
-        del tmp_list[:]
         tmp_list.append([0,0])
-        tmp_list.append([z[2,0],z[2,1]])
         mu_z.append(tmp_list.copy())
         del tmp_list[:]
+
+        # for 18 genomes
+        # tmp_list.append([0,0])
+        # tmp_list.append([z[0,0],z[0,1]])
+        # mu_z.append(tmp_list.copy())
+        # del tmp_list[:]
+        # tmp_list.append([0,0])
+        # tmp_list.append([z[1,0],z[1,1]])
+        # mu_z.append(tmp_list.copy())
+        # del tmp_list[:]
+        # tmp_list.append([0,0])
+        # tmp_list.append([z[2,0],z[2,1]])
+        # mu_z.append(tmp_list.copy())
+        # del tmp_list[:]
 
 
         params_left.array_mu_z = mu_z
 
-        # for 18 genomes
+        # for 6 genomes
+        tmp_list.append([0,0])
+        tmp_list.append([0,0])
+        mu_z_right.append(tmp_list.copy())
+        del tmp_list[:]
         tmp_list.append([z[0,0],z[0,1]])
         tmp_list.append([0,0])
         mu_z_right.append(tmp_list.copy())
         del tmp_list[:]
-        tmp_list.append([z[1,0],z[1,1]])
+        tmp_list.append([0,0])
         tmp_list.append([0,0])
         mu_z_right.append(tmp_list.copy())
         del tmp_list[:]
-        tmp_list.append([z[2,0],z[2,1]])
-        tmp_list.append([0,0])
-        mu_z_right.append(tmp_list.copy())
-        del tmp_list[:]
+
+        # for 18 genomes
+        # tmp_list.append([z[0,0],z[0,1]])
+        # tmp_list.append([0,0])
+        # mu_z_right.append(tmp_list.copy())
+        # del tmp_list[:]
+        # tmp_list.append([z[1,0],z[1,1]])
+        # tmp_list.append([0,0])
+        # mu_z_right.append(tmp_list.copy())
+        # del tmp_list[:]
+        # tmp_list.append([z[2,0],z[2,1]])
+        # tmp_list.append([0,0])
+        # mu_z_right.append(tmp_list.copy())
+        # del tmp_list[:]
 
         params_right.array_mu_z = mu_z_right
 

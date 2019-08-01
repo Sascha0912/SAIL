@@ -200,7 +200,7 @@ castellatedMeshControls
             //mode inside;
             //levels ((1E15 6));
             mode distance;
-            levels ( (2.0 2) );
+            levels ( (0.1 6) (0.5 4) (1.0 2) );
             //levels ( (0.03 8) (0.06 6) (0.1 5) (0.3 4) (2.0 2)); // levels must be ordered nearest first
             //levels ( (0.1 6) (0.3 4) (2.0 2) );
         }

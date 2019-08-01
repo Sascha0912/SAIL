@@ -11,7 +11,10 @@ runApplication surfaceFeatureExtract -case /home/sascha/SAIL/domain/wheelcase/hp
 runApplication blockMesh -case /home/sascha/SAIL/domain/wheelcase/hpc1_velo_changed
 
 runApplication decomposePar -case /home/sascha/SAIL/domain/wheelcase/hpc1_velo_changed
+start_snappy=$(date +%s)
 runParallel snappyHexMesh 4 -overwrite -case /home/sascha/SAIL/domain/wheelcase/hpc1_velo_changed
+end_snappy=$(date +%s)
+echo "SnappyHexMesh took $((end_snappy-start_snappy)) seconds to complete"
 # foamJob -parallel -screen snappyHexMesh
 
 meshTime=`date +%s` 
@@ -28,7 +31,10 @@ cfdStart=`date +%s`
 
 runParallel patchSummary 4 -case /home/sascha/SAIL/domain/wheelcase/hpc1_velo_changed
 runParallel potentialFoam 4 -case /home/sascha/SAIL/domain/wheelcase/hpc1_velo_changed
+start_simple=$(date +%s)
 runParallel $(getApplication) 4 -case /home/sascha/SAIL/domain/wheelcase/hpc1_velo_changed
+end_simple=$(date +%s)
+echo "SimpleFoam took $((end_simple-start_simple)) seconds to complete"
 
 cfdEnd=`date +%s` 
 echo "$((cfdEnd-cfdStart))" >> cfd.timing
