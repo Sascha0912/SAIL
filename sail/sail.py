@@ -32,8 +32,15 @@ from pprint import pprint
 
 def sail(p,d): # domain and params
 
-    def scale(value):
-        return (value - 0)/(1-0)*(d.featureMax[0] - d.featureMin[0]) + d.featureMin[0]
+    # def scale(value):
+    #     # return (value - 0)/(1-0)*(0.2 - (-0.2)) + (-0.2) # DOMAINCHANGE
+    #     return (value - 0)/(1-0)*(4-0)+0
+
+    def scale1(value):
+        return (value - 0)/(1-0)*(4-0)+0 # DOMAINCHANGE
+
+    def scale2(value):
+        return (value - 0)/(1-0)*(2-0)+0 # DOMAINCHANGE
 
     # SOBOL settings (adjust also in initialSampling)
     skip     = 1000
@@ -52,9 +59,9 @@ def sail(p,d): # domain and params
         # print("p.nInitlasmaples")
         # print(p.nInitialSamples)
         observation, value = initialSampling(d,p.nInitialSamples)
-        # print("observation")
+        # print("DEBUG1: observation")
         # print(observation)
-        # print("value")
+        # print("DEBUG2: value")
         # print(value)
     else:
         np.load(d.initialSampleSource) # e.g. npz-File csv
@@ -133,12 +140,12 @@ def sail(p,d): # domain and params
         tstart = time.time()
 
         # Evaluate observation set with acquisition function
-        # print("observation")
+        # print("DEBUG3: observation")
         # print(observation)
         fitness, predValues = acqFunction(observation)
-        # print("fitness")
+        # print("DEBUG4: fitness")
         # print(fitness)
-        # print("predValues")
+        # print("DEBUG5: predValues")
         # print(predValues)
 
         # Place best samples in acquisition map
@@ -150,27 +157,35 @@ def sail(p,d): # domain and params
         # print(observation)
         # print("fitness")
         # print(fitness)
-        # print("obsMap")
+        # print("DEBUG6: obsMap")
         # print(obsMap)
         # print("d")
         # print(d)
         replaced, replacement, x = nicheCompete(observation, fitness, obsMap, d)
-        # print("replaced")
+        # print("DEBUG7: replaced")
         # print(replaced)
-        # print("replacement")
+        # print("DEBUG8: replacement")
         # print(replacement)
         # print("x")
         # print(x)
         obsMap = updateMap(replaced, replacement, obsMap, fitness, observation, predValues, d.extraMapValues)
-        # print("obsMap")
+        # print("DEBUG9: obsMap.genes")
         # print(obsMap[0].genes) # OK
         # exit()
 
         # Illuminate with MAP-Elites
+        # print("acqFunc")
+        # print(acqFunction)
+        # print("obsMap")
+        # print(obsMap)
+        # print("p")
+        # print(p)
+        # print("d")
+        # print(d)
         acqMap, percImp, h = mapElites(acqFunction, obsMap, p, d)
-        # print("acqMap")
+        # print("DEBUG10: acqMap")
         # print(acqMap)
-        # print("percImp")
+        # print("DEBUG11: percImp")
         # print(percImp)
         # print("h")
         # print(h)
@@ -231,7 +246,9 @@ def sail(p,d): # domain and params
             sobPoint = 1
 
             # TODO: ADDED: Scaling
-            sobSet = sobSet.applymap(scale)
+            # sobSet = sobSet.applymap(scale) # for wheelcase: first column (0 - 0.4) second column (0 0.2)
+            sobSet[0] = sobSet[0].apply(scale1)
+            sobSet[1] = sobSet[1].apply(scale2)
 
 
         # Choose new samples and evaluate them for new observations
@@ -242,12 +259,12 @@ def sail(p,d): # domain and params
         while nMissing > 0:
             # Evenly sample solutions from acquisition map
             newSampleRange = list(range(sobPoint-1, sobPoint + p.nAdditionalSamples-1))
-            # print("newSampleRange")
+            # print("DEBUG12: newSampleRange")
             # print(newSampleRange)
             x, binIndx = sobol2indx(sobSet, newSampleRange, d, acqMap.edges)
-            # print("binIndxAfter")
+            # print("DEBUG13: binIndxAfter")
             # print(binIndx)
-            # print("acqMap.genes")
+            # print("DEBUG14: acqMap.genes")
             # print(acqMap.genes)
 
             for iGenes in range(0,binIndx.shape[0]):
@@ -256,9 +273,9 @@ def sail(p,d): # domain and params
                     # indPool.at[iGenes,0] = acqMap.genes[0].iloc[binIndx.iloc[iGenes,0],binIndx.iloc[iGenes,1]]
                     # indPool.at[iGenes,1] = acqMap.genes[1].iloc[binIndx.iloc[iGenes,0],binIndx.iloc[iGenes,1]]
 
-            # print("indPool")
+            # print("DEBUG15: indPool")
             # print(indPool)
-            # print("observation")
+            # print("DEBUG16: observation")
             # print(observation)
 
             # for iGenes in range(0,binIndx.shape[0]):
@@ -271,7 +288,7 @@ def sail(p,d): # domain and params
             indPool = pd.DataFrame(data=list(ds1.difference(ds2)))
             indPool.dropna(inplace=True) # ok
             indPool.reset_index(drop=True, inplace=True)
-            # print("indPool after")
+            # print("DEBUG17: indPool after")
             # print(indPool)
 
 
@@ -282,13 +299,13 @@ def sail(p,d): # domain and params
             peFunction = lambda x: feval(d.preciseEvaluate, x, d) # returns nan if not converged
             # print("indPool")
             # print(indPool)
-            # print("peFunction")
+            # print("DEBUG18: peFunction")
             # print(peFunction)
             # print("nMissing")
             # print(nMissing)
 
             foundSample, foundValue, nMissing, x = getValidInds(indPool, peFunction, nMissing)
-            # print("foundSample")
+            # print("DEBUG19: foundSample")
             # print(foundSample)
             # print("newSample")
             # print(newSample)

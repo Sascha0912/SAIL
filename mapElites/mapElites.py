@@ -40,9 +40,21 @@ def mapElites(fitnessFunction, map, p, d):
             validChildren, x, nMissing, y = getValidInds(indPool, validFunction, nMissing)
             children = children.append(validChildren)
 
+        # print("children")
+        # print(children)
+        # print("fitness")
+        # print(fitness)
         fitness, values = fitnessFunction(children)
 
         # Add Children to map
+        # print("children")
+        # print(children)
+        # print("fitness")
+        # print(fitness)
+        # print("map")
+        # print(map)
+        # print("d")
+        # print(d)
         replaced, replacement, x = nicheCompete(children, fitness, map, d)
         map = updateMap(replaced, replacement, map, fitness, children, values, d.extraMapValues)
 

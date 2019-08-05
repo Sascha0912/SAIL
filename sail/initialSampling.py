@@ -31,7 +31,9 @@ def initialSampling(d, nInitialSamples): # CHECKED d, nInitialSamples
     def feval(funcName,*args):
         return eval(funcName)(*args)
     def scale(value):
-        return (value - 0)/(1-0)*(d.featureMax[0] - d.featureMin[0]) + d.featureMin[0]
+        # return (value - 0)/(1-0)*(0.2 - (-0.2)) + (-0.2) # DOMAINCHANGE
+        # return (value - 0)/(1-0)*(4-0)+0
+        return (value - 0)/(1-0)*(2 - (-2)) + (-2)
 
 
 

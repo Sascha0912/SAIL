@@ -40,6 +40,6 @@ def cube_FitnessFunc(pop):# TODO: need also domain as input -> for feature Range
     # make all values negative (high fitness is bad fitness)
     fitness_arr = np.negative(fitness_arr)
     df_fitness = pd.DataFrame(data=fitness_arr).transpose()
-    print("df_fitness")
-    print(df_fitness)
+    # print("df_fitness")
+    # print(df_fitness)
     return df_fitness

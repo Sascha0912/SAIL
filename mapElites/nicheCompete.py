@@ -32,6 +32,7 @@ def nicheCompete(newInds, fitness, map, d):
     # print("map[0].edges")
     # print(map[0].edges)
     # pprint(vars(map[0]))
+
     bestIndex, bestBin = getBestPerCell(newInds, fitness, d, map[0].edges)
     # print("bestIndex")
     # print(bestIndex)
@@ -51,7 +52,7 @@ def nicheCompete(newInds, fitness, map, d):
 
     # Compare to already existing samples
     improvement = []
-    
+
     # print("mapLinIndx")
     # print(mapLinIndx)
     re_fitness = map[0].fitness.reshape((map[0].fitness.shape[0] * map[0].fitness.shape[1], 1))
@@ -83,7 +84,7 @@ def nicheCompete(newInds, fitness, map, d):
     #         else:
     #             improvement.append(False)
 
-    
+
     df_fitness = pd.DataFrame(data=fitness.transpose())
     # print("df_fitness")
     # print(df_fitness)
@@ -101,7 +102,7 @@ def nicheCompete(newInds, fitness, map, d):
     # first = False
     # print("bestIndex")
     # print(bestIndex)
-    
+
     # print("improvement")
     # print(improvement)
     replacement = [bestIndex[i] for i in range(len(bestIndex)) if improvement[improvement.index.values.tolist()[i]]]

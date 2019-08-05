@@ -9,6 +9,8 @@ def sobol2indx(sobSet, sobPoints, d, edges):
     # print(sobSet)
     # print("sobPoints")
     # print(sobPoints)
+    # print("edges")
+    # print(edges)
     sampleCoords = sobSet.iloc[sobPoints, :] # TODO: Error : Positional Indexes out of bounds
     # print("sampleCoords")
     # print(sampleCoords)
@@ -23,10 +25,10 @@ def sobol2indx(sobSet, sobPoints, d, edges):
     # print("edges")
     # print(edges)
     for iDim in range(0,d.nDims):
-        binIndx.at[:,iDim] = np.digitize(sampleCoords.iloc[:,iDim], edges[iDim])-1 # TODO: CHECK: -1 correct?
-    
+        binIndx.at[:,iDim] = np.digitize(sampleCoords.iloc[:,iDim], edges[iDim])-1 # TODO: CHECK: -1 correct? ADAPT
+
     # print("binIndx")
     # print(binIndx)
     mapLinIndx = np.ravel_multi_index((binIndx.iloc[:,0], binIndx.iloc[:,1]), dims=d.featureRes, order='F')
-    
+
     return mapLinIndx, binIndx

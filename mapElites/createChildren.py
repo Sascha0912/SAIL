@@ -31,7 +31,7 @@ def createChildren(map, nChildren, p, d):
             entry = reshaped_genes[j][i][0]
             # if (np.isnan(entry)): # only checks first attribute of sample if nan
             #     break
-            parentPool.at[i, j] = entry             
+            parentPool.at[i, j] = entry
             # if j==len(map.genes)-1:
             #     k = k+1
     parentPool.dropna(inplace=True)
@@ -54,8 +54,13 @@ def createChildren(map, nChildren, p, d):
     children = parents.add(mutation)
 
     # ADJUSTSCALE
-    children[children<d.featureMin[0]] = d.featureMin[0]
-    children[children>d.featureMax[0]] = d.featureMax[0]
+
+    children[children<-2] = -2 # DOMAINCHANGE
+    children[children>2] = 2
+    # children[children<0] = 0
+    # children[children>4] = 4
+
+
     # print("children")
     # print(children)
     return children

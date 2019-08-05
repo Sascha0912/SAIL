@@ -49,7 +49,20 @@ def viewMap(mapMatrix, d, **kwargs): # varagin == kwargs
     ax.set_yticks(np.arange(mapRes[1]))
 
     ax.set_xticklabels( [str(round(float(label),2)) for label in np.linspace(d.featureMin[0], d.featureMax[0], num=mapRes[0])] ) # ADJUSTSCALE TODO: calculate best amount of ticks so that everything is readable
-    ax.set_yticklabels( [str(round(float(label),2)) for label in np.linspace(d.featureMin[0], d.featureMax[0], num=mapRes[1])] )
+    ax.set_yticklabels( [str(round(float(label),2)) for label in np.linspace(d.featureMin[1], d.featureMax[1], num=mapRes[1])] )
+    every_nth = 4
+
+    for n, label in enumerate(ax.xaxis.get_ticklabels()):
+        if n % every_nth != 0:
+            label.set_visible(False)
+
+    for n, label in enumerate(ax.yaxis.get_ticklabels()):
+        if n % every_nth != 0:
+            label.set_visible(False)
+    # plt.locator_params(axis='x', nbins=3)
+    # plt.locator_params(axis='y', nbins=3)
+    # ax.set_xticklabels( [str(round(float(label),2)) for label in np.linspace(d.featureMin[0], d.featureMax[0], num=mapRes[0])] ) # ADJUSTSCALE TODO: calculate best amount of ticks so that everything is readable
+    # ax.set_yticklabels( [str(round(float(label),2)) for label in np.linspace(d.featureMin[1], d.featureMax[1], num=mapRes[1])] )
 
     # for t in ax.xaxis.get_ticks()[::2]: # Set every 2nd label on x-axis invisible to improve readability
     #     label.set_visible(False)

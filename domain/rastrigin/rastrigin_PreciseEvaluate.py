@@ -31,5 +31,5 @@ def rastrigin_PreciseEvaluate(observations, d):
     # miscVal.append(np.random.rand(1,len(observations)))
     # miscVal.append(np.zeros((1,len(observat ions))))
     # print("rastr_evaluate")
-    print(fitness)
+    # print(fitness)
     return fitness # TODO: check this return: is behaviour, fitness correct?

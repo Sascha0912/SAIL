@@ -32,9 +32,20 @@ def wheelcase_FitnessFunc(pop):
 
 
     # Generate config file for each sample
+    print("len(pop)")
+    print(len(pop))
     for i in range(len(pop)):
         # Change displacements (weights) of each sample
         sample = pop.iloc[i] # get sample (1x18)
+        # add penalty if abs(bottom ffd value ) < 1.5
+        # and abs(top ffd value) < 0.2
+        if (sample.iloc[2:4].to_numpy().reshape((1,2))[0,0] > -1.5 or sample.iloc[2:4].to_numpy().reshape((1,2))[0,1] > -0.2):
+            fitness_values.append(-1)
+        else:
+            fitness_values.append(0)
+
+
+
 
         mu_x = []
         mu_x_right = []
@@ -277,6 +288,9 @@ def wheelcase_FitnessFunc(pop):
         params_left.write_parameters(filename='configs/ffd_config_left_'+str(i)+'.prm')
         params_right.write_parameters(filename='configs/ffd_config_right_'+str(i)+'.prm')
     print("config files generated")
+    print("fitness values")
+    print(fitness_values)
+
 
     # Create wheelcase stl based on each config file
     for j in range(len(pop)):
@@ -422,7 +436,7 @@ def wheelcase_FitnessFunc(pop):
         # fitness is mean over the last 100 timesteps (inverted because lower cD (drag) is better)
         fitness = np.negative(cD.iloc[0:100].mean())
         print("FITNESS IS: " + str(fitness))
-        fitness_values.append(fitness)
+        fitness_values[k] += fitness
 
 
         # clean_par = "rm -rf domain/wheelcase/hpc1_velo_changed/processor*"
@@ -548,6 +562,8 @@ def wheelcase_FitnessFunc(pop):
         # print("wheelcase_turned.stl removed from hpc folder")
 
     print("end openfoam")
+    print("fitness values after")
+    print(fitness_values)
 
     remove_stls_cmd = "rm -r " + home_dir + "SAIL/stls/*"
     remove_configs_cmd = "rm -r " + home_dir + "SAIL/configs/*"

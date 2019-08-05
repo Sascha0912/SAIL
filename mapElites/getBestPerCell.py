@@ -60,6 +60,10 @@ def getBestPerCell(samples,fitness,d,edges):
     # print(indxSortTwo)
 
     bestIndex = indxSortTwo
+    # print("bestIndex")
+    # print(bestIndex)
+    # print("df_bin")
+    # print(df_bin)
     bestBin = pd.DataFrame(data=df_bin.iloc[bestIndex,:])
     # print("bestBin")
     # print(bestBin)

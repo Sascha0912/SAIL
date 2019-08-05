@@ -82,7 +82,7 @@ castellatedMeshControls
     // few cells. This setting will cause refinement to stop if <= minimumRefine
     // are selected for refinement. Note: it will at least do one iteration
     // (unless the number of cells to refine is 0)
-    minRefinementCells 10;
+    minRefinementCells 0;
 
     // Allow a certain level of imbalance during refining
     // (since balancing is quite expensive)
@@ -107,7 +107,7 @@ castellatedMeshControls
     (
         {
             file "all_deformed.eMesh";
-            level 6;
+            level 1;
         }
 
         //{
@@ -138,7 +138,7 @@ castellatedMeshControls
         allDef
         {
             // Surface-wise min and max refinement level
-            level (4 6);
+            level (1 6);
         
             // Optional specification of patch type (default is wall). No
             // constraint types (cyclic, symmetry) etc. are allowed.
@@ -200,7 +200,7 @@ castellatedMeshControls
             //mode inside;
             //levels ((1E15 6));
             mode distance;
-            levels ( (0.1 6) (0.5 4) (1.0 2) );
+            levels ( (0.05 7) (0.1 6) (0.5 4) (1.0 2) );
             //levels ( (0.03 8) (0.06 6) (0.1 5) (0.3 4) (2.0 2)); // levels must be ordered nearest first
             //levels ( (0.1 6) (0.3 4) (2.0 2) );
         }
@@ -252,7 +252,7 @@ snapControls
     //- Relative distance for points to be attracted by surface feature point
     //  or edge. True distance is this factor times local
     //  maximum edge length.
-    tolerance 2.0;
+    tolerance 1.0;
 
     //- Number of mesh displacement relaxation iterations.
     nSolveIter 30;

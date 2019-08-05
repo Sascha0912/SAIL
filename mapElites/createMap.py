@@ -10,12 +10,12 @@ def createMap(featureResolution, genomeLength, featureMin, featureMax, *args):
             self.edges = []
             self.fitness = None
             self.genes = None
-            
+
     edges = []
     map = Map()
 
     for i in range(0,len(featureResolution)):
-        edges.insert(i, np.linspace(featureMin[0] , featureMax[0], featureResolution[i]+1)) # ADJUSTSCALE
+        edges.insert(i, np.linspace(featureMin[i] , featureMax[i], featureResolution[i]+1)) # ADJUSTSCALE
 
     map.edges = edges
 
@@ -24,7 +24,7 @@ def createMap(featureResolution, genomeLength, featureMin, featureMax, *args):
     map.fitness = blankMap
     map.genes = []
     # print("genomeLength " + str(genomeLength))
-    
+
     # repmat
     # for i in range(0,genomeLength):
     #     map.genes.append(pd.DataFrame(data=blankMap))
@@ -36,7 +36,7 @@ def createMap(featureResolution, genomeLength, featureMin, featureMax, *args):
 
     # map.genes = np.tile(blankMap, [1,1,genomeLength])
     # print("map.genes")
-    
+
     # Debugging
     # np.set_printoptions(threshold=sys.maxsize)
     # print(map.genes)
@@ -48,5 +48,5 @@ def createMap(featureResolution, genomeLength, featureMin, featureMax, *args):
         for iValues in range(0,len(args[0])):
             exec('map.'+args[0][iValues]+'=blankMap.flatten("F")') # put already reshaped matrices for drag and confidence in map
         # pprint(vars(map))
-    
+
     return map, edges
