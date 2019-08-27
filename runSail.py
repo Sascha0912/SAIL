@@ -38,10 +38,10 @@ d = wheelcase_Domain()
 # d = velo_Domain()
 p = defaultParamSet()
 
-p.nInitialSamples = 5
-p.nTotalSamples   = 30
+p.nInitialSamples = 60
+p.nTotalSamples   = 1000
 p.nChildren       = 2**5 # 2**5
-p.nGens           = 2**8 # Illumination Generations 2**6
+p.nGens           = 2**11 # Illumination Generations 2**6
 
 p.data_mapEval    = False # produce intermediate prediction maps
 p.data_mapEvalMod = 50    # how often? (in samples)

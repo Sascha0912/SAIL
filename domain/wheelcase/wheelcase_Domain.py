@@ -27,7 +27,7 @@ def wheelcase_Domain():
             self.featureRes    = [25, 25]
             self.nDims         = len(self.featureRes)
             self.featureMin    = [0, 0]
-            self.featureMax    = [4, 2] # DOMAINCHANGE
+            self.featureMax    = [4, 0.2] # DOMAINCHANGE maximale Breite: 4 maximale h�he: 0.2
             self.featureLabels = ["velo width", "velo height"] # [X label, Y label]
 
             # GP Models
@@ -37,7 +37,7 @@ def wheelcase_Domain():
             self.nVals       = 2 # number of values of interest
 
             # Acquisition function
-            self.varCoef = 5 # variance weight
+            self.varCoef = 2 # variance weight
             self.muCoef  = 1  # mean weight TODO: delete
 
             # Domain Specific Map Values

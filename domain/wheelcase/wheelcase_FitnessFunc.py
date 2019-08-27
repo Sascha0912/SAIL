@@ -12,6 +12,10 @@ from stl import mesh
 import os
 
 def wheelcase_FitnessFunc(pop):
+
+    def downscaleXandZ(value, max_orig, min_orig, max_goal, min_goal):
+        return (value - min_orig)/(max_orig-min_orig)*(max_goal-min_goal)+min_goal
+
     # os.system('. /usr/local/stella/OpenFOAM/OpenFOAM-2.4.0/bin/tools/RunFunctions')
     fitness_values = []
     case_folder = 'domain/wheelcase/hpc1_velo_changed'
@@ -27,25 +31,37 @@ def wheelcase_FitnessFunc(pop):
 
     params_left.read_parameters(filename='domain/wheelcase/ffd/ffd_config_left.prm') # Dummy config file
     params_right.read_parameters(filename='domain/wheelcase/ffd/ffd_config_right.prm')
-    # print(pop)
-    pop.to_csv('domain/wheelcase/pop.csv',mode='a+',index=False,header=False)
+    
+    # pop.to_csv('domain/wheelcase/pop.csv',mode='a+',index=False,header=False)
 
+    # WORKAROUND because of OpenFOAM error when faces of mesh intersect -> x and z deformation downscale
+
+    # TODO: Teste ob hier die pop Werte schon skalierst sind
+    # print("pop_before")
+    # print(pop)
+
+    # pop[0] = pop[0].apply(lambda x : downscaleXandZ(x,0,-2,0.2,-0.2))
+    # pop[1] = pop[1].apply(lambda x : downscaleXandZ(x,0,-2,0.2,-0.2))
+    # pop[4] = pop[4].apply(lambda x : downscaleXandZ(x,0,-2,0.2,-0.2))
+    # pop[5] = pop[5].apply(lambda x : downscaleXandZ(x,0,-2,0.2,-0.2))
+    pop.to_csv('domain/wheelcase/pop.csv',mode='a+',index=False,header=False)
+    # print("pop")
+    # print(pop)
 
     # Generate config file for each sample
-    print("len(pop)")
-    print(len(pop))
+    # print("len(pop)")
+    # print(len(pop))
     for i in range(len(pop)):
+
         # Change displacements (weights) of each sample
-        sample = pop.iloc[i] # get sample (1x18)
+        sample = pop.iloc[i] # get sample (1x6)
+
         # add penalty if abs(bottom ffd value ) < 1.5
         # and abs(top ffd value) < 0.2
         if (sample.iloc[2:4].to_numpy().reshape((1,2))[0,0] > -1.5 or sample.iloc[2:4].to_numpy().reshape((1,2))[0,1] > -0.2):
             fitness_values.append(-1)
         else:
             fitness_values.append(0)
-
-
-
 
         mu_x = []
         mu_x_right = []
@@ -288,8 +304,8 @@ def wheelcase_FitnessFunc(pop):
         params_left.write_parameters(filename='configs/ffd_config_left_'+str(i)+'.prm')
         params_right.write_parameters(filename='configs/ffd_config_right_'+str(i)+'.prm')
     print("config files generated")
-    print("fitness values")
-    print(fitness_values)
+    # print("fitness values")
+    # print(fitness_values)
 
 
     # Create wheelcase stl based on each config file
@@ -308,33 +324,6 @@ def wheelcase_FitnessFunc(pop):
         mesh_points_final = free_form.modified_mesh_points
 
         stl_handler_all.write(mesh_points_final, 'stls/all_deformed_' + str(j) + '.stl')
-
-
-        # OLD VERSION:
-        # mesh_points_left = stl_handler_left.parse(filename='domain/wheelcase/ffd/wheelcase_turned_left.stl') # Base stl
-        # mesh_points_right = stl_handler_right.parse(filename='domain/wheelcase/ffd/wheelcase_turned_right.stl')
-        # params_left.read_parameters(filename='configs/ffd_config_left_'+str(j)+'.prm')
-        # params_right.read_parameters(filename='configs/ffd_config_right_'+str(j)+'.prm')
-
-        # free_form_left = FFD(params_left,mesh_points_left)
-        # free_form_left.perform() # Perform FFD
-
-        # free_form_right = FFD(params_right, mesh_points_right)
-        # free_form_right.perform()
-
-        # new_mesh_points_left = free_form_left.modified_mesh_points # Save new mesh of wheelcase
-        # stl_handler_left.write(new_mesh_points_left, 'stls/wheelcase_left_'+str(j)+'.stl') # save it in stls folder
-
-        # new_mesh_points_right = free_form_right.modified_mesh_points
-        # stl_handler_right.write(new_mesh_points_right, 'stls/wheelcase_right_'+str(j)+'.stl')
-
-        # # STLs zusammenfuegen - rechts und links
-        # left = mesh.Mesh.from_file('stls/wheelcase_left_'+str(j)+'.stl')
-        # right = mesh.Mesh.from_file('stls/wheelcase_right_'+str(j)+'.stl')
-
-        # # TODO: beide STLs zu einem zusammenfügen
-        # combined = mesh.Mesh(np.concatenate([left.data, right.data]))
-        # combined.save('stls/wheelcase_'+str(j)+'.stl', mode=stl.Mode.ASCII)
     print("slts generated")
 
     # config and stls correct
@@ -347,44 +336,6 @@ def wheelcase_FitnessFunc(pop):
 
         rename_cmd = "mv domain/wheelcase/hpc1_velo_changed/constant/triSurface/all_deformed_"+str(k)+".stl domain/wheelcase/hpc1_velo_changed/constant/triSurface/all_deformed.stl"
 
-
-
-        # openfoam_pre_cmd = "surfaceFeatureExtract -case " + home_dir + "SAIL/domain/wheelcase/hpc1_velo_changed"
-        #
-        # blockMesh_cmd = "blockMesh -case " + home_dir + "SAIL/domain/wheelcase/hpc1_velo_changed" #-case " + str(case_folder)  + " -dict domain/wheelcase/hpc1_velo_changed/constant/polyMesh/blockMeshDict"
-        #
-        # decompose_cmd = "decomposePar -case " + home_dir + "SAIL/domain/wheelcase/hpc1_velo_changed"
-        #
-        # snappy_cmd = "snappyHexMesh -case " + str(case_folder) + " -overwrite"
-        # snappy_par = "mpirun -np 4 snappyHexMesh -parallel -overwrite -case " + home_dir + "SAIL/domain/wheelcase/hpc1_velo_changed"
-        # # snappy_par = "runParallel snappyHexMesh 4 -overwrite -case " + home_dir + "SAIL/domain/wheelcade/hpc1_velo_changed"
-        # # snappy_par = "runParallel snappyHexMesh 32 -overwrite -case " + home_dir + "SAIL/domain/wheelcase/hpc1_velo_changed"
-        #
-        # # copy_0org_cmd = "cp -a domain/wheelcase/hpc1_velo_changed/0.org/. domain/wheelcase/hpc1_velo_changed/0"
-        #
-        # # For parallel running
-        # ls1_par = "ls -d processor* | xargs -I {} rm -rf ./{}/0"
-        # ls2_par = "ls -d processor* | xargs -I {} cp -r 0.org ./{}/0"
-        #
-        # openfoam_cmd = "patchSummary -case " + str(case_folder)
-        # patch_par = "mpirun -np 4 patchSummary -case " + home_dir + "SAIL/domain/wheelcase/hpc1_velo_changed"
-        # # patch_par = "runParallel patchSummary 4 -case " + home_dir + "SAIL/domain/wheelcase/hpc1_velo_changed"
-        # # patch_par = "runParallel patchSummary 32 -case " + home_dir + "SAIL/domain/wheelcase/hpc1_velo_changed"
-        #
-        # potential_cmd = "potentialFoam -case " + str(case_folder)
-        # potential_par = "mpirun -np 4 potentialFoam -case " + home_dir + "SAIL/domain/wheelcase/hpc1_velo_changed"
-        # # potential_par = "runParallel potentialFoam 4 -case " + home_dir + "SAIL/domain/wheelcase/hpc1_velo_changed"
-        # # potential_par = "runParallel potentialFoam 32 -case " + home_dir + "SAIL/domain/wheelcase/hpc1_velo_changed"
-        #
-        # simple_cmd = "simpleFoam -case " + str(case_folder)
-        # simple_par = "mpirun -np 4 simpleFoam -case " + home_dir + "SAIL/domain/wheelcase/hpc1_velo_changed"
-        # # simple_par = "runParallel simpleFoam 4 -case " + home_dir + "SAIL/domain/wheelcase/hpc1_velo_changed"
-        # # simple_par = "runParallel simpleFoam 32 -case " + home_dir + "SAIL/domain/wheelcase/hpc1_velo_changed"
-        #
-        # reconstruct_parmesh = "reconstructParMesh -constant -case /home/sobst2s/SAIL/domain/wheelcase/hpc1_velo_changed"
-        # reconstruct_par = "reconstructPar -latestTime -case /home/sobst2s/SAIL/domain/wheelcase/hpc1_velo_changed"
-        #
-        #
         print("cp: " + str(os.system(copy_cmd)))
         print("cp executed")
 
@@ -392,178 +343,26 @@ def wheelcase_FitnessFunc(pop):
         print("renaming executed")
         os.chdir("/home/sascha/SAIL/domain/wheelcase/hpc1_velo_changed")
         os.system("./Allrun")
-        #
-        # os.chdir("/home/sascha/SAIL/domain/wheelcase/hpc1_velo_changed")
-        #
-        # print("surfaceFeatureExtract: " + str(os.system(openfoam_pre_cmd)))
-        # print("surfaceFeatureExtract executed")
-        #
-        # print("blockMesh: " + str(os.system(blockMesh_cmd)))
-        # print("blockMesh executed")
-        #
-        # print("decompose: " + str(os.system(decompose_cmd)))
-        # print("decomposePar executed")
-        #
-        # print("snappy: " + str(os.system(snappy_par)))
-        # print("snappy executed")
-        #
-        # print("ls1: " + str(os.system(ls1_par)))
-        # print("ls2: " + str(os.system(ls2_par)))
-        #
-        # # print("copying: " + str(os.system(copy_0org_cmd)))
-        # # print("copying 0.org files to 0 folder")
-        #
-        # print("patchSummary: " + str(os.system(patch_par)))
-        # print("patchSummary executed")
-        #
-        # print("potentialFoam: " + str(os.system(potential_par)))
-        # print("potentialFoam executed")
-        #
-        # print("simpleFoam: " + str(os.system(simple_par)))
-        # print("simpleFoam executed")
-        #
-        # print("reconstructMesh: " + str(os.system(reconstruct_parmesh)))
-        # print("reconstructParMesh executed")
-        #
-        # print("reconstructPar: " + str(os.system(reconstruct_par)))
-        # print("reconstructPar executed")
-        #
-        # os.chdir("/home/sascha/SAIL")
 
         data_force = np.loadtxt('/home/sascha/SAIL/domain/wheelcase/hpc1_velo_changed/postProcessing/forceCoeffs1/0/forceCoeffs.dat')
         df_force = pd.DataFrame(data=data_force)
         cD = df_force.iloc[:,2]
+        cD.to_csv('drag'+str(k)+'.csv')
         # fitness is mean over the last 100 timesteps (inverted because lower cD (drag) is better)
-        fitness = np.negative(cD.iloc[0:100].mean())
+        fitness = np.negative(cD.iloc[100:200].mean()) # OpenFOAM 200 timesteps -> controlDict
         print("FITNESS IS: " + str(fitness))
         fitness_values[k] += fitness
 
-
-        # clean_par = "rm -rf domain/wheelcase/hpc1_velo_changed/processor*"
-        # clean_cmd1 = "rm -rf domain/wheelcase/hpc1_velo_changed/constant/extendedFeatureEdgeMesh"
-        # clean_cmd2 = "rm -f domain/wheelcase/hpc1_velo_changed/constant/triSurface/all_deformed.eMesh"
-        # clean_cmd3 = "rm -rf domain/wheelcase/hpc1_velo_changed/0"
-        # clean_cmd4 = "rm -r domain/wheelcase/hpc1_velo_changed/1* | rm -r domain/wheelcase/hpc1_velo_changed/2* | rm -r domain/wheelcase/hpc1_velo_changed/3* | rm -r domain/wheelcase/hpc1_velo_changed/4* | rm -r domain/wheelcase/hpc1_velo_changed/5* | rm -r domain/wheelcase/hpc1_velo_changed/6* | rm -r domain/wheelcase/hpc1_velo_changed/7* | rm -r domain/wheelcase/hpc1_velo_changed/8* | rm -r domain/wheelcase/hpc1_velo_changed/9* | rm -r domain/wheelcase/hpc1_velo_changed/postProcessing"
-        # # #TODO: delete polyMesh contents
-        # clean_cmd5 = "rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/faces | rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/neighbour | rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/owner | rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/points | rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/cellLevel | rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/level0Edge | rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/pointLevel | rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/refinementHistory | rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/surfaceIndex | rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/faceZones | rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/pointZones | rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/cellZones | rm -rf domain/wheelcase/hpc1_velo_changed/constant/polyMesh/sets"
-        # # clean_cmd5 = "rm -v !('blockMeshDict')"
-        # # clean_cmd4 = ". $WM_PROJECT_DIR/bin/tools/CleanFunctions"# & /home/sascha/Schreibtisch/SAIL/domain/wheelcase/hpc1_velo_changed/cleanCase"
-        # # os.chdir('/home/sascha/Schreibtisch/SAIL/domain/wheelcase/hpc1_velo_changed')
-        # # clean_cmd5 = "cleanCase"
         remove_wheelcase_cmd = "rm /home/sascha/SAIL/domain/wheelcase/hpc1_velo_changed/constant/triSurface/all_deformed.stl"
-
-        # os.system(clean_par)
-        # os.system(clean_cmd1)
-        # os.system(clean_cmd2)
-        # os.system(clean_cmd3)
-        # os.system(clean_cmd4)
-        # os.system(clean_cmd5)
 
         os.system("./Allclean")
         os.system(remove_wheelcase_cmd)
         os.chdir("/home/sascha/SAIL")
         print("wheelcase_turned.stl removed from hpc folder")
 
-        # OLD VERSION:
-        # # TODO: verketten der Kommandos mit &
-        # copy_cmd = "cp stls/wheelcase_"+str(k)+".stl domain/wheelcase/hpc1_velo_changed/constant/triSurface"
-
-        # rename_cmd = "mv domain/wheelcase/hpc1_velo_changed/constant/triSurface/wheelcase_"+str(k)+".stl domain/wheelcase/hpc1_velo_changed/constant/triSurface/wheelcase_turned.stl"
-
-        # openfoam_pre_cmd = "surfaceFeatureExtract -case " + str(case_folder)
-
-        # blockMesh_cmd = "blockMesh -case " + home_dir + "SAIL/domain/wheelcase/hpc1_velo_changed" #-case " + str(case_folder)  + " -dict domain/wheelcase/hpc1_velo_changed/constant/polyMesh/blockMeshDict"
-
-        # snappy_cmd = "snappyHexMesh -case " + str(case_folder) + " -overwrite"
-
-        # # copy all the contents of 0.org to 0 folder (should exist at this point)
-        # copy_0org_cmd = "cp -a domain/wheelcase/hpc1_velo_changed/0.org/. domain/wheelcase/hpc1_velo_changed/0"
-
-        # # non parallel computation (TODO: look at Allrun for parallel run functions)
-        # openfoam_cmd = "patchSummary -case " + str(case_folder)
-        # potential_cmd = "potentialFoam -case " + str(case_folder)
-        # simple_cmd = "simpleFoam -case " + str(case_folder)
-
-        # # recParMesh_cmd = "runApplication reconstructParMesh -constant -case " + home_dir + "SAIL/domain/wheelcase/hpc1_velo_changed"
-        # # recPar_cmd = "runApplication reconstructPar -latestTime -case " + home_dir + "SAIL/domain/wheelcase/hpc1_velo_changed"
-        # # postprocess_cmd = ""
-        # # print(copy_cmd)
-        # print("cp: " + str(os.system(copy_cmd)))
-        # print("cp executed")
-        # # print(rename_cmd) # 105 - 165
-        # print("renaming: " + str(os.system(rename_cmd)))
-        # print("renaming executed")
-        # # # testen ob case ausführbar ist
-        # # # os.system(source_of240_cmd)
-        # # print(openfoam_pre_cmd)
-        # print("surfaceFeatureExtract: " + str(os.system(openfoam_pre_cmd)))
-        # print("surfaceFaetureExtract executed")
-
-        # # # print(cd_cmd)
-        # # # os.system(cd_cmd)
-        # # print(blockMesh_cmd)
-        # print("blockMesh: " + str(os.system(blockMesh_cmd)))
-        # print("blockMesh executed")
-        # # exit()
-        # # # print(decompose_cmd)
-        # # # os.system(decompose_cmd)
-
-        # # print(snappy_cmd)
-        # print("snappy: " + str(os.system(snappy_cmd)))
-        # print("snappy executed")
-
-        # # print(copy_0org_cmd)
-        # print("copying: " + str(os.system(copy_0org_cmd)))
-        # print("copying 0.org files to 0 folder")
-        # # print(openfoam_cmd)
-        # print("patchSummary: " + str(os.system(openfoam_cmd)))
-        # print("patchSummary executed")
-        # # print(potential_cmd)
-        # print("potentialFoam: " + str(os.system(potential_cmd)))
-        # print("potentialFoam executed")
-        # # print(simple_cmd)
-        # print("simpleFoam: " + str(os.system(simple_cmd)))
-        # print("simpleFoam executed")
-
-        # # # print(recParMesh_cmd)
-        # # # os.system(recParMesh_cmd)
-        # # # print(recPar_cmd)
-        # # # os.system(recPar_cmd)
-        # # # Postprocessing - extraxt cD values
-        # data_force = np.loadtxt('domain/wheelcase/hpc1_velo_changed/postProcessing/forceCoeffs1/0/forceCoeffs.dat')
-        # df_force = pd.DataFrame(data=data_force)
-        # cD = df_force.iloc[:,2]
-        # # fitness is mean over the last 100 timesteps (inverted because lower cD (drag) is better)
-        # fitness = np.negative(cD.iloc[0:100].mean())
-        # print("FITNESS IS: " + str(fitness))
-        # fitness_values.append(fitness)
-        # # exit()
-
-        # # clean_cmd = "domain/wheelcase/hpc1_velo_changed/Allclean"
-        # clean_cmd1 = "rm -rf domain/wheelcase/hpc1_velo_changed/constant/extendedFeatureEdgeMesh"
-        # clean_cmd2 = "rm -f domain/wheelcase/hpc1_velo_changed/constant/triSurface/wheelcase_turned.eMesh"
-        # clean_cmd3 = "rm -rf domain/wheelcase/hpc1_velo_changed/0"
-        # clean_cmd4 = "rm -r domain/wheelcase/hpc1_velo_changed/1* | rm -r domain/wheelcase/hpc1_velo_changed/2* | rm -r domain/wheelcase/hpc1_velo_changed/3* | rm -r domain/wheelcase/hpc1_velo_changed/4* | rm -r domain/wheelcase/hpc1_velo_changed/5* | rm -r domain/wheelcase/hpc1_velo_changed/6* | rm -r domain/wheelcase/hpc1_velo_changed/7* | rm -r domain/wheelcase/hpc1_velo_changed/8* | rm -r domain/wheelcase/hpc1_velo_changed/9* | rm -r domain/wheelcase/hpc1_velo_changed/postProcessing"
-        # # #TODO: delete polyMesh contents
-        # clean_cmd5 = "rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/faces | rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/neighbour | rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/owner | rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/points | rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/cellLevel | rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/level0Edge | rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/pointLevel | rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/refinementHistory | rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/surfaceIndex | rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/faceZones | rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/pointZones | rm -f domain/wheelcase/hpc1_velo_changed/constant/polyMesh/cellZones | rm -rf domain/wheelcase/hpc1_velo_changed/constant/polyMesh/sets"
-        # # # clean_cmd5 = "rm -v !('blockMeshDict')"
-        # # # clean_cmd4 = ". $WM_PROJECT_DIR/bin/tools/CleanFunctions"# & /home/sascha/Schreibtisch/SAIL/domain/wheelcase/hpc1_velo_changed/cleanCase"
-        # # # os.chdir('/home/sascha/Schreibtisch/SAIL/domain/wheelcase/hpc1_velo_changed')
-        # # # clean_cmd5 = "cleanCase"
-        # remove_wheelcase_cmd = "rm domain/wheelcase/hpc1_velo_changed/constant/triSurface/wheelcase_turned.stl"
-
-        # os.system(clean_cmd1)
-        # os.system(clean_cmd2)
-        # os.system(clean_cmd3)
-        # os.system(clean_cmd4)
-        # os.system(clean_cmd5)
-
-        # os.system(remove_wheelcase_cmd)
-        # print("wheelcase_turned.stl removed from hpc folder")
-
     print("end openfoam")
-    print("fitness values after")
-    print(fitness_values)
+    # print("fitness values after")
+    # print(fitness_values)
 
     remove_stls_cmd = "rm -r " + home_dir + "SAIL/stls/*"
     remove_configs_cmd = "rm -r " + home_dir + "SAIL/configs/*"
@@ -572,24 +371,7 @@ def wheelcase_FitnessFunc(pop):
 
     # extract Fitness values (postProcessing folder)
     pd.DataFrame(data=fitness_values).to_csv('domain/wheelcase/fitness.csv',mode='a+',index=False,header=False)
-    # for i in range(len(pop)):
 
-
-    # np.savetxt('domain/wheelcase/debug.txt',fitness_values)
-    # params.read_parameters(filename='domain/cube/ffd/deform_goal.prm')
-
-    # goal_genome = np.concatenate((params.array_mu_x.flatten(), params.array_mu_y.flatten(), params.array_mu_z.flatten()), axis=None)
-    # fitness_arr = []
-    #
-    # for i in range(len(pop)):
-    #     a = pop.iloc[i,:].values
-    #     # print("a")
-    #     # print(a)
-    #     s = np.sum(abs(a-goal_genome))
-    #     fitness_arr.append(s)
-    #
-    # # make all values negative (high fitness is bad fitness)
-    # fitness_arr = np.negative(fitness_arr)
     df_fitness = pd.DataFrame(data=fitness_values).transpose()
 
     return df_fitness

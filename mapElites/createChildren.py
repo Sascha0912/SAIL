@@ -54,9 +54,21 @@ def createChildren(map, nChildren, p, d):
     children = parents.add(mutation)
 
     # ADJUSTSCALE
+    
+    children[0] = children[0].clip(upper=0.2,lower=-0.2)
+    children[1] = children[1].clip(upper=0.2,lower=-0.2)
 
-    children[children<-2] = -2 # DOMAINCHANGE
-    children[children>2] = 2
+    children[2] = children[2].clip(upper=0,lower=-2)
+    children[3] = children[3].clip(upper=0,lower=-2)
+
+    children[4] = children[4].clip(upper=0.2,lower=-0.2)
+    children[5] = children[5].clip(upper=0.2,lower=-0.2)
+    
+
+    # children[children<-2] = -2 # DOMAINCHANGE
+    # children[children>0] = 0
+    # print("children")
+    # print(children)
     # children[children<0] = 0
     # children[children>4] = 4
 

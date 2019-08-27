@@ -40,7 +40,7 @@ def sail(p,d): # domain and params
         return (value - 0)/(1-0)*(4-0)+0 # DOMAINCHANGE
 
     def scale2(value):
-        return (value - 0)/(1-0)*(2-0)+0 # DOMAINCHANGE
+        return (value - 0)/(1-0)*(0.2-0)+0 # DOMAINCHANGE
 
     # SOBOL settings (adjust also in initialSampling)
     skip     = 1000
@@ -59,8 +59,8 @@ def sail(p,d): # domain and params
         # print("p.nInitlasmaples")
         # print(p.nInitialSamples)
         observation, value = initialSampling(d,p.nInitialSamples)
-        # print("DEBUG1: observation")
-        # print(observation)
+        print("DEBUG1: observation")
+        print(observation)
         # print("DEBUG2: value")
         # print(value)
     else:
@@ -201,6 +201,7 @@ def sail(p,d): # domain and params
         percImproved[nSamples] = percImp # ok
         # print("percImproved")
         # print(percImproved)
+        percImproved.to_csv('percImproved.csv')
 
         # Data Gathering (illum Time)
         tEnd = time.time()
@@ -331,7 +332,7 @@ def sail(p,d): # domain and params
         # print("value")
         # print(value)
         observation = observation.append(newSample, ignore_index=True)
-        # print("observation")
+        # print("observation335")
         # print(observation)
         # observation = [observation, newSample] # cat
         nSamples = np.shape(observation)[0]

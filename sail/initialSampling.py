@@ -31,9 +31,9 @@ def initialSampling(d, nInitialSamples): # CHECKED d, nInitialSamples
     def feval(funcName,*args):
         return eval(funcName)(*args)
     def scale(value):
-        # return (value - 0)/(1-0)*(0.2 - (-0.2)) + (-0.2) # DOMAINCHANGE
-        # return (value - 0)/(1-0)*(4-0)+0
-        return (value - 0)/(1-0)*(2 - (-2)) + (-2)
+        return (value - 0)/(1-0)*(0 - (-2)) + (-2) # DOMAINCHANGE
+    def scale2(value):
+        return (value - 0)/(1-0)*(0.2 - (-0.2)) + (-0.2) # DOMAINCHANGE
 
 
 
@@ -62,7 +62,12 @@ def initialSampling(d, nInitialSamples): # CHECKED d, nInitialSamples
     sobSequence = sobSequence.sample(frac=1).reset_index(drop=True)
 
     # TODO: ADDED: Scaling
-    sobSequence = sobSequence.applymap(scale)
+    sobSequence[0] = sobSequence[0].apply(lambda x : scale2(x))
+    sobSequence[1] = sobSequence[1].apply(lambda x : scale2(x))
+    sobSequence[2] = sobSequence[2].apply(lambda x : scale(x))
+    sobSequence[3] = sobSequence[3].apply(lambda x : scale(x))
+    sobSequence[4] = sobSequence[4].apply(lambda x : scale2(x))
+    sobSequence[5] = sobSequence[5].apply(lambda x : scale2(x))
 
     # print(sobSequence)
     # random.shuffle(sobSequence)
