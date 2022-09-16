@@ -30,4 +30,4 @@ snowballstemmer==1.2.1
 Sphinx==1.4
 sphinx-rtd-theme==0.4.3
 tornado==6.0.2
-vtk==8.1.2
+vtk==9.0.1
